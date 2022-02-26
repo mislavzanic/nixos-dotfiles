@@ -1,0 +1,36 @@
+#!/bin/bash
+
+MAX=1500
+MIN=0
+tee="doas /usr/bin/tee"
+
+increase() {
+    new_brightness="$(($(< /sys/class/backlight/intel_backlight/brightness) + $1))"
+    if [ "$new_brightness" -le "$MAX" ]; then
+        echo "$new_brightness" | $tee /sys/class/backlight/intel_backlight/brightness && pkill -RTMIN+12 dwmblocks
+    else
+        echo "$MAX" | $tee /sys/class/backlight/intel_backlight/brightness && pkill -RTMIN+12 dwmblocks
+    fi
+}
+
+decrease() {
+    new_brightness="$(($(< /sys/class/backlight/intel_backlight/brightness) - $1))"
+    if [ "$new_brightness" -ge "$MIN" ]; then
+        echo "$new_brightness" | $tee /sys/class/backlight/intel_backlight/brightness && pkill -RTMIN+12 dwmblocks
+    else
+        echo "$MIN" | $tee /sys/class/backlight/intel_backlight/brightness && pkill -RTMIN+12 dwmblocks
+    fi
+}
+
+while getopts ":i:d:s:" opt; do
+    case $opt in
+        i) increase "$OPTARG"
+            ;;
+        d) decrease "$OPTARG"
+            ;;
+        s) < /sys/class/backlight/intel_backlight/brightness
+            ;;
+        \?) echo 'Invalid option'
+            ;;
+    esac
+done

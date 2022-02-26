@@ -1,0 +1,8 @@
+#!/bin/sh
+
+stack build --no-haddock \
+            --verbosity error \
+            --no-haddock-deps \
+            --only-dependencies \
+            --executable-stripping
+stack install

@@ -1,0 +1,30 @@
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/18.yaml
+
+packages:
+- .
+- xmobar-git
+- xmonad-git
+- xmonad-contrib-git
+
+nix:
+  packages:
+    - pkgconfig
+    - autoconf
+    - gcc
+    - alsa-lib
+    - xorg.libX11
+    - xorg.libXext
+    - xorg.libXft
+    - xorg.libXinerama
+    - xorg.libXpm
+    - xorg.libXScrnSaver
+    - xorg.libXrandr
+    - xorg.libXrender
+
+extra-deps:
+- netlink-1.1.1.0
+
+flags:
+  xmobar:
+    all_extensions: true

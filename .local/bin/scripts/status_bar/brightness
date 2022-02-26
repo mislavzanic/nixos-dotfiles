@@ -1,0 +1,5 @@
+#!/bin/bash
+
+BRIGHTNESS=$(< /sys/class/backlight/intel_backlight/brightness)
+
+[ "$BRIGHTNESS" -lt "500" ] && echo "🌒$BRIGHTNESS" || echo "🌞$BRIGHTNESS"

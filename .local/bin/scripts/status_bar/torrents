@@ -1,0 +1,11 @@
+#!/bin/sh
+
+transmission-remote -l | grep % |
+    sed "
+    s/.*Stopped.*/A 🛑 /;
+    s/.*Seeding.*/Z 🌱 /;
+	s/.*100%.*/N ✅/;
+	s/.*Idle.*/B 💤/;
+	s/.*Uploading.*/L 🔼/;
+	s/.*%.*/M 🔽/" |
+        sort -h | uniq -c | awk '{print $3 $1}' | paste -sd ' ' -

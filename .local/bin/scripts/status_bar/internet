@@ -1,0 +1,8 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) "$TERMINAL" -e nmtui; pkill -RTMIN+4 dwmblocks ;;
+esac
+
+printf "%s\n" "$(sed "s/down/❎/;s/up/🌐/" /sys/class/net/wlp2s0/operstate 2>/dev/null)"
+#printf "%s\n" "$(sed "s/down/d/;s/up/u/" /sys/class/net/wlp2s0/operstate 2>/dev/null)"

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+WALL_PATH="${XDG_DATA_HOME:-~/.local/share}/wall"
+BG='bg'
+
+read wall
+[ ! -f "${XDG_DATA_HOME:-~/.local/share}/$BG" ] && rm "${XDG_DATA_HOME:-~/.local/share}/$BG"
+ln -sf "$wall" "${XDG_DATA_HOME:-~/.local/share}/$BG"
+feh --bg-fill "${XDG_DATA_HOME:-~/.local/share}/$BG"

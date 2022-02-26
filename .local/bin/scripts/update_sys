@@ -1,0 +1,11 @@
+#!/bin/bash
+
+parse_yaml() {
+    result=($(yq "$1" "$2" | sed 's/\"//g' | tr '\n' ' '))
+    echo "${result[@]}"
+}
+
+update_users() {
+    config_users=$(parse_yaml '.users | keys[]' "$HOME/.config/config.yaml")
+    system_users=$(users)
+}

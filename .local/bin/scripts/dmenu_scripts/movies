@@ -1,0 +1,18 @@
+#!/bin/sh
+
+titles=$(ls /home/mislav/.local/media/movies/**/*.m* | 
+    awk '{print $NF;}' |
+    awk 'BEGIN {FS="/";} {print $NF;}' | 
+    sed 's/\./\ /g' | 
+    awk '{$NF = ""; print $0";";}'|
+    sed -E 's/\ /_/g;s/_*;$/;/g')
+echo $titles
+
+movies=$(ls /home/mislav/.local/media/movies/**/*.m* | sed -E 's/$/;/g;s/\s/\+/g')
+
+arr=(`echo $titles | tr ';' ' '`)
+marr=(`echo $movies | tr ';' ' '`)
+choice=$(printf '%s\n' "${arr[@]}" | dmenu -l 20 -p 'Pick what to watch:')
+for x in ${!arr[@]}; do
+    [[ "$choice" = "${arr[${x}]}" ]] && movie="$(echo ${marr[${x}]} | sed -E 's/\+/\ /g')" && mpv "$movie"
+done

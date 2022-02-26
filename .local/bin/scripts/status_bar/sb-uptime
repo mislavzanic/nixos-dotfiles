@@ -1,0 +1,6 @@
+#!/bin/sh
+
+time=$(uptime | awk '{print $3}')
+ismin=$(uptime | awk '{print $4}')
+
+[ $ismin == "min" ] && echo "⏰$time" || echo "⏰${time::-1}"

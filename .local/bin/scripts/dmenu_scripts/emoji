@@ -1,0 +1,5 @@
+#!/bin/sh
+
+emoji=$(cat ~/.local/share/emoji | dmenu -l 20 -p "Select emoji:" | awk '{print $1;}')
+printf $emoji | xclip -selection clipboard
+echo $emoji

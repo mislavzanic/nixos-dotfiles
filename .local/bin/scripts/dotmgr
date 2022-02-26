@@ -1,0 +1,57 @@
+#!/bin/bash
+
+parse_yaml() {
+    result=($(yq "$1" "$2" | sed 's/\"//g' | tr '\n' ' '))
+    echo "${result[@]}"
+}
+
+clean_xmonad() {
+    cd $HOME/dotfiles/.config/xmonad
+    rm -rf .stack-work
+    rm -rf mexmonad.cabal
+    rm -rf stack.yaml.lock
+    rm -rf xmonad.hi xmonad.o
+}
+
+backup_git() {
+    cd "$1"
+    git add .
+    git commit -m "$2"
+    git push origin master
+}
+
+backup_sys_dots() {
+    message="$1"
+    clean_xmonad
+    backup_git $HOME/.config/.dotfiles "$message"
+}
+
+backup() {
+    [ "$1" == 'dots' ] && backup_sys_dots "$2"
+}
+
+link_files() {
+    items=$(parse_yaml ".symlink.$1[]" $HOME/.config/.dotfiles/config.yaml)
+    for item in $items; do
+        ln -sf "$HOME/.config/.dotfiles/.$1/$item" "$HOME/.$1/$item"
+    done
+}
+
+symlink() {
+    link_files 'config'
+    link_files 'local'
+}
+
+BACKUP=''
+MESSAGE='backup'
+SYMLINK='0'
+while [ $# -gt 0 ]; do
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        [ $param == 'backup' ] && BACKUP="$2"
+        [ $param == 'message' ] && MESSAGE="$2"
+        [ $param == 'symlink' ] && SYMLINK="1"
+   fi
+   shift
+done
+[ $SYMLINK -eq '1' ] && symlink || backup "$BACKUP" "$MESSAGE"

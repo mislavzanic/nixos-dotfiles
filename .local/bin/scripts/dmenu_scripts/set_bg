@@ -1,0 +1,9 @@
+#!/bin/bash
+
+WALL_PATH="${XDG_DATA_HOME:-~/.local/share}/wall"
+BG='bg'
+echo $1
+wall=$(ls $WALL_PATH | dmenu -p "Select bg:")
+[ ! -f "${XDG_DATA_HOME:-~/.local/share}/$BG" ] && rm "${XDG_DATA_HOME:-~/.local/share}/$BG"
+ln -sf "$WALL_PATH/$wall" "${XDG_DATA_HOME:-~/.local/share}/$BG"
+feh --bg-fill "${XDG_DATA_HOME:-~/.local/share}/$BG"

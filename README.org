@@ -1,0 +1,12 @@
+#+TITLE: My Dotfiles
+
+[[./.local/screenshots/screen.png]]
+
+** Install
+
+#+BEGIN_SRC shell
+git clone --recurse-submodules https://github.com/mislavzanic/dotfiles.git
+cd dotfiles
+chmod a+x install.sh
+./install.sh
+#+END_SRC

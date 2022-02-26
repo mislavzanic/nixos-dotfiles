@@ -1,0 +1,77 @@
+name: Haskell CI (PRs)
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cabal: ["3.2"]
+        ghc: ["8.4", "8.6", "8.8.3", "8.10"]
+    env:
+      CONFIG: "--enable-tests --enable-benchmarks -fall_extensions"
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-haskell@v1
+      with:
+        ghc-version: ${{ matrix.ghc }}
+        cabal-version: ${{ matrix.cabal }}
+
+    - name: Cache
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-cabal
+      with:
+        path: ~/.cabal
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xorg-dev
+        sudo apt-get install -y libasound2-dev libxpm-dev libmpd-dev libxrandr-dev
+        sudo apt-get install -y happy c2hs hspec-discover
+
+    - name: Install dependencies
+      run: |
+        cabal update
+        cabal build --dependencies-only $CONFIG
+
+    - name: Build
+      run: cabal build $CONFIG
+
+    - name: Run hlint
+      run: |
+        wget https://raw.github.com/ndmitchell/hlint/master/misc/travis.sh
+        sh ./travis.sh src
+    - name: Run tests
+      run: cabal test
+
+  # build-freebsd:
+  #   runs-on: macos-latest
+  #   env:
+  #     CONFIG: "--enable-tests --enable-benchmarks -fwith_xft -fwith_mpd"
+
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+  #   - name: Install dependencies
+  #     uses: vmactions/freebsd-vm@v0.1.5
+  #     with:
+  #       usesh: true
+  #       prepare: pkg install -y ghc hs-hlint xorg-libraries hs-cabal-install git autoconf
+  #       run: |
+  #         cabal update
+  #         cabal build --dependencies-only $CONFIG
+  #         cabal build $CONFIG
+  #         hlint
+  #         cabal test

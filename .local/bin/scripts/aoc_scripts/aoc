@@ -1,0 +1,197 @@
+#!/bin/sh
+
+AOC="/home/$USER/.local/aoc"
+
+helpFunction() {
+   echo "Usage: $0 -y 2021 -d 17"
+   echo -e "\t-y Init current year"
+   echo -e "\t-d Init current day and download that days task/input"
+   echo -e "\t-s Post solution"
+   echo -e "\t-t View task"
+   exit 1 
+}
+
+prep_file() {
+    cat <<EOT >> $1.py
+#!/usr/bin/pypy3
+def parse_input():
+    l = [x.strip() for x in open('$1.in').readlines()]
+    return l
+
+def main():
+    l = parse_input()
+    print(l)
+
+if __name__ == '__main__':
+    main()
+EOT
+    chmod +x $1.py
+}
+
+parse_html() {
+    sed -n '/<main>/,/<\/main>/p' $1 | sed '/<style>/,/<\/style>/d' | grep -v 'script' | sed -E 's/<\/*em>/*/g ; s/<h2>/##/g ; s/<\/h2>/##\n/g ; s/<[^>]*>//g ; s/&gt;/>/g ; s/&lt;/</g ; s/&quot;/\"/g' >> $AOC/$year/$2
+}
+
+get_vars() {
+    alias=$(cat /home/$USER/.config/aocli/aocrc | grep curr_alias | awk -F ':' '{print $2}')
+    year=$(cat $AOC/.db | grep curr_year | awk -F ':' '{print $2}')
+    day=$(cat $AOC/.db | grep curr_day | awk -F ':' '{print $2}')
+    level=$(cat $AOC/$year/$day/.db | grep level | awk -F ':' '{print $2}')
+    session=$(cat /home/$USER/.config/aocli/aocrc | grep "$alias:" | awk -F ':' '{print $2}')
+    echo "$alias,$year,$day,$level,$session"
+}
+
+get_task() {
+    vars=$(get_vars)
+    session=$(echo $vars | awk -F ',' '{print $5}')
+    day=$(echo $vars | awk -F ',' '{print $3}')
+    year=$(echo $vars | awk -F ',' '{print $2}')
+    curl -s https://adventofcode.com/$year/day/$day --cookie "session=$session" > ${day}.task
+    parse_html "${day}.task" "$day/${day}.md"
+    rm ${day}.task
+    curl -s https://adventofcode.com/$year/day/$day/input --cookie "session=$session" > $AOC/$year/$day/${day}.in
+}
+
+get_calendar() {
+    year=$1
+    alias=$(cat /home/$USER/.config/aocli/aocrc | grep curr_alias | awk -F ':' '{print $2}')
+    session=$(cat /home/$USER/.config/aocli/aocrc | grep "$alias:" | awk -F ':' '{print $2}')
+    curl -s https://adventofcode.com/$year --cookie "session=$session" > ${year}.tmp
+    parse_html "${year}.tmp" "${year}.md"
+    rm ${year}.tmp
+}
+
+setup_year() {
+    YEAR=$1
+    db=$AOC/.db
+    [ -d $AOC ] || mkdir -p $AOC
+    [ -f $db ] || touch $db
+    [ $(grep curr_year $db | wc -l) -eq '0' ] && {
+        echo "curr_year:$YEAR" >> $db
+    } || {
+        sed -i -E "s/curr_year:[0-9]*/curr_year:$YEAR/" $db
+    }
+    [ -d $AOC/$YEAR ] || mkdir -p $AOC/$YEAR && cd $AOC/$YEAR
+    get_calendar $1
+    [ -d .git ] || {
+        git init -q . 
+        touch .gitignore && echo ".db" >> .gitignore
+        echo "*.md" >> .gitignore
+        echo "Directory $YEAR initialized at $AOC/$YEAR"
+    }
+}
+
+setup_day() {
+    DAY=$1
+    db=$AOC/.db
+    [ -z "$YEAR" ] && {
+        YEAR="$(cat $db | grep curr_year | awk -F ':' '{print $2}')"
+    }
+    [ -d $AOC/$YEAR/$DAY ] || mkdir -p $AOC/$YEAR/$DAY 
+    cd $AOC/$YEAR/$DAY
+    [ "$(cat $db | grep curr_day | wc -l)" -eq '1' ] && {
+        sed -i -E "s/curr_day:[0-9]*/curr_day:$DAY/" $db
+    } || {
+        echo "curr_day:$DAY" >> $db
+    }
+    touch .db
+    echo "level:1" >> .db
+    [ -f $AOC/$YEAR/$DAY/$DAY.in ] || get_task
+    [ -f $AOC/$YEAR/$DAY/$DAY.py ] || prep_file $DAY
+    echo "Initialized day $DAY"
+}
+
+post_answer() {
+    alias=$(cat /home/$USER/.config/aocli/aocrc | grep curr_alias | awk -F ':' '{print $2}')
+    session=$(cat /home/$USER/.config/aocli/aocrc | grep "$alias:" | awk -F ':' '{print $2}')
+    curl -s -X POST https://adventofcode.com/$2/day/$3/answer --cookie "session=$session" -d "level=$4&answer=$1" -o /tmp/answ.html
+    parse_html "/tmp/answ.html" "/tmp/tmp.md"
+    sed -i -E 's/\[.*\]//g' /tmp/tmp.md
+    cat /tmp/tmp.md
+
+    #RED="\033[0;31m"
+    #GREEN="\033[0;32m"
+    #NO="\033[0m"
+
+
+    #[ $(cat $day/answer.md | grep "That's the right answer!" | wc -l) -eq '1' ] && {
+    #    [ $level -eq '1' ] && {
+    #        sed -i 's/level:1/level:2/' $AOC/$year/$day/.db
+    #        get_task
+    #    }
+    #}
+}
+
+set_alias() {
+    path="/home/$USER/.config/aocli/aocrc"
+    [ -f $path ] || touch $path
+    [ $(cat $path | grep curr_alias | wc -l) -eq '0' ] && {
+        echo "curr_alias:$1" >> $path
+    } || {
+        sed -i -E "s/curr_alias:.*/curr_alias:$1/" $path
+    }
+}
+
+set_token() {
+    set_alias $1
+    path="/home/$USER/.config/aocli/aocrc"
+    [ ! -d /home/$USER/.config/aocli ] && mkdir /home/$USER/.config/aocli 
+    [ $(cat $path | grep "$1:" | wc -l) -eq '0' ] && {
+        echo "$1:$2" >> $path
+    } || {
+        sed -i -E "s/$1:.*/$1:$2/" $path
+    }
+}
+
+run_curr() {
+    vars=$(get_vars)
+    session=$(echo $vars | awk -F ',' '{print $5}')
+    day=$(echo $vars | awk -F ',' '{print $3}')
+    year=$(echo $vars | awk -F ',' '{print $2}')
+    level=$(echo $vars | awk -F ',' '{print $4}')
+    cd $AOC/$year/$day
+    res=$(./$day.py)
+    echo $res | xclip -selection clipboard
+    echo $res
+}
+
+view_task() {
+    vars=$(get_vars)
+    day=$(echo $vars | awk -F ',' '{print $3}')
+    year=$(echo $vars | awk -F ',' '{print $2}')
+    [ $year -gt '0' ] && {
+        [ $day -gt '0' ] && {
+            cat $AOC/$year/$day/$day.md $AOC/$year/$day/$day.in
+        }
+    }
+}
+
+get_input() {
+    alias=$(cat /home/$USER/.config/aocli/aocrc | grep curr_alias | awk -F ':' '{print $2}')
+    session=$(cat /home/$USER/.config/aocli/aocrc | grep "$alias:" | awk -F ':' '{print $2}')
+    curl -s https://adventofcode.com/$1/day/$2/input --cookie "session=$session"
+}
+
+# ----------------------------------------------------------------------------
+#  MAIN                                                                      -
+# ----------------------------------------------------------------------------
+
+while getopts 'i:l:thy:d:u:rs:k:' opt; do
+   case "$opt" in
+      s) POST="$OPTARG" ;;
+      r) run_curr ;;
+      t) view_task ;;
+      i) get_input "$2" "$3" ;;
+      u) ALIAS="$OPTARG" ;;
+      l) LEVEL="$OPTARG" ;;
+      y) YEAR="$OPTARG" ;;
+      d) DAY="$OPTARG" ;;
+      h) helpFunction ;; 
+   esac
+done
+
+[ -z $POST ] && {
+    get_input "$YEAR" "$DAY"
+} || {
+    post_answer "$POST" "$YEAR" "$DAY" "$LEVEL"
+}

@@ -1,0 +1,83 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.6.
+--
+-- see: https://github.com/sol/hpack
+
+name:           lvt-xmonad
+version:        69
+synopsis:       XMonad Rocks!
+author:         Mislav Zanic
+maintainer:     mislavzanic3@gmail.com
+license:        MIT
+build-type:     Simple
+
+executable xmobar
+  main-is: xmobar.hs
+  other-modules:
+      Custom.Colors.GruvboxDark
+      Custom.Colors.KaolinAurora
+      Custom.Keys
+      Custom.Layouts
+      Custom.Prompt
+      Custom.Scratchpads
+      Custom.TreePrompt
+      Custom.Utils
+      Custom.Vars
+      Hooks.ManageHook
+      Hooks.StartupHook
+      Hooks.StatusBar
+      Paths_lvt_xmonad
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -rtsopts -threaded -with-rtsopts=-N
+  build-depends:
+      X11
+    , base
+    , containers
+    , directory
+    , filepath
+    , libmpd
+    , process
+    , time
+    , unix
+    , utf8-string
+    , xmobar
+    , xmonad
+    , xmonad-contrib
+  default-language: Haskell2010
+
+executable xmonad
+  main-is: xmonad.hs
+  other-modules:
+      Custom.Colors.GruvboxDark
+      Custom.Colors.KaolinAurora
+      Custom.Keys
+      Custom.Layouts
+      Custom.Prompt
+      Custom.Scratchpads
+      Custom.TreePrompt
+      Custom.Utils
+      Custom.Vars
+      Hooks.ManageHook
+      Hooks.StartupHook
+      Hooks.StatusBar
+      Paths_lvt_xmonad
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2
+  build-depends:
+      X11
+    , base
+    , containers
+    , directory
+    , filepath
+    , libmpd
+    , process
+    , time
+    , unix
+    , utf8-string
+    , xmobar
+    , xmonad
+    , xmonad-contrib
+  default-language: Haskell2010

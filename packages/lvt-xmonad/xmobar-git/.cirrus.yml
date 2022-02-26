@@ -1,0 +1,39 @@
+freebsd_instance:
+  image_family: freebsd-13-0
+
+build_task:
+  env:
+    CONFIG: "--enable-tests --enable-benchmarks -fwith_mpd -fwith_xft"
+
+  # caches the freebsd package downloads
+  # saves probably just a couple of seconds, but hey...
+  pkg_cache:
+    folder: /var/cache/pkg
+
+  install_script:
+    - pkg install -y ghc hs-hlint xorg-libraries hs-cabal-install git autoconf libmpdclient pkgconf libXft hs-hspec-discover
+
+  # cache the hackage index file and downloads which are
+  # cabal v2-update downloads an incremental update, so we don't need to keep this up2date
+  packages_cache:
+    # warning: don't use ~/.cabal here, this will break the cache
+    folder: /.cabal/packages
+    reupload_on_changes: false
+
+  # cache the dependencies built by cabal
+  # they have to be uploaded on every change to make the next build fast
+  store_cache:
+    # warning: don't use ~/.cabal here, this will break the cache
+    folder: /.cabal/store
+    fingerprint_script: cat xmobar.cabal
+    reupload_on_changes: true
+
+  build_script:
+    - cabal v2-update
+    - timeout 1800 cabal v2-build -j4 $CONFIG || (($?==124))
+
+  lint_script:
+    - hlint src
+
+  test_script:
+    - cabal v2-test -j4 $CONFIG

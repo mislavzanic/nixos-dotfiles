@@ -1,0 +1,379 @@
+Xmobar can either be configured using the configuration language, or
+used as a Haskell library (similar to xmonad) and compiled with your
+specific configuration. For an example of the latter, you can have a
+loot at [[../examples/xmobar.hs][examples/xmobar.hs]] or, for a more complicated example, peruse
+[[https://gitlab.com/jaor/xmobar-config/][the author's configuration]].
+
+There is also an example of a config using the configuration language
+available [[http://github.com/jaor/xmobar/raw/master/examples/xmobar.config][here]].
+
+* Configuration Options
+
+Here are all the global configuration options that you can set within
+the =Config= block in your configuration.
+
+- =font= Name of the font to be used. Use the =xft:= prefix for XFT
+  fonts.
+
+- =additionalFonts= Haskell-style list of fonts to be used with the
+  =fn=-template. Use the =xft:= prefix for XFT fonts. See also
+  =textOffsets= below. For example:
+
+  #+begin_src haskell
+    additionalFonts = [iconFont, altIconFont]
+  #+end_src
+
+- =bgColor= Background color.
+
+- =fgColor= Default font color.
+
+- =alpha= The transparency. 0 is transparent, 255 is opaque.
+
+- =position= Top, TopH, TopP, TopW, TopSize, Bottom, BottomH,
+  BottomP, BottomW, BottomSize or Static (with x, y, width and height).
+
+  TopP and BottomP take 2 arguments: left padding and right padding.
+
+  TopW and BottomW take 2 arguments: an alignment parameter (L for left,
+  C for centered, R for Right) and an integer for the percentage width
+  xmobar window will have in respect to the screen width.
+
+  TopSize and BottomSize take 3 arguments: an alignment parameter, an
+  integer for the percentage width, and an integer for the minimum pixel
+  height that the xmobar window will have.
+
+  TopH and BottomH take one argument (Int) which adjusts the bar height.
+
+  For example:
+
+  #+begin_src haskell
+    position = TopH 30
+  #+end_src
+
+  to make a 30 tall bar on the top, or
+
+  #+begin_src haskell
+    position = BottomH 30
+  #+end_src
+
+  to make a 30 tall bar on the bottom of the screen.
+
+  #+begin_src haskell
+    position = BottomW C 75
+  #+end_src
+
+  to place xmobar at the bottom, centered with the 75% of the screen
+  width. Or
+
+  #+begin_src haskell
+    position = BottomP 120 0
+  #+end_src
+
+  to place xmobar at the bottom, with 120 pixel indent of the left. Or
+
+  #+begin_src haskell
+    position = Static { xpos = 0 , ypos = 0, width = 1024, height = 15 }
+  #+end_src
+
+  or
+
+  #+begin_src haskell
+    position = Top
+  #+end_src
+
+- =textOffset= The vertical offset, in pixels, for the text baseline. If
+  negative or not given, xmobar will try to center text vertically.
+
+- =textOffsets= A list of vertical offsets, in pixels, for the text
+  baseline, to be used with the each of the fonts in =additionalFonts=
+  (if any). If negative or not given, xmobar will try to center text
+  vertically for that font.
+
+- =iconOffset= The vertical offset, in pixels, for icons bottom line. If
+  negative or not given, xmobar will try to center icons vertically.
+
+- =lowerOnStart= When True the window is sent the bottom of the window
+  stack initially.
+
+- =hideOnStart= When set to True the window is initially not mapped,
+  i.e. hidden. It then can be toggled manually (for example using the
+  dbus interface) or automatically (by a plugin) to make it reappear.
+
+- =allDesktops= When set to True (the default), xmobar will tell the
+  window manager explicitly to be shown in all desktops, by setting
+  =_NET_WM_DESKTOP= to 0xffffffff.
+
+- =overrideRedirect= If you're running xmobar in a tiling window
+  manager, you might need to set this option to =False= so that it
+  behaves as a docked application. Defaults to =True=.
+
+- =pickBroadest= When multiple displays are available, xmobar will
+  choose by default the first one to place itself. With this flag set to
+  =True= (the default is =False=) it will choose the broadest one
+  instead.
+
+- =persistent= When True the window status is fixed i.e. hiding or
+  revealing is not possible. This option can be toggled at runtime.
+  Defaults to False.
+
+- =border= TopB, TopBM, BottomB, BottomBM, FullB, FullBM or NoBorder
+  (default).
+
+  TopB, BottomB, FullB take no arguments, and request drawing a border
+  at the top, bottom or around xmobar's window, respectively.
+
+  TopBM, BottomBM, FullBM take an integer argument, which is the margin,
+  in pixels, between the border of the window and the drawn border.
+
+- =borderColor= Border color.
+
+- =borderWidth= Border width in pixels.
+
+- =iconRoot= Root folder where icons are stored. For =<icon=path/>= if
+  path start with =/=, =./= or =../= it is interpreted as it is.
+  Otherwise it will have
+
+  #+begin_src haskell
+    iconRoot ++ "/"
+  #+end_src
+
+  prepended to it. Default is =.=.
+
+- =commands= For setting the options of the programs to run (optional).
+
+- =sepChar= The character to be used for indicating commands in the
+  output template (default '%').
+
+- =alignSep= a 2 character string for aligning text in the output
+  template. The text before the first character will be align to left,
+  the text in between the 2 characters will be centered, and the text
+  after the second character will be align to the right.
+
+- =template= The output template.
+
+- =wmClass= The value for the window's X11 WM_CLASS property. Defaults
+  to "xmobar".
+
+- =wmName= The value for the window's X11 WM_NAME property. Defaults to
+  "xmobar".
+
+** The Output =template=
+
+The output template is how xmobar will end up printing all of your
+configured commands. It must contain at least one command. Xmobar will
+parse the template and search for the command to be executed in the
+=commands= configuration option. First an =alias= will be searched (some
+plugins, such as =Weather= or =Network=, have default aliases, see the
+[[./plugins.org][plugin documentation]]).  After that, the command name will be tried. If a
+command is found, the arguments specified in the =commands= list will be
+used.
+
+If no command is found in the =commands= list, xmobar will ask the
+operating system to execute a program with the name found in the
+template. If the execution is not successful an error will be reported.
+
+The syntax for the output template is as follows:
+
+- =%command%= will execute command and print the output. The output may
+  contain markups to change the characters' color.
+
+- =<fc=#FF0000>string</fc>= will print =string= with =#FF0000= color
+  (red). =<fc=#FF0000,#000000>string</fc>= will print =string= in red
+  with a black background (=#000000=). Background absolute offsets can
+  be specified for XFT fonts. =<fc=#FF0000,#000000:0>string</fc>= will
+  have a background matching the bar's height.
+
+- =<box>string</box>= will print string surrounded by a box in the
+  foreground color. The =box= tag accepts several optional arguments to
+  tailor its looks:
+
+  - =type=: =Top=, =Bottom=, =VBoth= (a single line above or below
+    string, or both), =Left=, =Right=, =HBoth= (single vertical lines),
+    =Full= (a rectangle, the default).
+  - =color=: the color of the box lines.
+  - =width=: the width of the box lines.
+  - =offset=: an alignment char (L, C or R) followed by the amount of
+    pixels to offset the box lines; the alignment denotes the position
+    of the resulting line, with L/R meaning top/bottom for the vertical
+    lines, and left/right for horizontal ones.
+  - =mt=, =mb=, =ml=, =mr= specify margins to be added at the top,
+    bottom, left and right lines.
+
+  For example, a box underlining its text with a red line of width 2:
+
+  #+begin_src shell
+    <box type=Bottom width=2 color=red>string</box>
+  #+end_src
+
+  and if you wanted an underline and an overline with a margin of 2
+  pixels either side:
+
+  #+begin_src shell
+    <box type=VBoth mt=2 mb=2>string</box>
+  #+end_src
+
+- =<fn=1>string</fn>= will print =string= with the first font from
+  =additionalFonts=. The index =0= corresponds to the standard font.
+
+- =<hspace=X/>= will insert a blank horizontal space of =X= pixels.
+  For example, to add a blank horizontal space of 123 pixels,
+  =<hspace=123/>= may be used.
+
+- =<icon=/path/to/icon.xbm/>= will insert the given bitmap. XPM image
+  format is also supported when compiled with the =with_xpm= flag.
+
+- =<action=`command` button=12345>= will execute given command when
+  clicked with specified buttons. If not specified, button is equal to 1
+  (left mouse button). Using old syntax (without backticks surrounding
+  =command=) will result in =button= attribute being ignored.
+
+- =<raw=len:str/>= allows the encapsulation of arbitrary text =str=
+  (which must be =len= =Char=s long, where =len= is encoded as a decimal
+  sequence). Careful use of this and =UnsafeStdinReader=, for example,
+  permits window managers to feed xmobar strings with =<action>= tags
+  mixed with un-trusted content (e.g. window titles). For example, if
+  xmobar is invoked as
+
+  #+begin_src shell
+    xmobar -c "[Run UnsafeStdinReader]" -t "%UnsafeStdinReader%"
+  #+end_src
+
+  and receives on standard input the line
+
+  #+begin_src shell
+    <action=`echo test` button=1><raw=41:<action=`echo mooo` button=1>foo</action>/></action>`
+  #+end_src
+
+  then it will display the text
+  =<action=`echo mooo` button=1>foo</action>=, which, when clicked, will
+  cause =test= to be echoed.
+
+*** Bitmap Icons
+
+It's possible to insert in the global templates icon directives of the
+form:
+
+#+begin_src shell
+  <icon=/path/to/bitmap.xbm/>
+#+end_src
+
+which will produce the expected result. Accepted image formats are XBM
+and XPM (when =with_xpm= flag is enabled). If path does not start with
+=/=, =./=, =../= it will have
+
+#+begin_src haskell
+  iconRoot ++ "/"
+#+end_src
+
+prepended to it.
+
+*** Action Directives
+
+It's also possible to use action directives of the form:
+
+#+begin_src shell
+  <action=`command` button=12345>
+#+end_src
+
+which will be executed when clicked on with specified mouse buttons.
+This tag can be nested, allowing different commands to be run depending
+on button clicked.
+
+** The =commands= Configuration Option
+
+The =commands= configuration option is a list of commands information
+and arguments to be used by xmobar when parsing the output template.
+Each member of the list consists in a command prefixed by the =Run=
+keyword. Each command has arguments to control the way xmobar is going
+to execute it.
+
+The option consists in a list of commands separated by a comma and
+enclosed by square parenthesis.
+
+Example:
+
+#+begin_src haskell
+  [Run Memory ["-t","Mem: <usedratio>%"] 10, Run Swap [] 10]
+#+end_src
+
+to run the Memory monitor plugin with the specified template, and the
+swap monitor plugin, with default options, every second. And here's an
+example of a template for the commands above using an icon:
+
+#+begin_src haskell
+  template = "<icon=/home/jao/.xmobar/mem.xbm/><memory> <swap>"
+#+end_src
+
+This example will run "xclock" command when date is clicked:
+
+#+begin_src haskell
+  template = "<action=`xclock`>%date%</action>"
+#+end_src
+
+The only internal available command is =Com= (see below Executing
+External Commands). All other commands are provided by plugins. xmobar
+comes with some plugins, providing a set of system monitors, a standard
+input reader, an Unix named pipe reader, a configurable date plugin, and
+much more: we list all available plugins below.
+
+Other commands can be created as plugins with the Plugin infrastructure.
+See below.
+** Running xmobar with =i3status=
+
+xmobar can be used to display information generated by [[http://i3wm.org/i3status/][i3status]], a small
+program that gathers system information and outputs it in formats
+suitable for being displayed by the dzen2 status bar, wmii's status bar
+or xmobar's =StdinReader=. See [[http://i3wm.org/i3status/manpage.html#_using_i3status_with_xmobar][i3status manual]] for further details.
+
+** Dynamically sizing xmobar
+
+See [[https://github.com/jaor/xmobar/issues/239#issuecomment-233206552][this idea]] by Jonas Camillus Jeppensen for a way of adapting
+dynamically xmobar's size and run it alongside a system tray widget such
+as trayer or stalonetray (although the idea is not limited to trays,
+really). For your convenience, there is a version of Jonas' script in
+[[../examples/padding-icon.sh][examples/padding-icon.sh]].
+
+* Command Line Options
+
+xmobar can be either configured with a configuration file or with
+command line options. In the second case, the command line options will
+overwrite the corresponding options set in the configuration file.
+
+Example:
+
+#+begin_src shell
+  xmobar -B white -a right -F blue -t '%LIPB%' -c '[Run Weather "LIPB" [] 36000]'
+#+end_src
+
+This is the list of command line options (the output of =xmobar --help=):
+
+#+begin_src shell
+  Usage: xmobar [OPTION...] [FILE]
+  Options:
+    -h, -?        --help                 This help
+    -v            --verbose              Emit verbose debugging messages
+    -r            --recompile            Force recompilation
+    -V            --version              Show version information
+    -f font name  --font=font name       Font name
+    -N font name  --add-font=font name   Add to the list of additional fonts
+    -w class      --wmclass=class        X11 WM_CLASS property
+    -n name       --wmname=name          X11 WM_NAME property
+    -B bg color   --bgcolor=bg color     The background color. Default black
+    -F fg color   --fgcolor=fg color     The foreground color. Default grey
+    -i path       --iconroot=path        Root directory for icon pattern paths. Default '.'
+    -A alpha      --alpha=alpha          Transparency: 0 is transparent, 255 is opaque. Default: 255
+    -o            --top                  Place xmobar at the top of the screen
+    -b            --bottom               Place xmobar at the bottom of the screen
+    -d            --dock                 Don't override redirect from WM and function as a dock
+    -a alignsep   --alignsep=alignsep    Separators for left, center and right text
+                                         alignment. Default: '}{'
+    -s char       --sepchar=char         Character used to separate commands in
+                                         the output template. Default '%'
+    -t template   --template=template    Output template
+    -c commands   --commands=commands    List of commands to be executed
+    -C command    --add-command=command  Add to the list of commands to be executed
+    -x screen     --screen=screen        On which X screen number to start
+    -p position   --position=position    Specify position of xmobar. Same syntax as in config file
+
+  Mail bug reports and suggestions to <mail@jao.io>
+#+end_src

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+MANAGER='qtile'
+
+if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile" ]; then
+	. "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile"
+else
+	. "$HOME/.xprofile"
+fi
+
+while :; do
+#    ssh-agent "$HOME/.local/bin/$MANAGER"
+    qtile start
+done

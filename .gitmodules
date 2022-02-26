@@ -1,0 +1,9 @@
+[submodule "./packages/lvt-xmonad/xmonad-git"]
+	path = ./packages/lvt-xmonad/xmonad-git
+	url = https://github.com/xmonad/xmonad
+[submodule "./packages/lvt-xmonad/xmonad-contrib-git"]
+	path = ./packages/lvt-xmonad/xmonad-contrib-git
+	url = https://github.com/xmonad/xmonad-contrib
+[submodule "./packages/lvt-xmonad/xmobar-git"]
+	path = ./packages/lvt-xmonad/xmobar-git
+	url = https://github.com/jaor/xmobar
