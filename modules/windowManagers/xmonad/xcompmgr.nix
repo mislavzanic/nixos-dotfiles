@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 
 let
-  cfg = config.services.lvh.xcompmgr;
+  cfg = config.services.lvt.xcompmgr;
 in with lib; {
-  options.services.lvh.xcompmgr = {
+  options.services.lvt.xcompmgr = {
     enable = mkEnableOption "Enable xcompmgr Compositor";
   };
 

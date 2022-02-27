@@ -16,7 +16,6 @@ import XMonad.Layout.Renamed (renamed, Rename(Replace))
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
 import XMonad.Layout.LimitWindows (limitWindows)
-import XMonad.Layout.Magnifier (MagnifyThis (NoMaster), magnify)
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.BinarySpacePartition
@@ -76,13 +75,6 @@ myLayout = layoutOpts $ tiled ||| full where
      tiled = setName "Tall"
            $ mySpacing 4
            $ ResizableTall 1 (3/100) (1/2) []
-
-     hacking = setName "Hacking"
-       . limitWindows 3
-       . magnify 1.3 (NoMaster 3) True
-       $ mySpacing 4
-       $ rTall 1 (3 % 100) (13 % 25)
-
 
      -- bsp
      bsp = renamed [Replace "BSP"]

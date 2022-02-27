@@ -18,7 +18,10 @@ import Custom.Colors.KaolinAurora
 import Custom.Layouts
 import Hooks.StartupHook
 import Hooks.ManageHook
-import Hooks.StatusBar
+
+import qualified XMonad.StackSet as W
+
+import System.IO (hPutStrLn)
 
 
 import XMonad hiding ( (|||) ) -- jump to layout
@@ -26,7 +29,6 @@ import XMonad hiding ( (|||) ) -- jump to layout
 import XMonad.Config.Desktop
 
 -- actions
-import XMonad.Actions.TopicSpace (workspaceHistoryHookExclude)
 import XMonad.Actions.SwapPromote (masterHistoryHook)
 import XMonad.Actions.UpdatePointer (updatePointer)
 
@@ -38,37 +40,40 @@ import XMonad.Layout.NoBorders
 
 -- hooks
 import XMonad.Hooks.ManageDocks (manageDocks)
-import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen, setEwmhActivateHook)
+import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.StatusBar (dynamicEasySBs)
+import XMonad.Hooks.DynamicLog
+import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 main :: IO ()
-main = xmonad
-     . setEwmhActivateHook activateHook
-     . ewmhFullscreen
-     . ewmh
-     . withUrgencyHook NoUrgencyHook
-     . dynamicEasySBs (pure . barSpawner)
-     $ myConfig where
-        myConfig = desktopConfig
-          { manageHook         = ( isFullscreen --> doFullFloat ) <+> manageDocks <+> myManageHook <+> manageHook desktopConfig
-          , startupHook        = myStartupHook
-          , layoutHook         = lessBorders OnlyScreenFloat $ myLayout
-          , handleEventHook    = handleEventHook desktopConfig <+> myHandleEventHook
-          , workspaces         = myWorkspaces
-          , borderWidth        = myBorderWidth
-          , terminal           = myTerminal
-          , modMask            = myModMask
-          , normalBorderColor  = color1
-          , focusedBorderColor = border
-          , logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
-                                 -- Remember where we've been.
-                                 <> masterHistoryHook -- Remember where we've been² (for 'swapPromote').
-                                 <> updatePointer (0.5, 0.5) (0, 0)
-                                 -- When focusing a new window with the keyboard,
-                                 -- move pointer to exact center of that window.
-          }
-          `additionalKeysP` myKeys
+main = do
+  xmproc0 <- spawnPipe ("/etc/xmobar/xmobar-x86_64-linux -x 0")
+  xmproc1 <- spawnPipe ("/etc/xmobar/xmobar-x86_64-linux -x 1")
+  xmonad $ withUrgencyHook NoUrgencyHook $ ewmh desktopConfig
+      { manageHook         = ( isFullscreen --> doFullFloat ) <+> manageDocks <+> myManageHook <+> manageHook desktopConfig
+      , startupHook        = myStartupHook
+      , layoutHook         = lessBorders OnlyScreenFloat $ myLayout
+      , handleEventHook    = handleEventHook desktopConfig
+      , workspaces         = myWorkspaces
+      , borderWidth        = myBorderWidth
+      , terminal           = myTerminal
+      , modMask            = myModMask
+      , normalBorderColor  = color1
+      , focusedBorderColor = border
+      , logHook            =  dynamicLogWithPP xmobarPP
+        { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
+        , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
+        , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
+        , ppHidden = xmobarColor myppHidden "" . wrap "+" ""   -- Hidden workspaces in xmobar
+        , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
+        , ppTitleSanitize = xmobarStrip
+        , ppSep = wrapInColor myppSepColor "  |  "
+        , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
+        , ppExtras  = [windowCount]                           -- # of windows current workspace
+        , ppOrder = \[ws, l, _, wins] -> [ws, l, wins]
+        }
+      }
+      `additionalKeysP` myKeys

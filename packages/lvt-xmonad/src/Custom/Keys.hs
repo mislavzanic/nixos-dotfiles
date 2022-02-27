@@ -18,12 +18,10 @@ import XMonad.Util.NamedScratchpad
 
     -- Actions
 import XMonad.Actions.Promote
-import XMonad.Actions.Prefix (PrefixArgument (Raw), withPrefixArgument)
 import XMonad.Actions.Submap (submap)
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.CycleWS
 
-import XMonad.Util.ActionCycle (cycleAction)
 import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
                                           , MergeAll
                                           , UnMergeAll
@@ -50,9 +48,6 @@ import XMonad.Prompt.Window
 
 type Keybinding = (String, X ())
 
-switchToLayout :: String -> X ()
-switchToLayout = sendMessage . JumpToLayout
-
 windowsKeys =
   [ ("M-[", windowPrompt dtXPConfig Goto allWindows)
   , ("M-]", windowPrompt dtXPConfig Bring allWindows)
@@ -69,10 +64,6 @@ windowsKeys =
   , ("M-h", sendMessage Shrink)
   , ("M-l", sendMessage Expand)
 
-  , ("M-C-m"  , cycleAction "tabAll" [ withFocused $ sendMessage . MergeAll
-                                     , withFocused $ sendMessage . UnMergeAll
-                                     ]
-    )
   , ("M-;"  , withFocused $ sendMessage . mergeDir id)
   , ("M-S-;"  , withFocused (sendMessage . UnMerge) *> windows W.focusUp)
   , ("M-S-b"  , sendMessage $ Toggle NOBORDERS)
@@ -107,9 +98,6 @@ passPromptKeys =
 promptKeys =
   [ ("M-p", shellPrompt dtXPConfig)
   , ("M-o l", systemPrompt dtXPConfig)
-  , ("M-s", withPrefixArgument $ submap . searchEngineMap . \case
-        Raw _ -> Selected  -- Search for selected text.
-        _     -> Normal)   -- Search for a certain term.
   ]
 
 layoutKeys =

@@ -5,6 +5,7 @@ let
   cfg = config.windowManager.lvt.xmonad;
   lvt-xmonad = pkgs.lvt.lvt-xmonad;
   configDir = "xmonad/xmonad-x86_64-linux";
+
 in {
 
   imports = [ ./xcompmgr.nix ];
@@ -29,28 +30,27 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      feh
-      sxiv
-      xcompmgr
-      htop
-      xmonad-log
       xdotool
+      htop
+      feh
       xorg.xset
+      xmonad-log
+      xcompmgr
       tremc
     ];
 
     services = {
       xserver = {
         enable = true;
+
         displayManager = {
-          startx.enable = true;
           defaultSession = "none+xmonad";
+          startx.enable = true;
         };
-        windowManager = {
-          xmonad.enable = true;
-        };
+
+        windowManager.xmonad.enable = true;
       };
+      lvt.xcompmgr.enable = true;
     };
   };
-
 }

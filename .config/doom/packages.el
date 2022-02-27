@@ -62,3 +62,4 @@
 (package! peep-dired)
 (package! dired-icon)
 (package! smart-tabs-mode)
+(package! nix-mode)

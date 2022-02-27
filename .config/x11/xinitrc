@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MANAGER='qtile'
+MANAGER='xmonad'
 
 if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile" ]; then
 	. "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile"
@@ -9,6 +9,6 @@ else
 fi
 
 while :; do
-#    ssh-agent "$HOME/.local/bin/$MANAGER"
-    qtile start
+    #ssh-agent "$HOME/.local/bin/xmonad"
+    ssh-agent "/etc/xmonad/xmonad-x86_64-linux"
 done

@@ -9,7 +9,7 @@
   };
 
   # outputs = { nixpkgs, home-manager, ... }: 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
   let
     system = "x86_64-linux";
 
@@ -30,12 +30,15 @@
 
     devShell.${system} = import ./shell.nix { inherit pkgs; };
 
-    packages.${system} = { lvt-xmonad = pkgs.lvt.lvt-xmonad; };
+    packages.${system} = {
+      lvt-xmonad = pkgs.lvt.lvt-xmonad;
+      lvt-xmobar = pkgs.lvt.lvt-xmobar;
+    };
 
     nixosConfigurations = {
       leviathan = nixpkgs.lib.nixosSystem {
         inherit system;
-
+        specialArgs = { inherit inputs pkgs; };
         modules = pkgs.lib.lists.flatten [
           ./hosts/base
           ./hosts/leviathan

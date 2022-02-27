@@ -1,5 +1,9 @@
 { pkgs, lib, ... }: {
 
+  networking.networkmanager.enable = true;
+  networking.useDHCP = false;
+  networking.interfaces.enp9s0.useDHCP = true;
+
   users.users.mislav = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" "video" ]; # Enable ‘sudo’ for the user.

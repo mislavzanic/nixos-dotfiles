@@ -95,12 +95,6 @@
                                 "--header-insertion-decorators=0"))
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
 
-(use-package omnisharp
-  :after company
-  :config
-  (add-hook 'csharp-mode-hook 'omnisharp-mode)
-  (add-to-list 'company-backends 'company-omnisharp))
-
 (defun disable-tabs () (setq indent-tabs-mode nil))
 (defun enable-tabs  ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)

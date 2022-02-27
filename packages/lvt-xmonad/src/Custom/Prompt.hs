@@ -23,13 +23,9 @@ import Control.Arrow (first)
 import XMonad.Prompt
 import XMonad.Prompt.FuzzyMatch
 import XMonad.Prompt.Input
-import XMonad.Prompt.Man
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
-
-import XMonad.Actions.Search
-
 
 import System.Exit (exitSuccess)
 
@@ -58,7 +54,7 @@ dtXPConfig = def
       }
 
 systemPrompt :: XPConfig -> X ()
-systemPrompt c = inputPromptWithCompl c "Execute" (systemCompletion c) ?+ \case
+systemPrompt c = inputPromptWithCompl c "Execute" (mkComplFunFromList ["poweroff", "lock", "logout", "reboot", "recompile"]) ?+ \case
      { "poweroff" -> spawnList ["systemctl", "poweroff"]
      ; "lock" -> spawn "xlock"
      ; "logout" -> liftIO exitSuccess
@@ -66,10 +62,6 @@ systemPrompt c = inputPromptWithCompl c "Execute" (systemCompletion c) ?+ \case
      ; "recompile" -> restart "xmonad" True
      ; _ -> debugNotif "'Invalid action'"
      }
-
-systemCompletion :: XPConfig -> String -> IO [String]
-systemCompletion c = mkComplFunFromList c ["poweroff", "lock", "logout", "reboot", "recompile"]
-
 
 ------------------------------------------------------------------------
 -- XPROMPT KEYMAP (emacs-like key bindings for xprompts)
@@ -112,50 +104,3 @@ myXPKeymap = M.fromList $
      , (xK_Up, moveHistory W.focusDown')
      , (xK_Escape, quit)
      ]
-
-data SearchType = Normal | Selected
-
-promptNoHist :: XPConfig
-promptNoHist = dtXPConfig { historySize = 0 }
-
-searchEngineMap :: SearchType -> M.Map (KeyMask, KeySym) (X ())
-searchEngineMap st = basicSubmapFromList
-  [ (xK_t, sw  reddit    )
-  , (xK_u, sw  url       )
-  , (xK_d, sw  duckduckgo)
-  , (xK_a, sw  arch      )
-  , (xK_y, sw  youtube   )
-  , (xK_h, sw  hoogle    )
-  , (xK_p, sw  piratebay )
-  , (xK_m, manPrompt promptNoHist)
-  ]
- where
-  -- | Same window, new window.
-  sw :: SearchEngine -> X ()
-  sw  = dw myBrowser
-
-  -- | [D]ecide whether to open a new [w]indow.
-  dw :: Browser -> SearchEngine -> X ()
-  dw br se = case st of
-    Normal   -> promptSearchBrowser' (decidePrompt se) br se
-    Selected -> selectSearchBrowser                    br se
-
-  -- | Some search engines get a modified prompt.
-  decidePrompt :: SearchEngine -> XPConfig
-  decidePrompt se
-    | se `elem` [hoogle, wikipedia, arch, duckduckgo, piratebay] =
-        promptNoHist
-    | se `elem` [youtube, reddit] =
-        dtXPConfig { autoComplete = (5 `ms`) }
-    | otherwise = dtXPConfig
-
-  -- | Search engines not in X.A.Search.
-  reddit     = searchEngine  "reddit"       "https://old.reddit.com/r/"
-  arch       = searchEngine  "arch"         "https://wiki.archlinux.org/index.php?search="
-  duckduckgo = searchEngine  "duck"         "https://duckduckgo.com/?q="
-  piratebay  = searchEngine  "piratebay"    "https://thepiratebay10.org/search/"
-  url        = searchEngineF "url"          ("https://" <>)
-
-instance Eq {- ORPHAN -} SearchEngine where
-  (==) :: SearchEngine -> SearchEngine -> Bool
-  (SearchEngine n _) == (SearchEngine n' _) = n == n'

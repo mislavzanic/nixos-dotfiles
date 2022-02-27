@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           lvt-xmonad
+name:           lvt-xmobar
 version:        69
 synopsis:       XMonad Rocks!
 author:         Mislav Zanic
@@ -12,25 +12,9 @@ maintainer:     mislavzanic3@gmail.com
 license:        MIT
 build-type:     Simple
 
-
-executable lvt-xmonad-x86_64-linux
-  main-is: xmonad.hs
-  other-modules:
-      Custom.Colors.GruvboxDark
-      Custom.Colors.KaolinAurora
-      Custom.Keys
-      Custom.Layouts
-      Custom.Prompt
-      Custom.Scratchpads
-      Custom.TreePrompt
-      Custom.Utils
-      Custom.Vars
-      Hooks.ManageHook
-      Hooks.StartupHook
-      Paths_lvt_xmonad
-  hs-source-dirs:
-      src
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2
+executable lvt-xmobar-x86_64-linux
+  main-is: xmobar.hs
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -rtsopts -threaded -with-rtsopts=-N
   build-depends:
       X11
     , base
