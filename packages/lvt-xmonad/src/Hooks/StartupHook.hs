@@ -16,8 +16,8 @@ myStartupHook = do
 
   spawnOnce "[ -f ~/.local/share/bg ] && feh --bg-fill ~/.local/share/bg"
   spawnOnce "dunst &"
+  spawnOnce "xcompmgr &"
   -- spawnOnce "compton &"
   spawnOnce "nm-applet &"
-  spawnOnce "unclutter &"
   spawnOnce "xsetroot -cursor_name left_ptr &"
-  spawnOnce "/usr/bin/emacs --daemon &"
+  spawnOnce "emacs --daemon &"

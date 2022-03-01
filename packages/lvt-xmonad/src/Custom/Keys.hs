@@ -129,8 +129,8 @@ appKeys =
   , ("M-S-w", spawn "sxiv -r -q -t -o ~/.local/share/wall/*")
 
   -- Quit xmonad
-  , ("M-S-q", io exitSuccess)
-  , ("M-q", spawn "xmonad --recompile; xmonad --restart")
+  -- , ("M-S-q", io exitSuccess)
+  -- , ("M-q", spawn "xmonad --recompile; xmonad --restart")
   ]
 
 scratchPadKeys =

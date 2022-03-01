@@ -33,10 +33,15 @@ in {
       xdotool
       htop
       feh
+      sxiv
       xorg.xset
       xmonad-log
       xcompmgr
       tremc
+      unclutter
+      dunst
+      lxappearance
+      pamixer
     ];
 
     services = {
@@ -45,7 +50,11 @@ in {
 
         displayManager = {
           defaultSession = "none+xmonad";
-          startx.enable = true;
+          lightdm.enable = true;
+          lightdm.greeters.gtk.iconTheme = {
+            package = pkgs.capitaine-cursors;
+            name = "Capitaine Cursors";
+          };
         };
 
         windowManager.xmonad.enable = true;

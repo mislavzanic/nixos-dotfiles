@@ -57,7 +57,22 @@
 ;;(require 'lsp-python-ms)
 ;;(setq lsp-python-ms-auto-install-server t)
 ;;(add-hook 'python-mode-hook #'lsp)
+
 (package! kaolin-themes)
+(use-package kaolin-themes
+  :config
+  (load-theme 'kaolin-aurora t nil)
+  (set-face-attribute 'fringe nil :background nil)
+  (set-face-attribute 'mode-line nil
+		      :background nil :box nil
+		      :overline "darkgray")
+  (set-face-attribute 'mode-line-inactive nil
+		      :box nil
+		      :foreground "darkgray"
+		      :overline "darkgray")
+  (set-face-attribute 'font-lock-keyword-face nil :italic nil))
+
+
 (package! modus-themes)
 (package! peep-dired)
 (package! dired-icon)

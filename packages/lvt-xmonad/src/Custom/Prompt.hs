@@ -55,10 +55,10 @@ dtXPConfig = def
 
 systemPrompt :: XPConfig -> X ()
 systemPrompt c = inputPromptWithCompl c "Execute" (mkComplFunFromList ["poweroff", "lock", "logout", "reboot", "recompile"]) ?+ \case
-     { "poweroff" -> spawnList ["systemctl", "poweroff"]
-     ; "lock" -> spawn "xlock"
+     { "poweroff" -> spawn "poweroff"
+     ; "lock" -> spawn "slock"
      ; "logout" -> liftIO exitSuccess
-     ; "reboot" -> spawnList ["systemctl", "reboot"]
+     ; "reboot" -> spawn "reboot"
      ; "recompile" -> restart "xmonad" True
      ; _ -> debugNotif "'Invalid action'"
      }

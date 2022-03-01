@@ -4,11 +4,9 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     nixpkgs-unstable.url = "nixpkgs/master";
-    # home-manager.url = "github:nix-community/home-manager/master";
-    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    emacs-overlay.url  = "github:nix-community/emacs-overlay";
   };
 
-  # outputs = { nixpkgs, home-manager, ... }: 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
   let
     system = "x86_64-linux";

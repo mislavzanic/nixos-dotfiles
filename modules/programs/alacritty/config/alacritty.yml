@@ -43,15 +43,15 @@ scrolling:
 
 font:
   normal:
-    family: JetBrainsMono Nerd Font
+    family: Mononoki Nerd Font
 
   bold:
-    family: JetBrainsMono Nerd Font
+    family: Mononoki Nerd Font
 
   italic:
-    family: JetBrainsMono Nerd Font
+    family: Mononoki Nerd Font
 
-  size: 10
+  size: 11
 
   offset:
     x: 0

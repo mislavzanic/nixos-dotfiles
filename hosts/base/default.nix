@@ -33,8 +33,6 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    emacs
-    alacritty
     zsh
     transmission
     git
@@ -42,12 +40,29 @@
     wget
     feh
     brave
+    python3
+
+    ripgrep
+    fd
+    cmake
+    gcc
   ];
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
   nix = {
+    gc = {
+      automatic = true;
+      dates = "monthly";
+      options = "--delete-older-than 30d";
+    };
+
+    settings = {
+      auto-optimise-store = true;
+      trusted-users = [ "mislav" "root" ];
+    };
+
     package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes

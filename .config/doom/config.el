@@ -69,10 +69,6 @@
 (setq display-line-numbers-type 'relative
       tab-always-indent 'complete)
 
-;;(define-key evil-normal-state-map (kbd ";") 'evil-ex)
-
-;; (use-package! password-store)
-
 (after! doom-modeline
     (setq doom-modeline-major-mode-icon t
           doom-modeline-buffer-state-icon t
@@ -81,12 +77,6 @@
 
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-;(add-hook 'c++-mode-hook
-;          '(lambda ()
-;             (setq indent-tabs-mode nil)
-;             (setq tab-width 4)
-;             (setq indent-line-function (quote insert-tab))))
-
 (setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
                                 "--clang-tidy"
@@ -102,6 +92,3 @@
   (setq tab-width custom-tab-width))
 (setq-default electric-indent-inhibit t)
 (setq backward-delete-char-untabify-method 'hungry)
-;(smart-tabs-insinuate 'c++ 'c 'javascript 'python)
-
-;;(define-key evil-normal-state-map (kbd "z z") 'sp-wrap-round)
