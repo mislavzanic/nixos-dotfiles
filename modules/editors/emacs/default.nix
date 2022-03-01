@@ -14,6 +14,7 @@ in {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
     environment.systemPackages = with pkgs; [
+      emacs
       binutils
       git
       gnutls

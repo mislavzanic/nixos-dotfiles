@@ -58,6 +58,8 @@ in {
         };
 
         windowManager.xmonad.enable = true;
+        windowManager.xmonad.enableContribAndExtras = true;
+
       };
       lvt.xcompmgr.enable = true;
     };

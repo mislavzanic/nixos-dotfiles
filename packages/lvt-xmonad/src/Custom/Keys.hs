@@ -96,7 +96,7 @@ passPromptKeys =
   ]
 
 promptKeys =
-  [ ("M-p", shellPrompt dtXPConfig)
+  [ ("M-p", spawn "rofi -show run")
   , ("M-o l", systemPrompt dtXPConfig)
   ]
 
