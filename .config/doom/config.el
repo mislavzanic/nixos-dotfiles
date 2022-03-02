@@ -54,9 +54,9 @@
       +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
 (setq doom-theme 'kaolin-aurora)
 
-(setq doom-font (font-spec :family "Mononoki Nerd Font" :size 13)
-      doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 13)
-      doom-big-font (font-spec :family "Mononoki Nerd Font" :size 24))
+(setq doom-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
+      doom-variable-pitch-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
+      doom-big-font (font-spec :family "JetBrains Mono Nerd Font" :size 24))
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))

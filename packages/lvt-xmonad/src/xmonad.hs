@@ -69,6 +69,7 @@ main = do
         , ppVisible = xmobarColor myppVisible ""                -- Visible but not current workspace
         , ppHidden = xmobarColor myppHidden "" . wrap "+" ""   -- Hidden workspaces in xmobar
         , ppHiddenNoWindows = xmobarColor  myppHiddenNoWindows ""        -- Hidden workspaces (no windows)
+        , ppTitle = xmobarColor myppCurrent "" . shorten 60
         , ppTitleSanitize = xmobarStrip
         , ppSep = wrapInColor myppSepColor "  |  "
         , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace

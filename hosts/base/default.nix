@@ -11,6 +11,7 @@
   };
 
   boot = {
+    kernelPackages = pkgs.linuxKernel.packages.linux_5_16;
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
@@ -41,7 +42,6 @@
     feh
     brave
     python3
-
     ripgrep
     fd
     cmake

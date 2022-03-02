@@ -96,7 +96,7 @@ passPromptKeys =
   ]
 
 promptKeys =
-  [ ("M-p", spawn "rofi -show run")
+  [ ("M-p", spawn "rofi -show run -config $HOME/.config/.dotfiles/modules/programs/rofi/config/rofi.rasi")
   , ("M-o l", systemPrompt dtXPConfig)
   ]
 

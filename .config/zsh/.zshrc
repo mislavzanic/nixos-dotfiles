@@ -7,7 +7,7 @@
 
 bindkey -v
 bindkey '^R' history-incremental-search-backward
-
+export PATH=$PATH":/home/$USER/.local/bin"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 
 
@@ -18,7 +18,6 @@ HISTFILE=$HOME/.cache/zsh/history
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 
 se() { find ~/.local/bin/scripts ~/.config | fzf | xargs -r nvim ;}
-get_creds() { grep password ~/.local/mzanic_VPN/credentials.txt | awk '{print $2}' | xclip -selection clipboard ;}
 
 # Enable colors and change prompt:
 autoload -U colors && colors

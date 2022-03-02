@@ -51,10 +51,23 @@ in {
         displayManager = {
           defaultSession = "none+xmonad";
           lightdm.enable = true;
-          lightdm.greeters.gtk.iconTheme = {
-            package = pkgs.capitaine-cursors;
-            name = "Capitaine Cursors";
+          lightdm.greeters.mini = {
+            enable = true;
+            user = "mislav";
+            extraConfig = ''
+              [greeter-theme]
+              background-image = "";
+              background-color = "#0C0F12"
+              text-color = "#ff79c6"
+              password-background-color = "#1E2029"
+              window-color = "#181a23"
+              border-color = "#bd93f9"
+            '';
           };
+          #lightdm.greeters.gtk.iconTheme = {
+          #  package = pkgs.capitaine-cursors;
+          #  name = "Capitaine Cursors";
+          #};
         };
 
         windowManager.xmonad.enable = true;

@@ -6,7 +6,8 @@
 
   programs.lvt.xmobar.enable = true;
   programs.lvt.alacritty.enable = true;
-
+  programs.lvt.rofi.enable = true;
+  programs.lvt.zsh.enable = true;
   modules.lvt.emacs.enable = true;
   modules.lvt.emacs.doom.enable = true;
 
