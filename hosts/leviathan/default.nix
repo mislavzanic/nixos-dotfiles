@@ -1,15 +1,26 @@
 { pkgs, lib, config, ... }: {
 
+  imports = [ ./hardware-configuration.nix ];
   networking.hostName = "leviathan";
+  time.timeZone = "Europe/Zagreb";
 
-  windowManager.lvt.xmonad.enable = true;
+  networking.networkmanager.enable = true;
+  networking.useDHCP = false;
+  networking.interfaces.enp9s0.useDHCP = true;
 
-  programs.lvt.xmobar.enable = true;
-  programs.lvt.alacritty.enable = true;
-  programs.lvt.rofi.enable = true;
-  programs.lvt.zsh.enable = true;
-  modules.lvt.emacs.enable = true;
-  modules.lvt.emacs.doom.enable = true;
+  modules = {
+    desktop = {
+      xmonad.enable = true;
+      xmobar.enable = true;
+      rofi.enable   = true;
+    };
+    term = { alacritty.enable = true; };
+    shell = { zsh.enable = true; };
+    editor = {
+      emacs.enable = true;
+      emacs.doom.enable = true;
+    };
+  };
 
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];

@@ -1,9 +1,0 @@
-#!/bin/sh
-
-BIN=./result/bin/xmonad-x86_64-linux
-if test -f $BIN; then
-	ln -s $BIN ./ -f
-else
-	nix build .#
-	ln -s $BIN ./ -f
-fi

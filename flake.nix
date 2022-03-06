@@ -4,46 +4,44 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     nixpkgs-unstable.url = "nixpkgs/master";
+
+    home-manager.url = "github:rycee/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     emacs-overlay.url  = "github:nix-community/emacs-overlay";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, ... }:
   let
+    inherit (lib.my) mapModules mapModulesRec mapHosts;
+
     system = "x86_64-linux";
 
-    pkgs = import nixpkgs {
+    mkPkgs = pkgs: extraOverlays: import pkgs {
       inherit system;
-      config = { allowUnfree = true; };
-      overlays = [
-        (import ./packages)
-      ];
+      config.allowUnfree = true;  # forgive me Stallman senpai
+      overlays = extraOverlays ++ (lib.attrValues self.overlays);
     };
+    pkgs  = mkPkgs nixpkgs [ self.overlay ];
+    pkgs' = mkPkgs nixpkgs-unstable [];
 
-    myLib = import ./lib/lib.nix pkgs.lib;
-    myModules = myLib.listModulesRec ./modules;
-
+    lib = nixpkgs.lib.extend
+      (self: super: { my = import ./lib { inherit pkgs inputs; lib = self; }; });
   in {
-    inherit pkgs;
-    inherit myLib;
+    lib = lib.my;
 
-    devShell.${system} = import ./shell.nix { inherit pkgs; };
-
-    packages.${system} = {
-      lvt-xmonad = pkgs.lvt.lvt-xmonad;
-      lvt-xmobar = pkgs.lvt.lvt-xmobar;
-    };
-
-    nixosConfigurations = {
-      leviathan = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs pkgs; };
-        modules = pkgs.lib.lists.flatten [
-          ./hosts/base
-          ./hosts/leviathan
-          ./hosts/leviathan/hardware-configuration.nix
-          myModules
-        ];
+    overlay =
+      final: prev: {
+        unstable = pkgs';
+        my = self.packages."${system}";
       };
-    };
+
+    overlays =
+      mapModules ./overlays import;
+
+    nixosModules = { dotfiles = import ./.; } // mapModulesRec ./modules import;
+
+    nixosConfigurations = mapHosts ./hosts {};
+
   };
 }

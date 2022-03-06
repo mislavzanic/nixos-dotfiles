@@ -1,5 +1,6 @@
 (setq user-full-name "Mislav Zanic"
       user-mail-address "mislavzanic3@gmail.com")
+(server-start)
 
 (map! :leader
       (:prefix ("b". "buffer")

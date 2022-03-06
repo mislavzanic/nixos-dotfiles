@@ -6,6 +6,7 @@
 #+begin_src emacs-lisp
 (setq user-full-name "Mislav Zanic"
       user-mail-address "mislavzanic3@gmail.com")
+(server-start)
 #+end_src
 
 * Bookmarks and buffers
