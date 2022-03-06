@@ -11,15 +11,29 @@ in {
   config = mkIf cfg.enable {
     users.defaultUserShell = pkgs.zsh;
 
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableGlobalCompInit = false;
+    programs = {
+      zsh = {
+        enable = true;
+        enableCompletion = true;
+        enableGlobalCompInit = false;
+
+        autosuggestions.enable = true;
+        syntaxHighlighting.enable = true;
+
+        # autocd = true;
+        # cdpath = true;
+      };
+
+      # fzf = {
+      #   enable = true;
+      #   enableZshIntegration = true;
+      # };
     };
 
     environment.systemPackages = with pkgs; [
       zsh
       nix-zsh-completions
+      zsh-git-prompt
       bat
       exa
       fasd
@@ -32,7 +46,6 @@ in {
     env = {
       ZDOTDIR   = "$XDG_CONFIG_HOME/zsh";
       ZSH_CACHE = "$XDG_CACHE_HOME/zsh";
-      ZGEN_DIR  = "$XDG_DATA_HOME/zgenom";
     };
 
     home.configFile = {

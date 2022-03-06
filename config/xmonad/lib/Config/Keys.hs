@@ -68,7 +68,7 @@ workspaceKeys =
   ]
 
 promptKeys =
-  [ ("M-p", spawn "rofi -show run -config $HOME/.config/.dotfiles/modules/programs/rofi/config/rofi.rasi") ]
+  [ ("M-p", spawn "rofi -show run") ]
 
 layoutKeys =
   [ ("M-<Tab>", sendMessage NextLayout) ]

@@ -8,14 +8,12 @@
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 export PATH=$PATH":/home/$USER/.local/bin"
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/.dotfiles/config/zsh/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/.dotfiles/config/zsh/aliasrc"
 
 
 HISTSIZE=10000000
 SAVEHIST=10000000
 HISTFILE=$HOME/.cache/zsh/history
-
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 
 se() { find ~/.local/bin/scripts ~/.config | fzf | xargs -r nvim ;}
 
@@ -56,6 +54,5 @@ autoload edit-command-line; zle -N edit-command-line
 bindkey '^E' edit-command-line
 
 # Load zsh-syntax-highlighting; should be last.
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 #eval "$(starship init zsh)"
 pfetch

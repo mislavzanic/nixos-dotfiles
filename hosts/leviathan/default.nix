@@ -20,6 +20,9 @@
       emacs.enable = true;
       emacs.doom.enable = true;
     };
+    dev = {
+      python.enable = true;
+    };
   };
 
   services.xserver.enable = true;
