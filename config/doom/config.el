@@ -1,49 +1,12 @@
-#+TITLE: Doom Emacs config
-#+PROPERTY: header-args:emacs-lisp :tangle ./config.el
-
-* Ident
-
-#+begin_src emacs-lisp
 (setq user-full-name "Mislav Zanic"
       user-mail-address "mislavzanic3@gmail.com")
 (server-start)
-#+end_src
 
-* Bookmarks and buffers
-
-Doom Emacs uses ‘SPC b’ for keybindings related to bookmarks and buffers.  Bookmarks are somewhat like registers in that they record positions you can jump to.  Unlike registers, they have long names, and they persist automatically from one Emacs session to the next. The prototypical use of bookmarks is to record where you were reading in various files.  Regarding buffers, the text you are editing in Emacs resides in an object called a buffer. Each time you visit a file, a buffer is used to hold the file’s text. Each time you invoke Dired, a buffer is used to hold the directory listing.
-
-#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("b". "buffer")
        :desc "List bookmarks" "L" #'list-bookmarks
        :desc "Save current bookmarks to bookmark file" "w" #'bookmark-save))
-#+end_src
 
-* Dired
-
-Dired is the file manager within Emacs.  Below, I setup keybindings for image previews (peep-dired).  Doom Emacs does not use ‘SPC d’ for any of its keybindings, so I’ve chosen the format of ‘SPC d’ plus ‘key’.
-
-** Keybindings To Open Dired
-
-| COMMAND    | DESCRIPTION                       | KEYBINDINGS |
-|------------+-----------------------------------+-------------|
-| dired      | /Open file in dired/              | SPC d d     |
-| dired-jump | /Jump to curr directory in dired/ | SPC d j     |
-
-** Keybindings in dired
-
-| COMMAND             | DESCRIPTION                                   | KEYBINDING |
-|---------------------+-----------------------------------------------+------------|
-| dired-view-file     | /View file in dired/                          | SPC d v    |
-| dired-up-directory  | /Go up in directory tree/                     | h          |
-| dired-find-file     | /Go down in directory tree (or open if file)/ | l          |
-| dired-next-line     | Move down to next line                        | j          |
-| dired-previous-line | Move up to previous line                      | k          |
-| dired-mark          | Mark file at point                            | m          |
-| dired-unmark        | Unmark file at point                          | u          |
-
-#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("d" . "dired")
        :desc "Open dired" "d" #'dired
@@ -83,31 +46,15 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
 (add-hook 'peep-dired-hook 'evil-normalize-keymaps)
 ;; Get file icons in dired
 ;(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-#+end_src
 
-* Cosmetic
-
-#+begin_src emacs-lisp
 (setq fancy-splash-image "~/.config/doom/doom.png")
 ;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
 ;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
 ;;(remove-hook '+doom-dashboard-functions #'+doom-dashboard-widget-banner)
 (setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
       +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
+
 (setq doom-theme 'kaolin-aurora)
-#+end_src
-
-* Font Config
-
-- Settings related to fonts within Doom Emacs:
-  - ‘doom-font’ – standard monospace font that is used for most things in Emacs.
-  - ‘doom-variable-pitch-font’ – variable font which is useful in some Emacs plugins.
-  - ‘doom-big-font’ – used in doom-big-font-mode; useful for presentations.
-  - ‘font-lock-comment-face’ – for comments.
-  - ‘font-lock-keyword-face’ – for keywords with special significance like ‘setq’ in elisp.
-  - ‘global-prettify-symbols-mode’ – change certain keywords to symbols, such as lambda!
-
-#+begin_src emacs-lisp
 
 (setq doom-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
       doom-variable-pitch-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
@@ -118,27 +65,18 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
-#+end_src
 
-* Misc
-#+begin_src emacs-lisp
 (setq org-directory "~/org/")
 
 (setq display-line-numbers-type 'relative
       tab-always-indent 'complete)
-#+end_src
 
-* Doom modeline
-#+begin_src emacs-lisp
 (after! doom-modeline
     (setq doom-modeline-major-mode-icon t
           doom-modeline-buffer-state-icon t
           doom-modeline-buffer-encoding nil)
     (remove-hook 'doom-modeline-mode-hook #'size-indication-mode))
-#+end_src
 
-* c++
-#+begin_src emacs-lisp
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 (setq lsp-clients-clangd-args '("-j=3"
@@ -148,10 +86,7 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
                                 "--header-insertion=never"
                                 "--header-insertion-decorators=0"))
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
-#+end_src
 
-* Indentation
-#+begin_src emacs-lisp
 (defun disable-tabs () (setq indent-tabs-mode nil))
 (defun enable-tabs  ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)
@@ -159,4 +94,3 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
   (setq tab-width custom-tab-width))
 (setq-default electric-indent-inhibit t)
 (setq backward-delete-char-untabify-method 'hungry)
-#+end_src

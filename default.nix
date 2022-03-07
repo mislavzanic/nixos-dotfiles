@@ -15,11 +15,7 @@ with lib.my;
   environment.variables.DOTFILES = config.dotfiles.dir;
   environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
 
-  users.users.mislav = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
-  };
+  fileSystems."/".device = mkDefault "/dev/disk/by-label/nixos";
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_5_16;
@@ -55,6 +51,7 @@ with lib.my;
     ripgrep
     fd
     cmake
+    gnumake
     gcc
   ];
 

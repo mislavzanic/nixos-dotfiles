@@ -10,7 +10,7 @@
  '(awesome-tray-mode-line-active-color "#2fafff")
  '(awesome-tray-mode-line-inactive-color "#323232")
  '(custom-safe-themes
-   '("835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" default))
+   '("e511744d4e267e31128fb217b14e90d3ea0de94aa46f59de8c98615b69649bf3" "8975d1a0b441abba1e0409090b0bc12f57ee8f9681315c2caccbfb80c00ed462" "3c7a784b90f7abebb213869a21e84da462c26a1fda7e5bd0ffebf6ba12dbd041" "835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" default))
  '(doom-big-font-mode t t)
  '(exwm-floating-border-color "#121212")
  '(fci-rule-color "#515151")
@@ -50,6 +50,8 @@
  '(package-selected-packages
    '(nix-mode treemacs-all-the-icons ivy-posframe seti-theme subatomic256-theme subatomic-theme badger-theme leuven-theme abyss-theme modus-operandi-theme modus-vivendi-theme dired-icon smart-tabs-mode haskell-emacs lsp-haskell omnisharp cmake-ide atom-one-dark-theme eshell-git-prompt all-the-icons-ibuffer all-the-icons-dired all-the-icons pdf-tools one-themes spacemacs-theme password-store kaolin-themes dashboard ace-window fzf lsp-python-ms lsp-pyright ccls rust-mode))
  '(pdf-view-midnight-colors (cons "#d4d4d4" "#191919"))
+ '(pos-tip-background-color "#191F26")
+ '(pos-tip-foreground-color "#d4d4d6")
  '(rustic-ansi-faces
    ["#191919" "#FF5E5E" "#468800" "#E9FDAC" "#8CDAFF" "#C586C0" "#85DDFF" "#d4d4d4"])
  '(vc-annotate-background "#191919")

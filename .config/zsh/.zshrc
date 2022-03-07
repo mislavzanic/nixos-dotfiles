@@ -1,1 +1,0 @@
-/home/mislav/.config/.dotfiles/config/zsh/.zshrc

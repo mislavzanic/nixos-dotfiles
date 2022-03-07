@@ -15,10 +15,16 @@ in {
   config = mkIf cfg.enable {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
-    services.emacs.enable = true;
+    services.emacs = {
+      enable = true;
+    };
 
     environment.systemPackages = with pkgs; [
-      emacs
+
+      ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
+        epkgs.vterm
+      ]))
+
       binutils
       git
       gnutls
@@ -28,5 +34,12 @@ in {
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
+
+    home.configFile = {
+      "doom" = {
+        source = "${configDir}/doom";
+        recursive = true;
+      };
+    };
   };
 }

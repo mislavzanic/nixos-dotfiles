@@ -12,7 +12,9 @@
     desktop = {
       xmonad.enable = true;
       xmobar.enable = true;
-      rofi.enable   = true;
+      apps = {
+        zathura.enable = true;
+      };
     };
     term = { alacritty.enable = true; };
     shell = { zsh.enable = true; };
@@ -22,6 +24,10 @@
     };
     dev = {
       python.enable = true;
+    };
+    services = {
+      transmission.enable = true;
+      picom.enable = true;
     };
   };
 

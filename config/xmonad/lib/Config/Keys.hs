@@ -68,7 +68,7 @@ workspaceKeys =
   ]
 
 promptKeys =
-  [ ("M-p", spawn "rofi -show run") ]
+  [ ("M-p", spawn "dmenu_run -i -p \"Run: \"") ]
 
 layoutKeys =
   [ ("M-<Tab>", sendMessage NextLayout) ]
