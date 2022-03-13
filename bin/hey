@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+print_help() {
+  read -d '' help <<EOF
+Usage: hey [global-options] [command] [sub-options]
+
+Available Commands:
+  check                  Run 'nix flake check' on your dotfiles
+  gc                     Garbage collect & optimize nix store
+  generations            Explore, manage, diff across generations
+  help [SUBCOMMAND]      Show usage information for this script or a subcommand
+  rebuild                Rebuild the current system's flake
+  repl                   Open a nix-repl with nixpkgs and dotfiles preloaded
+  rollback               Roll back to last generation
+  search                 Search nixpkgs for a package
+  show                   [ARGS...]
+  ssh HOST [COMMAND]     Run a bin/hey command on a remote NixOS system
+  swap PATH [PATH...]    Recursively swap nix-store symlinks with copies (and back).
+  test                   Quickly rebuild, for quick iteration
+  theme THEME_NAME       Quickly swap to another theme module
+  update [INPUT...]      Update specific flakes or all of them
+  upgrade                Update all flakes and rebuild system
+
+Options:
+    -d, --dryrun                     Don't change anything; perform dry run
+    -D, --debug                      Show trace on nix errors
+    -f, --flake URI                  Change target flake to URI
+    -h, --help                       Display this help, or help for a specific command
+    -i, -A, -q, -e, -p               Forward to nix-env
+EOF
+  echo "$help"
+}
+
+rebuild() {
+  cmd="nixos-rebuild"
+  [ $# -eq 1 ] && {
+    cmd="sudo $cmd $1"
+  }
+  [ $# -eq 2 ] && {
+    flags="$1"
+    args="$2"
+    [[ "$flags" =~ "u" ]] || cmd="sudo $cmd"
+    [[ "$flags" =~ "D" ]] && cmd="$cmd --show-trace"
+    cmd="$cmd $args"
+  }
+
+  $cmd
+}
+
+gc() {
+  flags="$1"
+  if [[ "$flags" =~ "a" ]] || [[ "$flags" =~ "s" ]]; then
+    sudo nix-collect-garbage -d
+    sudo nix-store --optimise
+    sudo nix-env --delete-generations old --profile /nix/var/nix/profiles/system
+    sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+  fi
+
+  if [[ "$flags" =~ "a" ]] || ! [[ "$flags" =~ "s" ]]; then
+    nix-collect-garbage -d
+  fi
+}
+
+nixenv() {
+  flags="$1"
+  args="$2"
+
+}
+
+search() {
+    nix search nixpkgs "$1"
+}
+
+flags=''
+while [ $# -gt 0 ]; do
+  if [[ $1 == *"--"* ]]; then
+    param="${1/--/}"
+    [ $param == 'help' ]   && print_help && exit;
+    [ $param == 'flake' ]  && args="$args --flake $2" && shift;
+    [ $param == 'user' ]   && flags="u$flags"
+    [ $param == 'dryrun' ] && args="$args dry-build"
+    [ $param == 'debug' ]  && flags="D$flags"
+    [ $param == 'system' ] && flags="s$flags"
+    [ $param == 'all' ]    && flags="a$flags"
+  elif [[ $1 = *"-"* ]]; then
+    param="${1/-/}"
+    [ $param == 'h' ]   && print_help && exit
+    [ $param == 'f' ]   && args="$args --flake $2" && shift;
+    [ $param == 'd' ]   && args="$args dry-build"
+    [ $param == 'D' ]   && flags="D$flags"
+    [ $param == 's' ]   && flags="s$flags"
+    [ $param == 'a' ]   && flags="a$flags"
+    [[ $param =~ 'i' ]] && { flags="i$flags" && pkg="$2 $pkg"; shift; }
+    [[ $param =~ 'A' ]] && { flags="A$flags" && pkg="$2 $pkg"; shift; }
+    [[ $param =~ 'q' ]] && { flags="q$flags" && pkg="$2 $pkg"; shift; }
+    [[ $param =~ 'e' ]] && { flags="e$flags" && pkg="$2 $pkg"; shift; }
+    [[ $param =~ 'p' ]] && { flags="p$flags" && pkg="$2 $pkg"; shift; }
+  else
+    param="$1"
+    [ "$param" == 'rebuild' ] && rebuild="1"
+    [ "$param" == 'rollback' ] && rollback="1"
+    [ "$param" == 'gc' ] && gc="1"
+    [ "$param" == 'search' ] && { search="1"; pkg="$2"; shift; }
+    [ "$param" == 'switch' ] && args="$args switch"
+  fi
+  shift
+done
+
+[[ $flags =~ [iAqep] ]] && { nix-env -$flags $pkg; exit; }
+[ -z "$rebuild" ] || { rebuild "$flags" "$args"; exit; }
+[ -z "$rollback" ] || { rebuild "switch --rollback"; exit; }
+[ -z "$gc" ] || { gc "$flags"; exit; }
+[ -z "$search" ] || { search "$pkg"; exit; }

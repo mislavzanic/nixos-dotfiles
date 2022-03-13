@@ -48,9 +48,6 @@
 ;(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (setq fancy-splash-image "~/.config/doom/doom.png")
-;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
-;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
-;;(remove-hook '+doom-dashboard-functions #'+doom-dashboard-widget-banner)
 (setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
       +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
 
@@ -76,6 +73,29 @@
           doom-modeline-buffer-state-icon t
           doom-modeline-buffer-encoding nil)
     (remove-hook 'doom-modeline-mode-hook #'size-indication-mode))
+
+(setq ivy-posframe-display-functions-alist
+      '((swiper                     . ivy-posframe-display-at-point)
+        (complete-symbol            . ivy-posframe-display-at-point)
+        (counsel-M-x                . ivy-display-function-fallback)
+        (counsel-esh-history        . ivy-posframe-display-at-window-center)
+        (counsel-describe-function  . ivy-display-function-fallback)
+        (counsel-describe-variable  . ivy-display-function-fallback)
+        (counsel-find-file          . ivy-display-function-fallback)
+        (counsel-recentf            . ivy-display-function-fallback)
+        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
+        (dmenu                      . ivy-posframe-display-at-frame-top-center)
+        (nil                        . ivy-posframe-display))
+      ivy-posframe-height-alist
+      '((swiper . 20)
+        (dmenu . 20)
+        (t . 10)))
+;; (ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
+
+(map! :leader
+      (:prefix ("v" . "Ivy")
+       :desc "Ivy push view" "v p" #'ivy-push-view
+       :desc "Ivy switch view" "v s" #'ivy-switch-view))
 
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))

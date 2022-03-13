@@ -4,6 +4,7 @@ module Config.Keys where
 
     -- Config
 import Config.Vars
+import Config.Scratchpad
 
     -- Base
 import XMonad
@@ -28,11 +29,10 @@ import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
 import XMonad.Layout.MultiToggle (Toggle (Toggle))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NOBORDERS))
 
+import XMonad.Util.NamedScratchpad
 
-    -- Data
 import qualified Data.Map        as M
 
-    -- Hooks
 import XMonad.Hooks.ManageDocks (ToggleStruts(..))
 
 type Keybinding = (String, X ())
@@ -53,6 +53,13 @@ windowsKeys =
   , ("M-;"  , withFocused $ sendMessage . mergeDir id)
   -- , ("M-S-;"  , withFocused (sendMessage . UnMerge) *> windows W.focusUp)
   , ("M-S-b"  , sendMessage $ Toggle NOBORDERS)
+  ]
+
+scratchpadKeys =
+  [ ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
+  , ("M-C-t", namedScratchpadAction myScratchPads "tremc")
+  -- , ("M-C-s", namedScratchpadAction myScratchPads "spotify")
+  -- , ("M-C-d", namedScratchpadAction myScratchPads "discord")
   ]
 
 workspaceKeys =
@@ -98,6 +105,7 @@ myKeys = concat
   , promptKeys
   , windowsKeys
   , workspaceKeys
+  , scratchpadKeys
   ]
 
 ------------------------------------------------------------------------

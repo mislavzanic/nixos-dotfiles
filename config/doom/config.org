@@ -89,9 +89,6 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
 
 #+begin_src emacs-lisp
 (setq fancy-splash-image "~/.config/doom/doom.png")
-;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-shortmenu)
-;;(remove-hook '+doom-dashboard-functions #'doom-dashboard-widget-footer)
-;;(remove-hook '+doom-dashboard-functions #'+doom-dashboard-widget-banner)
 (setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
       +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
 #+end_src
@@ -99,8 +96,6 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
 * Theme
 #+begin_src emacs-lisp
 (setq doom-theme 'kaolin-aurora)
-(custom-set-faces!
-  '(fringe ((t (:background "#080B0E" :foreground "#e6e6e8")))))
 #+end_src
 * Font Config
 
@@ -142,6 +137,36 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
     (remove-hook 'doom-modeline-mode-hook #'size-indication-mode))
 #+end_src
 
+
+* Ivy
+** Ivy Postframe
+#+begin_src emacs-lisp
+(setq ivy-posframe-display-functions-alist
+      '((swiper                     . ivy-posframe-display-at-point)
+        (complete-symbol            . ivy-posframe-display-at-point)
+        (counsel-M-x                . ivy-display-function-fallback)
+        (counsel-esh-history        . ivy-posframe-display-at-window-center)
+        (counsel-describe-function  . ivy-display-function-fallback)
+        (counsel-describe-variable  . ivy-display-function-fallback)
+        (counsel-find-file          . ivy-display-function-fallback)
+        (counsel-recentf            . ivy-display-function-fallback)
+        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
+        (dmenu                      . ivy-posframe-display-at-frame-top-center)
+        (nil                        . ivy-posframe-display))
+      ivy-posframe-height-alist
+      '((swiper . 20)
+        (dmenu . 20)
+        (t . 10)))
+;; (ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
+#+end_src
+
+** Ivy keybindings
+#+begin_src emacs-lisp
+(map! :leader
+      (:prefix ("v" . "Ivy")
+       :desc "Ivy push view" "v p" #'ivy-push-view
+       :desc "Ivy switch view" "v s" #'ivy-switch-view))
+#+end_src
 * c++
 #+begin_src emacs-lisp
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))

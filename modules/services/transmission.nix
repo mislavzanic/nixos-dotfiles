@@ -15,6 +15,7 @@ in {
       enable = true;
       settings = {
         download-dir = "${config.user.home}/.local/torrents";
+        incomplete-dir = "${config.user.home}/.local/torrents";
       };
     };
     user.extraGroups = [ "transmission" ];

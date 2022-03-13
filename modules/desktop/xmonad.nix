@@ -15,13 +15,11 @@ in {
       xdotool
       htop
       feh
-      # ghc
       sxiv
       xorg.xset
       xmonad-log
       tremc
       dmenu
-      unclutter
       dunst
       lxappearance
       pamixer

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-grep password ~/.local/mzanic_VPN/credentials.txt | awk '{print $2}' | xclip -selection clipboard
-

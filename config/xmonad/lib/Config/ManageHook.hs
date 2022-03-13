@@ -7,6 +7,7 @@ import XMonad.Hooks.UrgencyHook (doAskUrgent)
 import XMonad.Util.NamedScratchpad
 
 import Config.Vars
+import Config.Scratchpad
 
 activateHook :: ManageHook
 activateHook = mconcat
@@ -41,6 +42,6 @@ myManageHook = composeAll
     , className =? "Thunar"       --> doFloat
 
     , isFullscreen --> doFullFloat
-    ]
+    ] <+> namedScratchpadManageHook myScratchPads
 
 myHandleEventHook = swallowEventHook (className =? "Alacritty") (return True)

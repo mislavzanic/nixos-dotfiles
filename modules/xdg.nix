@@ -8,7 +8,7 @@
       "XDG_CONFIG_HOME" = "$HOME/.config";
       "XDG_DATA_HOME"   = "$HOME/.local/share";
       "XDG_BIN_HOME"    = "$HOME/.local/bin";
-      "PATH"            = "$PATH:$HOME/.local/bin/scripts:$HOME/.config/emacs/bin:$HOME/.local/bin";
+      "PATH"            = "$PATH:$HOME/.local/bin/scripts:$HOME/.config/emacs/bin:$HOME/.local/bin:$HOME/.config/.dotfiles/bin";
     };
 
     variables = {

@@ -14,6 +14,7 @@
       xmobar.enable = true;
       apps = {
         zathura.enable = true;
+        dmenu.enable = true;
       };
     };
     term = { alacritty.enable = true; };
@@ -24,10 +25,11 @@
     };
     dev = {
       python.enable = true;
+      sh.enable = true;
     };
     services = {
       transmission.enable = true;
-      picom.enable = true;
+      picom.enable = false;
     };
   };
 
