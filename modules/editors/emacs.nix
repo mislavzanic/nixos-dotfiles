@@ -15,13 +15,9 @@ in {
   config = mkIf cfg.enable {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
-    services.emacs = {
-      enable = true;
-    };
-
     environment.systemPackages = with pkgs; [
 
-      ((emacsPackagesNgGen emacs).emacsWithPackages (epkgs: [
+      ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
         epkgs.vterm
       ]))
 
@@ -34,12 +30,5 @@ in {
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
-
-    home.configFile = {
-      "doom" = {
-        source = "${configDir}/doom";
-        recursive = true;
-      };
-    };
   };
 }

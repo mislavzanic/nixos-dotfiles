@@ -1,0 +1,61 @@
+#!/usr/bin/env nix-shell
+#! nix-shell -p python310 -p python310Packages.requests -i "python" --quiet
+
+import sys
+import os
+import argparse
+import requests
+# from collections import defaultdict
+
+class Aoc:
+    def __init__(self):
+        with open(f"{os.getenv('HOME', default='/home/mislav')}/.config/aocrc") as f:
+            self.session_token = (f.readline()).strip()
+        self.__setup_parser()
+        self.URI = 'https://adventofcode.com'
+        self.func_map = {}
+        self.func_map['input'] = self._input
+        self.func_map['in'] = self._input
+        self.func_map['run'] = self._run
+
+
+    def __setup_parser(self):
+        self.parser = argparse.ArgumentParser(description="Cli for Advent of Code")
+        self.parser.add_argument("command", choices=[x[1:] for x in dir(Aoc) if x.startswith('_') and not x.endswith('__')])
+        self.parser.add_argument('-d', '--day', type=int)
+        self.parser.add_argument('-y', '--year', type=int)
+        self.parser.add_argument('--print', action='store_true', dest="print_input")
+        self.parser.add_argument('-p', '--path', type=str)
+
+
+    def _input(self, args):
+        day, year = args.day, args.year
+
+        response = requests.get(
+            f'{self.URI}/{year}/day/{day}/input',
+            headers={'cookie':f'session={self.session_token}'}
+        )
+
+        if args.print_input:
+            print(response.text)
+        else:
+            try:
+                with open(args.path, 'w') as f:
+                    f.write(response.text)
+            except Exception as e:
+                print(f'Error: {e.args}')
+
+
+    def _run(self):
+        ...
+
+
+    def parse_args(self):
+        args = self.parser.parse_args()
+        if args.command in self.func_map.keys():
+            self.func_map[args.command](args)
+
+
+if __name__ == '__main__':
+    aoc = Aoc()
+    aoc.parse_args()

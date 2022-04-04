@@ -17,7 +17,7 @@ myTerminal           :: String    = "alacritty"
 myEditor             :: String    = "emacsclient -c -a'emacs'"
 editCMD              :: String    = "emacsclient -c -n "
 myPDF                :: String    = "zathura"
-myBrowser            :: Browser   = "brave"
+myBrowser            :: Browser   = "firefox"
 
 myFont               :: String    = "xft:Ubuntu:bold:size=9:antialias=true:hinting=true"
 

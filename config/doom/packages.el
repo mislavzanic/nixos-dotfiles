@@ -66,3 +66,4 @@
 (package! nix-mode)
 (package! haskell-mode)
 (package! lsp-haskell)
+(package! exwm)

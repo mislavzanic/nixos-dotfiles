@@ -47,19 +47,20 @@ windowsKeys =
   , ("M-S-j", windows W.swapDown)
   , ("M-S-k", windows W.swapUp)
 
+  , ("M-o k", spawn "dmkill")
+  , ("M-o l", spawn "dmlogout")
+
   , ("M-h", sendMessage Shrink)
   , ("M-l", sendMessage Expand)
 
   , ("M-;"  , withFocused $ sendMessage . mergeDir id)
-  -- , ("M-S-;"  , withFocused (sendMessage . UnMerge) *> windows W.focusUp)
   , ("M-S-b"  , sendMessage $ Toggle NOBORDERS)
   ]
 
 scratchpadKeys =
   [ ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
   , ("M-C-t", namedScratchpadAction myScratchPads "tremc")
-  -- , ("M-C-s", namedScratchpadAction myScratchPads "spotify")
-  -- , ("M-C-d", namedScratchpadAction myScratchPads "discord")
+  , ("M-C-s", namedScratchpadAction myScratchPads "spotify")
   ]
 
 workspaceKeys =

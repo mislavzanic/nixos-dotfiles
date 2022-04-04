@@ -49,7 +49,7 @@ case $choice in
         done
         ;;
     'Lock screen')
-        $LOCKER -m "$(cowfortune)"
+        dm-tool lock
         ;;
     'Reboot')
         systemctl reboot

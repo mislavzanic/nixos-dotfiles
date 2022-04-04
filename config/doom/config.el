@@ -1,11 +1,30 @@
 (setq user-full-name "Mislav Zanic"
       user-mail-address "mislavzanic3@gmail.com")
-(server-start)
 
 (map! :leader
       (:prefix ("b". "buffer")
        :desc "List bookmarks" "L" #'list-bookmarks
        :desc "Save current bookmarks to bookmark file" "w" #'bookmark-save))
+
+(setq fancy-splash-image "~/.config/doom/doom.png")
+(setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
+      +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
+
+(set-frame-parameter (selected-frame) 'alpha '(85 . 85))
+(add-to-list 'default-frame-alist '(alpha . (85 . 85)))
+(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+(setq doom-theme 'modus-vivendi)
+
+(after! doom-modeline
+    (setq doom-modeline-major-mode-icon t
+          doom-modeline-buffer-state-icon t
+          doom-modeline-buffer-encoding nil)
+    (remove-hook 'doom-modeline-mode-hook #'size-indication-mode))
+
+(setq display-line-numbers-type 'relative
+      tab-always-indent 'complete)
 
 (map! :leader
       (:prefix ("d" . "dired")
@@ -47,11 +66,8 @@
 ;; Get file icons in dired
 ;(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
-(setq fancy-splash-image "~/.config/doom/doom.png")
-(setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
-      +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
-
-(setq doom-theme 'kaolin-aurora)
+(when IS-LINUX
+    (load! "+exwm"))
 
 (setq doom-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
       doom-variable-pitch-font (font-spec :family "JetBrains Mono Nerd Font" :size 12)
@@ -62,17 +78,6 @@
 (custom-set-faces!
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
-
-(setq org-directory "~/org/")
-
-(setq display-line-numbers-type 'relative
-      tab-always-indent 'complete)
-
-(after! doom-modeline
-    (setq doom-modeline-major-mode-icon t
-          doom-modeline-buffer-state-icon t
-          doom-modeline-buffer-encoding nil)
-    (remove-hook 'doom-modeline-mode-hook #'size-indication-mode))
 
 (setq ivy-posframe-display-functions-alist
       '((swiper                     . ivy-posframe-display-at-point)
@@ -97,20 +102,16 @@
        :desc "Ivy push view" "v p" #'ivy-push-view
        :desc "Ivy switch view" "v s" #'ivy-switch-view))
 
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-(setq lsp-clients-clangd-args '("-j=3"
-                                "--background-index"
-                                "--clang-tidy"
-                                "--completion-style=detailed"
-                                "--header-insertion=never"
-                                "--header-insertion-decorators=0"))
-(after! lsp-clangd (set-lsp-priority! 'clangd 2))
+(setq org-directory "~/.local/org/")
 
-(defun disable-tabs () (setq indent-tabs-mode nil))
-(defun enable-tabs  ()
-  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
-  (setq indent-tabs-mode t)
-  (setq tab-width custom-tab-width))
-(setq-default electric-indent-inhibit t)
-(setq backward-delete-char-untabify-method 'hungry)
+(defun efs/org-babel-tangle-config ()
+  (when (string-equal (buffer-file-name)
+                      (expand-file-name "~/.config/.dotfiles/config/doom/config.org"))
+    (let ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle))))
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+
+(map! :leader
+      :desc "Org babel tangle" "m B" #'org-babel-tangle)
+
+(server-start)

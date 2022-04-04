@@ -17,6 +17,10 @@ in {
         python310
         python310Packages.pip
         python310Packages.ipython
+        python310Packages.ipykernel
+        python310Packages.notebook
+        python310Packages.jupyter
+        python310Packages.jupyter_core
         python310Packages.black
         python310Packages.setuptools
         python310Packages.pylint

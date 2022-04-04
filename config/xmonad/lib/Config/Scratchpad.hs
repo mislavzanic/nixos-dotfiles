@@ -8,7 +8,7 @@ import XMonad.StackSet
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                 , NS "tremc" spawnTremc findTremc manageTremc
-                -- , NS "spotify" spawnSpotify findSpotify manageSpotify
+                , NS "spotify" spawnSpotify findSpotify manageSpotify
                 -- , NS "discord" spawnDiscord findDiscord manageDiscord
                 ]
   where
@@ -28,8 +28,7 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                    w = 0.9
                    t = 0.95 - h
                    l = 0.95 - w
-{-
-    spawnSpotify  = myTerminal ++ " -t spotify -e spotify"
+    spawnSpotify  = "spotify"
     findSpotify   = title =? "Spotify" <||> title =? "spotify" <||> className =? "Spotify"
     manageSpotify = customFloating $ RationalRect l t w h
                     where
@@ -37,6 +36,7 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                       w = 0.9
                       t = 0.95 - h
                       l = 0.95 - w
+{-
     spawnDiscord  = "discord"
     findDiscord   = className =? "discord"
     manageDiscord = customFloating $ RationalRect l t w h

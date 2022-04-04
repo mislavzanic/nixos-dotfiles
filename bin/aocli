@@ -1,0 +1,104 @@
+#!/usr/bin/env nix-shell
+#! nix-shell -p ruby_2_7 -p rubyPackages.faraday -i "ruby -S" --quiet
+
+require 'shellwords'
+require 'optparse'
+require 'faraday'
+require 'uri'
+
+module Aoc
+  extend self
+  Command = Struct.new(:name, :desc, :args, :opts, :fn)
+
+  @@commands = {}
+  @@alias = {}
+  @@opts = {}
+  @@session = nil
+  @@cli = nil
+
+  def self.defcmd names, &block
+    names = (names.kind_of?(Array) ? names : [names]).map(&:to_s)
+    names.drop(1).each { |n| @@alias[n] = names.first }
+    cli = Command.new names.first, [], []
+    cli.opts = OptionParser.new do |opt|
+      opt.banner = "Usage: #{opt.program_name} #{cli.name} [options]"
+      opt.separator "\nOptions:"
+      opt.on_tail('-h', '--help', 'Prints this help') { puts opt; exit }
+    end
+    @@cli = cli
+    fn = block.call cli
+    cli.fn = lambda do |args|
+      begin
+        cli.opts.banner +=
+          (cli.args ? " #{cli.args.join ' '}" : "")
+          (cli.desc ? "\n\n#{cli.desc[0]}\n\n#{cli.desc[1..].join "\n"}" : "")
+        cli.opts.order!(args, into: @@opts)
+        fn.call args
+      ensure @@cli = nil end
+    end
+    @@commands[cli.name] = @@cli
+  end
+
+  def self.opts(*args) @@cli.opts.on(*args) end
+  def self.args(*args) @@cli.args = args end
+  def self.desc(*args) @@cli.desc = args end
+
+  defcmd [:input, :in] do
+    desc "Get a advent of code task"
+    opts '-y YEAR', '--year YEAR', Integer, "Task year"
+    opts '-d DAY', '--day DAY', Integer, "Task day"
+    opts '--print', 'Print output to console'
+    opts '-p [PATH]', '--path [PATH]', 'Path to input file'
+    args "YEAR", "DAY", "[PATH]"
+    lambda do |args|
+      res = Faraday.get("https://adventofcode.com/#{@@opts[:'year']}/day/#{@@opts[:'day']}/input", {},
+                        {"cookie" => "session=#{@@session}"})
+      if @@opts[:print]
+        puts res.body
+      else
+        File.open("#{@@opts[:path]}", 'w') do |file|
+          file.write(res.body)
+        end
+      end
+    end
+  end
+
+  defcmd :run do
+    desc 'Run a file'
+    opts '-p PATH', '--path PATH', 'Source path'
+    opts '--interpreter [INTERPRETER]', 'Interpreter'
+    args 'PATH', '[INTERPRETER]'
+    lambda do |args|
+    end
+  end
+
+  def self.call command, args
+    cmd = command.to_s
+    cmd = @@alias[cmd] while cmd and not @@commands.key?(cmd)
+    if cmd
+      @@commands[cmd].fn.call args
+    elsif command
+      # user_error "Couldn't recognize command '#{command}'"
+    else
+      raise UsageError
+    end
+  end
+
+  def self.run(args = [])
+    opts = OptionParser.new do |opt|
+      opt.banner = "Usage: hey [global-options] [command] [sub-options]\n\n"
+      opt.separator "\n\nAvailable Commands:"
+    end
+    if args.length == 0
+      puts "Error: No command specified"
+      puts "\n"
+      raise UsageError
+    else
+      @@session = File.open("#{ENV["HOME"]}/.config/aocrc").read().to_s
+      call args.first, args.drop(1)
+    end
+  end
+end
+
+
+Aoc.run ARGV.dup

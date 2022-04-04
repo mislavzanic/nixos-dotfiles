@@ -47,6 +47,7 @@ with lib.my;
     wget
     feh
     brave
+    firefox
     python3
     ripgrep
     fd

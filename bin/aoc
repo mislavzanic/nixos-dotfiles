@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 AOC="/home/$USER/.local/aoc"
 
@@ -176,22 +176,21 @@ get_input() {
 #  MAIN                                                                      -
 # ----------------------------------------------------------------------------
 
-while getopts 'i:l:thy:d:u:rs:k:' opt; do
-   case "$opt" in
-      s) POST="$OPTARG" ;;
-      r) run_curr ;;
-      t) view_task ;;
-      i) get_input "$2" "$3" ;;
-      u) ALIAS="$OPTARG" ;;
-      l) LEVEL="$OPTARG" ;;
-      y) YEAR="$OPTARG" ;;
-      d) DAY="$OPTARG" ;;
-      h) helpFunction ;; 
-   esac
+
+while [ $# -gt 0 ]; do
+  if [[ $1 == *"--"* ]]; then
+    param="${1/--/}"
+    [ $param == 'post' ]  && post=1
+    [ $param == 'year' ]  && { year=$2; shift; }
+    [ $param == 'day' ]   && { day=$2; shift; }
+    [ $param == 'level' ] && { level=$2; shift; }
+    [ $param == 'run' ]   && { run_curr; exit; }
+  fi
+  shift
 done
 
-[ -z $POST ] && {
-    get_input "$YEAR" "$DAY"
+[ -z $post ] && {
+    get_input "$year" "$day"
 } || {
-    post_answer "$POST" "$YEAR" "$DAY" "$LEVEL"
+    post_answer "$post" "$year" "$day" "$level"
 }

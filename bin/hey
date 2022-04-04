@@ -41,6 +41,7 @@ rebuild() {
     args="$2"
     [[ "$flags" =~ "u" ]] || cmd="sudo $cmd"
     [[ "$flags" =~ "D" ]] && cmd="$cmd --show-trace"
+    [[ "$args" =~ "flake" ]] || cmd="$cmd --flake $default_flake#"
     cmd="$cmd $args"
   }
 
@@ -71,7 +72,14 @@ search() {
     nix search nixpkgs "$1"
 }
 
+update() {
+  args="$1"
+  flake="$2"
+  [ -z "$args" ] && { nix flake update "$flake" --impure; }
+}
+
 flags=''
+default_flake="$FLAKE"
 while [ $# -gt 0 ]; do
   if [[ $1 == *"--"* ]]; then
     param="${1/--/}"
@@ -97,10 +105,13 @@ while [ $# -gt 0 ]; do
     [[ $param =~ 'p' ]] && { flags="p$flags" && pkg="$2 $pkg"; shift; }
   else
     param="$1"
-    [ "$param" == 'rebuild' ] && rebuild="1"
-    [ "$param" == 'rollback' ] && rollback="1"
-    [ "$param" == 'gc' ] && gc="1"
-    [ "$param" == 'search' ] && { search="1"; pkg="$2"; shift; }
+    [ "$param" == 'rebuild' ] && rebuild=1
+    [ "$param" == 'update' ] && update=1
+    [ "$param" == 'upgrade' ] && upgrade=1
+    [ "$param" == 'rollback' ] && rollback=1
+    [ "$param" == 'test' ] && build_test=1
+    [ "$param" == 'gc' ] && gc=1
+    [ "$param" == 'search' ] && { search=1; pkg="$2"; shift; }
     [ "$param" == 'switch' ] && args="$args switch"
   fi
   shift
@@ -108,6 +119,9 @@ done
 
 [[ $flags =~ [iAqep] ]] && { nix-env -$flags $pkg; exit; }
 [ -z "$rebuild" ] || { rebuild "$flags" "$args"; exit; }
+[ -z "$upgrade" ] || { update && rebuild "switch"; exit; }
+[ -z "$update" ] || { update "$args"; exit; }
+[ -z "$build_test" ] || { rebuild "$flags" "$args test --fast"; exit; }
 [ -z "$rollback" ] || { rebuild "switch --rollback"; exit; }
 [ -z "$gc" ] || { gc "$flags"; exit; }
 [ -z "$search" ] || { search "$pkg"; exit; }
