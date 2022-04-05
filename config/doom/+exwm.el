@@ -86,15 +86,18 @@
 
           ([?\s-b] . ibuffer)
 
-          ([?\s-m] . exwm-layout-toggle-mode-line)
+          ;; ([?\s-m] . exwm-layout-toggle-mode-line)
 
           ([?\s-c] . exwm-input-toggle-keyboard)
 
           ;; Move between windows
-          ([s-h] . windmove-left)
-          ([s-j] . windmove-down)
-          ([s-k] . windmove-up)
-          ([s-l] . windmove-right)
+          ([?\s-h] . windmove-left)
+          ([?\s-j] . windmove-down)
+          ([?\s-k] . windmove-up)
+          ([?\s-l] . windmove-right)
+
+          (,(kbd "s-<tab>") . windower-toggle-single)
+          (,(kbd "s-s") . windower-toggle-split)
 
           ;; Launch applications via shell command
           ([?\s-&] . (lambda (command)
@@ -147,6 +150,15 @@
 
 ;; Update panel indicator when workspace changes
 (add-hook 'exwm-workspace-switch-hook #'efs/send-polybar-exwm-workspace)
+
+(use-package! helm-exwm
+  :config
+  (setq helm-exwm-emacs-buffers-source (helm-exwm-build-emacs-buffers-source))
+  (setq helm-exwm-source (helm-exwm-build-source))
+  (setq helm-mini-default-sources `(helm-exwm-emacs-buffers-source
+                                    helm-exwm-source
+                                    helm-source-recentf)))
+(require 'helm-exwm)
 
 (use-package! dmenu)
 

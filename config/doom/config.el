@@ -1,3 +1,5 @@
+(server-start)
+
 (setq user-full-name "Mislav Zanic"
       user-mail-address "mislavzanic3@gmail.com")
 
@@ -6,7 +8,7 @@
        :desc "List bookmarks" "L" #'list-bookmarks
        :desc "Save current bookmarks to bookmark file" "w" #'bookmark-save))
 
-(setq fancy-splash-image "~/.config/doom/doom.png")
+(setq fancy-splash-image "~/.config/doom/logo.png")
 (setq +doom-dashboard-banner-file (expand-file-name "doom.png" doom-private-dir)
       +doom-dashboard-banner-dir  "~/.emacs.d/modules/ui/doom-dashboard/")
 
@@ -102,8 +104,6 @@
        :desc "Ivy push view" "v p" #'ivy-push-view
        :desc "Ivy switch view" "v s" #'ivy-switch-view))
 
-(setq org-directory "~/.local/org/")
-
 (defun efs/org-babel-tangle-config ()
   (when (string-equal (buffer-file-name)
                       (expand-file-name "~/.config/.dotfiles/config/doom/config.org"))
@@ -114,4 +114,43 @@
 (map! :leader
       :desc "Org babel tangle" "m B" #'org-babel-tangle)
 
-(server-start)
+(setq org-directory "~/.local/org/"
+      org-agenda-files '("~/.local/org/agenda.org")
+      org-default-notes-file (expand-file-name "notes.org" org-directory)
+      org-agenda-start-with-log-mode t
+      org-log-done 'time
+      org-log-into-drawer t
+      org-ellipsis " ▼ ")
+
+(use-package! org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "●" "○" "◆" "●" "○" "◆")))
+
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+(font-lock-add-keywords 'org-journal-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(set-face-attribute 'variable-pitch nil :font "Cantarell")
+
+(custom-set-faces
+  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+  '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+  '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+  '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+
+(setq org-journal-dir "~/.local/org/journal/"
+      org-journal-date-prefix "* "
+      org-journal-time-prefix "** "
+      org-journal-date-format "%B %d, %Y (%A) "
+      org-journal-file-format "%Y-%m-%d.org")
+
+(use-package! lsp-pyright
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))

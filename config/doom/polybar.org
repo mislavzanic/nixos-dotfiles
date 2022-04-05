@@ -8,7 +8,7 @@ margin-top = 0
 margin-bottom = 0
 
 [colors]
-background = #000000
+background = #D7000000
 background-alt = #576075
 foreground = #A6Accd
 foreground-alt = #555
@@ -44,7 +44,7 @@ module-margin = 1
 
 font-0 = "Cantarell:size=8:weight=bold;2"
 font-1 = "Font Awesome:size=4;2"
-font-2 = "Material Icons:size=10;5"
+font-2 = "Material Icons:size=12;2"
 font-3 = "Fira Mono:size=3;-3"
 
 modules-left = exwm-workspace
@@ -84,7 +84,7 @@ module-margin = 1
 
 font-0 = "Cantarell:size=8:weight=bold;2"
 font-1 = "Font Awesome:size=4;2"
-font-2 = "Material Icons:size=10;5"
+font-2 = "Material Icons:size=12;2"
 font-3 = "Fira Mono:size=3;-3"
 
 modules-left = exwm-workspace

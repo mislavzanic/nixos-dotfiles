@@ -27,6 +27,9 @@ in {
       fd
       ripgrep
       imagemagick
+      xdotool
+      xorg.xwininfo
+
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
