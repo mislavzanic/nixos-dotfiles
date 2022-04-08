@@ -1,0 +1,26 @@
+;;; custom.el ---                                    -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2022  The primary user account
+
+;; Author: The primary user account <mislav@leviathan>
+;; Keywords: c, c, vc, 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(load-prefer-newer nil)
+ '(package-archive-priorities
+   '(("gnu" . 99)
+     ("nongnu" . 80)
+     ("stable" . 70)
+     ("melpa" . 0)))
+ '(package-selected-packages
+   '(rainbow-delimiters ivy vterm vertico use-package undo-tree projectile orderless marginalia keycast helpful evil-nerd-commenter evil-collection embark elisp-demos doom-themes doom-modeline consult))
+ '(rational-ui-default-font '(:font "JetBrains Mono" :weight light :height 110)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

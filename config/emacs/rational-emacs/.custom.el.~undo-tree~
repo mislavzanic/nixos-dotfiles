@@ -1,0 +1,28 @@
+(undo-tree-save-format-version . 1)
+"6587d56195f285d028a633ec0ad89b68a007cf83"
+[nil nil nil nil (25168 20974 45414 574000) 0 nil]
+([nil current ((919 . 1158) (#("(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )" 0 239 (fontified nil)) . -919) (835 . 918) (#("
+" 0 1 (fontified nil)) . -835) (620 . 836) (#(" " 0 1 (fontified nil)) . 620) (590 . 621) (573 . 576) (552 . 555) (531 . 534) (#("
+" 0 1 (fontified nil)) . -581) (565 . 567) (547 . 549) (529 . 531) (575 . 576) (560 . 561) (#("
+" 0 1 (fontified nil)) . 560) (560 . 561) (#(" " 0 1 (fontified nil)) . -560) (544 . 545) (#("
+" 0 1 (fontified nil)) . 544) (544 . 545) (#(" " 0 1 (fontified nil)) . -544) (528 . 529) (#("
+" 0 1 (fontified nil)) . 528) (528 . 529) (#(" " 0 1 (fontified nil)) . -528) (510 . 575) (#(" " 0 1 (fontified nil)) . 510) (210 . 511) (#("(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(load-prefer-newer nil)
+ '(package-archive-priorities
+   '((\"gnu\" . 99)
+     (\"nongnu\" . 80)
+     (\"stable\" . 70)
+     (\"melpa\" . 0)))
+ '(package-selected-packages
+   '(rainbow-delimiters ivy vterm vertico use-package undo-tree projectile orderless marginalia keycast helpful evil-nerd-commenter evil-collection embark elisp-demos doom-themes doom-modeline consult))
+ '(rational-ui-default-font '(:font \"JetBrains Mono\" :weight light :height 110)))" 0 695 (fontified nil)) . -210) (" " . -209) (t 25168 20691 747393 64000)) nil (25168 20974 45409 254000) 0 nil])
+nil

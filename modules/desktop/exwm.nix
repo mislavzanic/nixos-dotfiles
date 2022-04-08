@@ -23,6 +23,7 @@ in {
       firefox
       zathura
       compton
+      xorg.xmodmap
       # networkmanager-applet
     ];
 

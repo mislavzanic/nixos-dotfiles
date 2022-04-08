@@ -1,0 +1,72 @@
+;;; config.el --- Description -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2022 Mislav Zanic
+;;
+;; Author: Mislav Zanic <mislavzanic3@gmail.com>
+;; Maintainer: Mislav Zanic <mislavzanic3@gmail.com>
+;; Created: April 08, 2022
+;; Modified: April 08, 2022
+;; Version: 0.0.1
+;; Keywords: abbrev bib c calendar comm convenience data docs emulations extensions faces files frames games hardware help hypermedia i18n internal languages lisp local maint mail matching mouse multimedia news outlines processes terminals tex tools unix vc wp
+;; Homepage: https://github.com/mislav/config
+;; Package-Requires: ((emacs "24.3"))
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; Commentary:
+;;
+;; Rational Emacs supports user customization through a `config.el' file
+;; similar to this one.  You can copy this file as `config.el' to your
+;; Rational Emacs configuration directory as an example.
+;;
+;; In your configuration you can set any Emacs configuration variable, face
+;; attributes, themes, etc as you normally would.
+;;
+;; See the README.org file in this repository for additional information.
+
+;;; Code:
+(require 'rational-completion)
+(require 'rational-defaults)
+(require 'rational-editing)
+(require 'rational-evil)
+(require 'rational-screencast)
+(require 'rational-ui)
+(require 'rational-use-package)
+(require 'rational-windows)
+
+(use-package projectile)
+
+;; Set further font and theme customizations
+(custom-set-variables
+   '(rational-ui-default-font
+     '(:font "JetBrains Mono" :weight light :height 110)))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper))
+  :config
+  (ivy-mode 1))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package modus-themes
+  :ensure t
+  :init
+  (setq modus-themes-vivendi-color-overrides
+        '((bg-alt . "#000000")))
+  (modus-themes-load-themes)
+  :config
+  (modus-themes-load-vivendi)
+  :bind ("<f5>" . modus-themes-toggle))
+
+;; To not load `custom.el' after `config.el', uncomment this line.
+;; (setq rational-load-custom-file nil)
+
+;;; config.el ends here

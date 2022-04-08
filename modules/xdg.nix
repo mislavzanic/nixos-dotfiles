@@ -20,7 +20,7 @@
 
       "EMACSDIR"            = "$XDG_CONFIG_HOME/emacs";
       "DOOMDIR"             = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/doom";
-      "RATIONAL_EMACS_HOME" = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/rational-emacs";
+      "RATIONAL_EMACS_HOME" = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/rational";
       "CABAL_CONFIG"        = "$XDG_CONFIG_HOME/cabal/config";
       "CABAL_DIR"           = "$XDG_CACHE_HOME/cabal";
       "ZDOTDIR"             = "$XDG_CONFIG_HOME/zsh";
