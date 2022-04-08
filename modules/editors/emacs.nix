@@ -16,7 +16,6 @@ in {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
     environment.systemPackages = with pkgs; [
-
       ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
         epkgs.vterm
       ]))
@@ -26,10 +25,12 @@ in {
       gnutls
       fd
       ripgrep
+      jq
       imagemagick
+      sqlite
+      texlive.combined.scheme-medium
       xdotool
       xorg.xwininfo
-
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];

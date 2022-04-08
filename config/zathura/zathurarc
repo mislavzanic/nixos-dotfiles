@@ -1,4 +1,2 @@
 # include catppuccin
-include kaolin-aurora
-
 set selection-clipboard clipboard

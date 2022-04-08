@@ -12,8 +12,8 @@
     desktop = {
       xmonad.enable = false;
       xmobar.enable = false;
-      i3.enable = false;
-      exwm.enable = true;
+      i3.enable = true;
+      exwm.enable = false;
       apps = {
         zathura.enable = true;
         dmenu.enable   = true;

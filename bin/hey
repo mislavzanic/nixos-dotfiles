@@ -112,6 +112,7 @@ while [ $# -gt 0 ]; do
     [ "$param" == 'test' ] && build_test=1
     [ "$param" == 'gc' ] && gc=1
     [ "$param" == 'search' ] && { search=1; pkg="$2"; shift; }
+    [ "$param" == 'shell' ] && { shell=1; }
     [ "$param" == 'switch' ] && args="$args switch"
   fi
   shift
@@ -125,3 +126,4 @@ done
 [ -z "$rollback" ] || { rebuild "switch --rollback"; exit; }
 [ -z "$gc" ] || { gc "$flags"; exit; }
 [ -z "$search" ] || { search "$pkg"; exit; }
+[ -z "$shell" ] || { nix-shell "$flags"; exit; }

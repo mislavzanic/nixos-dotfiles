@@ -13,16 +13,17 @@
     };
 
     variables = {
-      "HISTFILE"        = "$XDG_DATA_HOME/zsh/history";
-      "INPUTRC"         = "$XDG_CONFIG_HOME/readline/inputrc";
-      "LESSHISTFILE"    = "$XDG_CACHE_HOME/lesshst";
-      "WGETRC"          = "$XDG_CONFIG_HOME/wgetrc";
+      "HISTFILE"            = "$XDG_DATA_HOME/zsh/history";
+      "INPUTRC"             = "$XDG_CONFIG_HOME/readline/inputrc";
+      "LESSHISTFILE"        = "$XDG_CACHE_HOME/lesshst";
+      "WGETRC"              = "$XDG_CONFIG_HOME/wgetrc";
 
-      "EMACSDIR"        = "$XDG_CONFIG_HOME/emacs";
-      "DOOMDIR"         = "$XDG_CONFIG_HOME/doom";
-      "CABAL_CONFIG"    = "$XDG_CONFIG_HOME/cabal/config";
-      "CABAL_DIR"       = "$XDG_CACHE_HOME/cabal";
-      "ZDOTDIR"         = "$XDG_CONFIG_HOME/zsh";
+      "EMACSDIR"            = "$XDG_CONFIG_HOME/emacs";
+      "DOOMDIR"             = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/doom";
+      "RATIONAL_EMACS_HOME" = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/rational-emacs";
+      "CABAL_CONFIG"        = "$XDG_CONFIG_HOME/cabal/config";
+      "CABAL_DIR"           = "$XDG_CACHE_HOME/cabal";
+      "ZDOTDIR"             = "$XDG_CONFIG_HOME/zsh";
     };
   };
 }

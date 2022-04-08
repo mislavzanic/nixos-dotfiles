@@ -19,7 +19,11 @@ in {
       pasystray
       autorandr
       polybar
-      vimb
+      qutebrowser
+      firefox
+      zathura
+      compton
+      # networkmanager-applet
     ];
 
     services = {
