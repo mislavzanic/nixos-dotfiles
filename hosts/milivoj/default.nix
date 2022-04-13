@@ -6,7 +6,7 @@
 
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
-  networking.interfaces.enp9s0.useDHCP = true;
+  networking.interfaces.wlp2s0.useDHCP = true;
 
   modules = {
     desktop = {

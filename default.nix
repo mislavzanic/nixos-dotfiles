@@ -48,8 +48,6 @@ with lib.my;
     brave
     firefox
     python3
-    ripgrep
-    fd
     cmake
     gnumake
     gcc
@@ -67,7 +65,6 @@ with lib.my;
 
     settings = {
       auto-optimise-store = true;
-      trusted-users = [ "mislav" "root" ];
     };
 
     package = pkgs.nixFlakes;
