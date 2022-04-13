@@ -4,7 +4,7 @@ with lib;
 with lib.my;
 let
   devopsCfg = config.modules.devops;
-  cfg = deopsvCfg.kubernetes;
+  cfg = devopsCfg.kubernetes;
 in {
   options.modules.devops.kubernetes = { enable = mkBoolOpt false; };
 

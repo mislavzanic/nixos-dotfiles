@@ -52,4 +52,10 @@
       "SECONDARY_MONITOR" = "HDMI-1";
     };
   };
+
+  nix = {
+    settings = {
+      trusted-users = [ "mzanic" "root" ];
+    };
+  };
 }

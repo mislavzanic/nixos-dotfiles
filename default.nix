@@ -41,7 +41,6 @@ with lib.my;
   environment.systemPackages = with pkgs; [
     vim
     zsh
-    transmission
     git
     mpv
     wget

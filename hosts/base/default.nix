@@ -2,7 +2,6 @@
 
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
-  networking.interfaces.enp9s0.useDHCP = true;
 
   users.users.mislav = {
     isNormalUser = true;
@@ -60,7 +59,6 @@
 
     settings = {
       auto-optimise-store = true;
-      trusted-users = [ "mislav" "root" ];
     };
 
     package = pkgs.nixFlakes;

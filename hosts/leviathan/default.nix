@@ -52,6 +52,15 @@
       "PRIMARY_MONITOR" = "DP-0";
       "SECONDARY_MONITOR" = "HDMI-0";
     };
+
+    systemPackages = with pkgs; [
+      transmission
+    ];
   };
 
+  nix = {
+    settings = {
+      trusted-users = [ "mislav" "root" ];
+    };
+  };
 }
