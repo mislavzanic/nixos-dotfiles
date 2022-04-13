@@ -50,6 +50,7 @@
   environment = {
     sessionVariables = {
       "PRIMARY_MONITOR" = "DP-0";
+      "SECONDARY_MONITOR" = "HDMI-0";
     };
   };
 

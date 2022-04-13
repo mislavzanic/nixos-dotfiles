@@ -4,9 +4,9 @@ with lib;
 with lib.my;
 let
   devopsCfg = config.modules.devops;
-  cfg = devCfg.k8s;
+  cfg = deopsvCfg.kubernetes;
 in {
-  options.modules.devops.k8s = { enable = mkBoolOpt false; };
+  options.modules.devops.kubernetes = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
