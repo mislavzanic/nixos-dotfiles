@@ -3,11 +3,11 @@
   networking.networkmanager.enable = true;
   networking.useDHCP = false;
 
-  users.users.mislav = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
-  };
+  # users.users.mislav = {
+  #   isNormalUser = true;
+  #   extraGroups = [ "wheel" "networkmanager" "audio" "video" ]; # Enable ‘sudo’ for the user.
+  #   shell = pkgs.zsh;
+  # };
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_5_16;
