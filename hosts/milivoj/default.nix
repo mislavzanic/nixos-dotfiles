@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }: {
 
   imports = [ ./hardware-configuration.nix ];
-  networking.hostName = "leviathan";
+  networking.hostName = "milivoj";
   time.timeZone = "Europe/Zagreb";
 
   networking.networkmanager.enable = true;
@@ -16,7 +16,6 @@
       exwm.enable = true;
       apps = {
         zathura.enable = true;
-        dmenu.enable   = true;
         spotify.enable = true;
       };
     };
@@ -29,28 +28,28 @@
     dev = {
       python.enable = true;
       sh.enable     = true;
-      ruby.enable     = true;
     };
-    services = {
-      transmission.enable = true;
-      picom.enable        = false;
+    devops = {
+      kubernetes.enable = true;
+      terraform.enable = true;
     };
   };
 
   programs.dconf.enable = true;
   services = {
     xserver.enable       = true;
-    xserver.videoDrivers = [ "nvidia" ];
-
     dbus.packages = with pkgs; [ dconf ];
-
     fwupd.enable = true;
   };
 
+  user.packages = with pkgs; [
+    openvpn
+  ];
+
   environment = {
     sessionVariables = {
-      "PRIMARY_MONITOR" = "DP-0";
+      "PRIMARY_MONITOR" = "eDP-1";
+      "SECONDARY_MONITOR" = "HDMI-1";
     };
   };
-
 }

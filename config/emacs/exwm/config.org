@@ -94,6 +94,8 @@
 
   (start-process-shell-command "xmodmap" nil "xmodmap ~/.config/.dotfiles/config/emacs/exwm/Xmodmap")
 
+  (start-process-shell-command "xsetroot" nil "xsetroot -cursor_name left_ptr")
+
   (require 'exwm-randr)
   (exwm-randr-enable)
   (setq exwm-randr-workspace-monitor-plist '(0 "DP-0" 1 "HDMI-0"))
@@ -128,7 +130,7 @@
           ([?\s-r] . exwm-reset)
 
           ([?\s-b] . counsel-switch-buffer)
-          ([?\s-q] . kill-buffer)
+          ([?\s-q] . persp-kill-buffer)
           ([?\s-Q] . kill-this-buffer)
 
           (,(kbd "s-. c") . helpful-command)
