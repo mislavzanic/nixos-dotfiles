@@ -5,6 +5,9 @@
 ;;
 ;;; Code:
 
+(defvar efs/primary-monitor (getenv "PRIMARY-MONITOR"))
+(defvar efs/secondary-monitor (getenv "SECONDARY-MONITOR"))
+
 (defun efs/exwm-update-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
 

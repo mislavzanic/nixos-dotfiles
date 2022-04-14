@@ -10,6 +10,10 @@
 ;;; Code:
 #+end_src
 
+** Variables
+#+begin_src emacs-lisp :tangle ./+exwm.el
+#+end_src
+
 ** Functions
 #+begin_src emacs-lisp :tangle ./+exwm.el
 (defun efs/exwm-update-class ()
@@ -39,6 +43,12 @@
     ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
     ("zathura" (exwm-workspace-rename-buffer (format "Zathura: %s" exwm-title)))
     ("qutebrowser" (exwm-workspace-rename-buffer (format "qutebrowser: %s" exwm-title)))))
+
+(defun efs/update-displays ()
+  (efs/run-in-background "autorandr --change --force")
+  (efs/set-wallpaper)
+  (message "Display config: %s"
+           (string-trim (shell-command-to-string "autorandr --current"))))
 #+end_src
 
 *** Panel
@@ -105,7 +115,10 @@
   (add-hook 'exwm-randr-screen-change-hook
     (lambda ()
       (start-process-shell-command
-        "xrandr" nil "xrandr --output DP-0 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal")))
+        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode 1920x1080 --pos 1920x0 --rotate normal --output ${SECONDARY_MONITOR} --mode 1920x1080 --pos 0x0 --rotate normal"))))
+
+  (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+  (efs/update-displays)
 
   (setq exwm-workspace-warp-cursor t)
 
