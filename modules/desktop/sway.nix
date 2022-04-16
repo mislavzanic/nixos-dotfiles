@@ -31,19 +31,23 @@ in {
         displayManager = {
           defaultSession = "none+i3";
           lightdm.enable = true;
-          lightdm.greeters.mini = {
-            enable = true;
-            user = config.user.name;
-            extraConfig = ''
-              [greeter-theme]
-              background-image = "";
-              background-color = "#0C0F12"
-              text-color = "#ff79c6"
-              password-background-color = "#1E2029"
-              window-color = "#181a23"
-              border-color = "#bd93f9"
-            '';
-          };
+           lightdm.greeters.mini = {
+             enable = true;
+             user = config.user.name;
+             extraConfig = ''
+               [greeter-theme]
+               background-image = "";
+               background-color = "#0C0F12"
+               text-color = "#ff79c6"
+               password-background-color = "#1E2029"
+               window-color = "#181a23"
+               border-color = "#bd93f9"
+             '';
+           };
+	  autoLogin = {
+	    enable = true;
+	    user = config.user.name;
+	  };
         };
 
         windowManager = {

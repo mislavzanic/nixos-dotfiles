@@ -51,6 +51,9 @@ with lib.my;
     cmake
     gnumake
     gcc
+    nerdfonts
+    mononoki
+    pfetch
   ];
 
   sound.enable = true;

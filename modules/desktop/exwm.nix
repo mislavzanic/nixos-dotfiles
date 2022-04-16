@@ -24,7 +24,7 @@ in {
       zathura
       compton
       xorg.xmodmap
-      # networkmanager-applet
+      networkmanagerapplet
     ];
 
     services = {

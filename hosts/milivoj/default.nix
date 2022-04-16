@@ -37,9 +37,17 @@
 
   programs.dconf.enable = true;
   services = {
-    xserver.enable       = true;
+    xserver.enable = true;
     dbus.packages = with pkgs; [ dconf ];
     fwupd.enable = true;
+    xserver.libinput = {
+      enable = true;
+      touchpad = {
+        naturalScrolling = false;
+        middleEmulation = true;
+        tapping = true;
+      };
+    };
   };
 
   user.packages = with pkgs; [

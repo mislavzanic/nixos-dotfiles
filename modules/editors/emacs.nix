@@ -31,6 +31,9 @@ in {
       texlive.combined.scheme-medium
       xdotool
       xorg.xwininfo
+      jetbrains-mono
+      nerdfonts
+      cantarell-fonts
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
