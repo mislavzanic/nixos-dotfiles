@@ -108,7 +108,8 @@
 
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist '(0 "DP-0" 1 "HDMI-0"))
+  (setq exwm-randr-workspace-monitor-plist
+        '(0 (substitute-env-vars "${PRIMARY_MONITOR}") 1 (substitute-env-vars "${SECONDARY_MONITOR}")))
 
   (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
 
@@ -146,8 +147,6 @@
           ([?\s-q] . persp-kill-buffer)
           ([?\s-Q] . kill-this-buffer)
 
-          (,(kbd "s-. c") . helpful-command)
-
           ([?\s-i] . exwm-input-toggle-keyboard)
 
           ;; Move between windows
@@ -163,7 +162,6 @@
           (,(kbd "s-<tab>") . windower-toggle-single)
           (,(kbd "s-s") . windower-toggle-split)
 
-          (,(kbd "s-o") . counsel-google)
 
           ;; Launch applications via shell command
           ([?\s-&] . (lambda (command)
@@ -236,7 +234,7 @@ underline-1 = #c792ea
 
 
 [bar/HDMI0]
-monitor = HDMI-0
+monitor = ${env:SECONDARY_MONITOR}
 width = 100%
 height = 15
 offset-x = 0
@@ -276,7 +274,7 @@ cursor-scroll = ns-resize
 
 
 [bar/DP0]
-monitor = DP-0
+monitor = ${env:PRIMARY_MONITOR}
 width = 100%
 height = 15
 offset-x = 0

@@ -5,8 +5,7 @@
 ;;
 ;;; Code:
 
-(defvar efs/primary-monitor (getenv "PRIMARY-MONITOR"))
-(defvar efs/secondary-monitor (getenv "SECONDARY-MONITOR"))
+
 
 (defun efs/exwm-update-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
@@ -35,6 +34,12 @@
     ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
     ("zathura" (exwm-workspace-rename-buffer (format "Zathura: %s" exwm-title)))
     ("qutebrowser" (exwm-workspace-rename-buffer (format "qutebrowser: %s" exwm-title)))))
+
+(defun efs/update-displays ()
+  (efs/run-in-background "autorandr --change --force")
+  (efs/set-wallpaper)
+  (message "Display config: %s"
+           (string-trim (shell-command-to-string "autorandr --current"))))
 
 (defvar efs/polybar-hdmi nil
   "Holds the process of the running Polybar instance, if any")
@@ -87,14 +92,17 @@
 
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist '(0 "DP-0" 1 "HDMI-0"))
+  (setq exwm-randr-workspace-monitor-plist '(0 (substitute-env-vars "${PRIMARY_MONITOR}") 1 (substitute-env-vars "${SECONDARY_MONITOR}")))
 
   (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
 
   (add-hook 'exwm-randr-screen-change-hook
     (lambda ()
       (start-process-shell-command
-        "xrandr" nil "xrandr --output DP-0 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal")))
+        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode 1920x1080 --pos 1920x0 --rotate normal --output ${SECONDARY_MONITOR} --mode 1920x1080 --pos 0x0 --rotate normal"))))
+
+  (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+  (efs/update-displays)
 
   (setq exwm-workspace-warp-cursor t)
 
