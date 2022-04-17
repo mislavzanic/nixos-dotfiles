@@ -31,11 +31,13 @@ in {
       texlive.combined.scheme-medium
       xdotool
       xorg.xwininfo
+    ];
+
+    fonts.fonts = with pkgs; [
+      emacs-all-the-icons-fonts
       jetbrains-mono
       nerdfonts
       cantarell-fonts
     ];
-
-    fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
   };
 }

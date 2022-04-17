@@ -1,4 +1,6 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+let configDir = config.dotfiles.configDir;
+in {
 
   imports = [ ./hardware-configuration.nix ];
   networking.hostName = "milivoj";
@@ -52,6 +54,7 @@
 
   user.packages = with pkgs; [
     openvpn
+    cantarell-fonts
   ];
 
   environment = {
@@ -59,5 +62,7 @@
       "PRIMARY_MONITOR" = "eDP-1";
       "SECONDARY_MONITOR" = "HDMI-1";
     };
+
+    etc."modprobe.d/alsa-base.conf".source = "${configDir}/modprobe/alsa-base.conf";
   };
 }

@@ -52,7 +52,7 @@ with lib.my;
     gnumake
     gcc
     nerdfonts
-    mononoki
+    cantarell-fonts
     pfetch
   ];
 
