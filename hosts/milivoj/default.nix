@@ -54,7 +54,8 @@ in {
 
   user.packages = with pkgs; [
     openvpn
-    cantarell-fonts
+    slack
+    brightnessctl
   ];
 
   environment = {
