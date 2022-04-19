@@ -81,6 +81,22 @@
 
 (defun efs/send-polybar-exwm-workspace ()
   (efs/send-polybar-hook "exwm-workspace" 1))
+
+(defun efs/get-monitor-list (env-str)
+  (let (env-var (getenv env-str))
+    (if env-var
+        (split-string env-var)
+      nil)))
+
+(defun efs/build-workspace-monitor-plist (list)
+    (let (transformed-list first second (rev-list (reverse list)))
+      (while rev-list
+        (setq second (car rev-list))
+        (setq first (string-to-number (car (cdr rev-list))))
+        (setq transformed-list (cons first (cons second transformed-list)))
+        (setq rev-list (cdr (cdr rev-list)))
+        )
+      transformed-list))
 #+end_src
 
 
@@ -106,17 +122,22 @@
 
   (start-process-shell-command "xsetroot" nil "xsetroot -cursor_name left_ptr")
 
+#+end_src
+
+** Xrandr
+#+begin_src emacs-lisp :tangle ./+exwm.el
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist
-        '(0 (substitute-env-vars "${PRIMARY_MONITOR}") 1 (substitute-env-vars "${SECONDARY_MONITOR}")))
+
+  (setq efs/monitor-list (efs/get-monitor-list "MONITOR_LIST"))
+  (setq exwm-randr-workspace-monitor-plist (efs/build-workspace-monitor-plist efs/monitor-list))
 
   (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
 
   (add-hook 'exwm-randr-screen-change-hook
     (lambda ()
       (start-process-shell-command
-        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode 1920x1080 --pos 1920x0 --rotate normal --output ${SECONDARY_MONITOR} --mode 1920x1080 --pos 0x0 --rotate normal"))))
+        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos ${PRIMARY_MONITOR_POS} --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --pos ${SECONDARY_MONITOR_POS} --rotate normal"))))
 
   (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
   (efs/update-displays)
@@ -125,6 +146,10 @@
 
   (efs/set-wallpaper)
 
+#+end_src
+
+** Keybindings
+#+begin_src emacs-lisp :tangle ./+exwm.el
   (setq exwm-input-prefix-keys
     '(?\C-x
       ?\C-u
@@ -161,6 +186,7 @@
 
           (,(kbd "s-<tab>") . windower-toggle-single)
           (,(kbd "s-s") . windower-toggle-split)
+          (,(kbd "s-v") . evil-window-vsplit)
 
 
           ;; Launch applications via shell command
@@ -258,12 +284,12 @@ padding-right = 1
 module-margin = 1
 
 font-0 = "Cantarell:size=8:weight=bold;2"
-font-1 = "Font Awesome:size=4;2"
+font-1 = "Font Awesome:size=12;2"
 font-2 = "Material Icons:size=12;2"
 font-3 = "Fira Mono:size=3;-3"
 
 modules-left = exwm-workspace
-modules-right = cpu temperature date
+modules-right = cpu temperature battery date
 
 tray-position = right
 tray-padding = 2
@@ -298,12 +324,12 @@ padding-right = 1
 module-margin = 1
 
 font-0 = "Cantarell:size=8:weight=bold;2"
-font-1 = "Font Awesome:size=4;2"
+font-1 = "Font Awesome:size=12;2"
 font-2 = "Material Icons:size=12;2"
 font-3 = "Fira Mono:size=3;-3"
 
 modules-left = exwm-workspace
-modules-right = cpu temperature date
+modules-right = cpu temperature battery date
 
 tray-position = right
 tray-padding = 2
@@ -350,6 +376,37 @@ format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.underline-1}
 
 label = %date% %time%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+time-format = %-l:%M
+
+label-charging = %percentage%% / %time%
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = ${colors.underline-1}
+
+label-discharging = %percentage%% / %time%
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+
+format-full = <ramp-capacity> <label-full>
+format-full-underline = ${self.format-charging-underline}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
 
 [module/temperature]
 type = internal/temperature

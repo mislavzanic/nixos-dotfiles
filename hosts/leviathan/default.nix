@@ -50,7 +50,14 @@
   environment = {
     sessionVariables = {
       "PRIMARY_MONITOR" = "DP-0";
+      "PRIMARY_MONITOR_POS" = "1920x0";
+      "PRIMARY_MONITOR_RES" = "1920x1080";
+
       "SECONDARY_MONITOR" = "HDMI-0";
+      "SECONDARY_MONITOR_POS" = "0x0";
+      "SECONDARY_MONITOR_RES" = "1920x1080";
+
+      "MONITOR_LIST" = "2 HDMI-0 3 HDMI-0";
     };
 
     systemPackages = with pkgs; [

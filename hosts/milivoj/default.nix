@@ -61,7 +61,14 @@ in {
   environment = {
     sessionVariables = {
       "PRIMARY_MONITOR" = "eDP-1";
+      "PRIMARY_MONITOR_POS" = "0x0";
+      "PRIMARY_MONITOR_RES" = "1920x1080";
+
       "SECONDARY_MONITOR" = "HDMI-1";
+      "SECONDARY_MONITOR_POS" = "0x1080";
+      "SECONDARY_MONITOR_RES" = "1920x1200";
+
+      "MONITOR_LIST" = "2 HDMI-1 3 HDMI-1";
     };
 
     etc."modprobe.d/alsa-base.conf".source = "${configDir}/modprobe/alsa-base.conf";

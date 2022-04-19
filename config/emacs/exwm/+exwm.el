@@ -70,6 +70,22 @@
 (defun efs/send-polybar-exwm-workspace ()
   (efs/send-polybar-hook "exwm-workspace" 1))
 
+(defun efs/get-monitor-list (env-str)
+  (let (env-var (getenv env-str))
+    (if env-var
+        (split-string env-var)
+      nil)))
+
+(defun efs/build-workspace-monitor-plist (list)
+    (let (transformed-list first second (rev-list (reverse list)))
+      (while rev-list
+        (setq second (car rev-list))
+        (setq first (string-to-number (car (cdr rev-list))))
+        (setq transformed-list (cons first (cons second transformed-list)))
+        (setq rev-list (cdr (cdr rev-list)))
+        )
+      transformed-list))
+
 (use-package! exwm
   :init
   (setq
@@ -92,14 +108,16 @@
 
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (setq exwm-randr-workspace-monitor-plist '(0 (substitute-env-vars "${PRIMARY_MONITOR}") 1 (substitute-env-vars "${SECONDARY_MONITOR}")))
+
+  (setq efs/monitor-list (efs/get-monitor-list "MONITOR_LIST"))
+  (setq exwm-randr-workspace-monitor-plist (efs/build-workspace-monitor-plist efs/monitor-list))
 
   (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
 
   (add-hook 'exwm-randr-screen-change-hook
     (lambda ()
       (start-process-shell-command
-        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode 1920x1080 --pos 1920x0 --rotate normal --output ${SECONDARY_MONITOR} --mode 1920x1080 --pos 0x0 --rotate normal"))))
+        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos ${PRIMARY_MONITOR_POS} --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --pos ${SECONDARY_MONITOR_POS} --rotate normal"))))
 
   (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
   (efs/update-displays)
@@ -130,8 +148,6 @@
           ([?\s-q] . persp-kill-buffer)
           ([?\s-Q] . kill-this-buffer)
 
-          (,(kbd "s-. c") . helpful-command)
-
           ([?\s-i] . exwm-input-toggle-keyboard)
 
           ;; Move between windows
@@ -146,8 +162,8 @@
 
           (,(kbd "s-<tab>") . windower-toggle-single)
           (,(kbd "s-s") . windower-toggle-split)
+          (,(kbd "s-v") . evil-window-vsplit)
 
-          (,(kbd "s-o") . counsel-google)
 
           ;; Launch applications via shell command
           ([?\s-&] . (lambda (command)
