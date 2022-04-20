@@ -58,6 +58,7 @@
       "SECONDARY_MONITOR_RES" = "1920x1080";
 
       "MONITOR_LIST" = "2 HDMI-0 3 HDMI-0";
+      "DEFAULT_USER" = "mislav";
     };
 
     systemPackages = with pkgs; [

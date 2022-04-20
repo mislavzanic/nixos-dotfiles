@@ -69,6 +69,8 @@ in {
       "SECONDARY_MONITOR_RES" = "1920x1200";
 
       "MONITOR_LIST" = "2 HDMI-1 3 HDMI-1";
+
+      "DEFAULT_USER" = "mzanic";
     };
 
     etc."modprobe.d/alsa-base.conf".source = "${configDir}/modprobe/alsa-base.conf";

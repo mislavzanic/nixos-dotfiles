@@ -119,8 +119,8 @@
       (start-process-shell-command
         "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos ${PRIMARY_MONITOR_POS} --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --pos ${SECONDARY_MONITOR_POS} --rotate normal"))))
 
-  (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
-  (efs/update-displays)
+  ;; (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+  ;; (efs/update-displays)
 
   (setq exwm-workspace-warp-cursor t)
 
