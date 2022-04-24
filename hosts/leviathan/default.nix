@@ -42,10 +42,13 @@
     xserver.enable       = true;
     xserver.videoDrivers = [ "nvidia" ];
 
+    blueman.enable = true;
     dbus.packages = with pkgs; [ dconf ];
 
     fwupd.enable = true;
   };
+
+  hardware.bluetooth.enable = true;
 
   environment = {
     sessionVariables = {

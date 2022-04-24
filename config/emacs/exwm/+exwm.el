@@ -27,6 +27,7 @@
 
   (efs/start-panel)
   (efs/run-in-background "nm-applet")
+  (efs/run-in-background "blueman-applet")
   (efs/run-in-background "pasystray"))
 
 (defun efs/exwm-update-title ()
@@ -40,6 +41,22 @@
   (efs/set-wallpaper)
   (message "Display config: %s"
            (string-trim (shell-command-to-string "autorandr --current"))))
+
+(defun efs/get-monitor-list (env-str)
+  (let ((env-var (getenv env-str)))
+    (if env-var
+        (split-string env-var)
+      nil)))
+
+(defun efs/build-workspace-monitor-plist (list)
+    (let (transformed-list first second (rev-list (reverse list)))
+      (while rev-list
+        (setq second (car rev-list))
+        (setq first (string-to-number (car (cdr rev-list))))
+        (setq transformed-list (cons first (cons second transformed-list)))
+        (setq rev-list (cdr (cdr rev-list)))
+        )
+      transformed-list))
 
 (defvar efs/polybar-hdmi nil
   "Holds the process of the running Polybar instance, if any")
@@ -69,22 +86,6 @@
 
 (defun efs/send-polybar-exwm-workspace ()
   (efs/send-polybar-hook "exwm-workspace" 1))
-
-(defun efs/get-monitor-list (env-str)
-  (let (env-var (getenv env-str))
-    (if env-var
-        (split-string env-var)
-      nil)))
-
-(defun efs/build-workspace-monitor-plist (list)
-    (let (transformed-list first second (rev-list (reverse list)))
-      (while rev-list
-        (setq second (car rev-list))
-        (setq first (string-to-number (car (cdr rev-list))))
-        (setq transformed-list (cons first (cons second transformed-list)))
-        (setq rev-list (cdr (cdr rev-list)))
-        )
-      transformed-list))
 
 (use-package! exwm
   :init
@@ -119,8 +120,8 @@
       (start-process-shell-command
         "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos ${PRIMARY_MONITOR_POS} --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --pos ${SECONDARY_MONITOR_POS} --rotate normal"))))
 
-  ;; (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
-  ;; (efs/update-displays)
+  (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
+  (efs/update-displays)
 
   (setq exwm-workspace-warp-cursor t)
 
@@ -149,6 +150,7 @@
           ([?\s-Q] . kill-this-buffer)
 
           ([?\s-i] . exwm-input-toggle-keyboard)
+          ([?\s-f] . exwm-layout-toggle-fullscreen)
 
           ;; Move between windows
           ([?\s-h] . windmove-left)

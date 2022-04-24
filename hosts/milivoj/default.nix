@@ -39,18 +39,23 @@ in {
 
   programs.dconf.enable = true;
   services = {
-    xserver.enable = true;
+    blueman.enable = true;
     dbus.packages = with pkgs; [ dconf ];
     fwupd.enable = true;
-    xserver.libinput = {
+    xserver = {
       enable = true;
-      touchpad = {
-        naturalScrolling = false;
-        middleEmulation = true;
-        tapping = true;
+      libinput = {
+        enable = true;
+        touchpad = {
+          naturalScrolling = false;
+          middleEmulation = true;
+          tapping = true;
+        };
       };
     };
   };
+
+  hardware.bluetooth.enable = true;
 
   user.packages = with pkgs; [
     openvpn

@@ -36,8 +36,7 @@ with lib.my;
   config = {
     user =
       let user = builtins.getEnv "USER";
-          default_user = builtins.getEnv "DEFAULT_USER";
-          name = if elem user [ "" "root" ] then default_user else user;
+          name = if config.networking.hostName == "milivoj" then "mzanic" else "mislav";
       in {
         inherit name;
         description = "The primary user account";
