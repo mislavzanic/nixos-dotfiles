@@ -1,0 +1,3 @@
+command("<%= name %>",
+  args: ["-lock-timeout=22m"],
+)

@@ -30,6 +30,7 @@ in {
     dev = {
       python.enable = true;
       sh.enable     = true;
+      go.enable     = true;
     };
     devops = {
       kubernetes.enable = true;

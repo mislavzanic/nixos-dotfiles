@@ -54,6 +54,7 @@ with lib.my;
     nerdfonts
     cantarell-fonts
     pfetch
+    lxappearance
   ];
 
   sound.enable = true;

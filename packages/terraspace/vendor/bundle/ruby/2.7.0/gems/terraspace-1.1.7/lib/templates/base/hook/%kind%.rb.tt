@@ -1,0 +1,7 @@
+before("<%= name %>",
+  execute: "echo '<%= hook_path %>: test <%= type %> before hook for <%= kind %> <%= name %>'",
+)
+
+after("<%= name %>",
+  execute: "echo '<%= hook_path %>: test <%= type %> after hook for <%= kind %> <%= name %>'"
+)

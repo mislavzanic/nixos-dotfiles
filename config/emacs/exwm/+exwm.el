@@ -30,6 +30,10 @@
   (efs/run-in-background "blueman-applet")
   (efs/run-in-background "pasystray"))
 
+(defun efs/screenshot ()
+  (interactive)
+  (start-process-shell-command "scrot" nil "scrot -s"))
+
 (defun efs/exwm-update-title ()
   (pcase exwm-class-name
     ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))

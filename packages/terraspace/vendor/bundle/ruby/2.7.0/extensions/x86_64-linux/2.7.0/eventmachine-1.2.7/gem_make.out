@@ -1,0 +1,16 @@
+current directory: /home/mzanic/.config/.dotfiles/packages/terraspace/vendor/bundle/ruby/2.7.0/gems/eventmachine-1.2.7/ext/fastfilereader
+/nix/store/r5x085qa4pmqwc9lnijg252npbh4ldkj-ruby-2.7.5/bin/ruby -I /nix/store/r5x085qa4pmqwc9lnijg252npbh4ldkj-ruby-2.7.5/lib/ruby/2.7.0 -r ./siteconf20220422-66224-1l1bgrz.rb extconf.rb
+creating Makefile
+
+current directory: /home/mzanic/.config/.dotfiles/packages/terraspace/vendor/bundle/ruby/2.7.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= clean
+
+current directory: /home/mzanic/.config/.dotfiles/packages/terraspace/vendor/bundle/ruby/2.7.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\=
+compiling mapper.cpp
+compiling rubymain.cpp
+linking shared-object fastfilereaderext.so
+
+current directory: /home/mzanic/.config/.dotfiles/packages/terraspace/vendor/bundle/ruby/2.7.0/gems/eventmachine-1.2.7/ext/fastfilereader
+make DESTDIR\= install
+/nix/store/4dycifbpfg90py2ky101irwb54wjlmdy-coreutils-9.0/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20220422-66224-24hqoo
