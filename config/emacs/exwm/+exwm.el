@@ -19,6 +19,11 @@
   (start-process-shell-command
    "feh" nil "feh --bg-fill ~/.local/share/bg"))
 
+(defun efs/lock ()
+  (interactive)
+  (start-process-shell-command
+   "dm-tool lock" nil "dm-tool lock"))
+
 (defun efs/exwm-init-hook ()
   (exwm-workspace-switch-create 1)
 
@@ -98,6 +103,8 @@
    select-enable-primary t
    ;; Follow the mouse.
    focus-follows-mouse t
+   exwm-layout-show-all-buffers nil
+   exwm-workspace-show-all-buffers t
    ;; Move the focus to the followed window.
    mouse-autoselect-window t
    exwm-workspace-number 5)
@@ -149,7 +156,7 @@
           ;; Reset to line-mode (C-c C-k switches to char-mode via exwm-input-release-keyboard)
           ([?\s-r] . exwm-reset)
 
-          ([?\s-b] . counsel-switch-buffer)
+          ([?\s-b] . exwm-workspace-switch-to-buffer)
           ([?\s-q] . persp-kill-buffer)
           ([?\s-Q] . kill-this-buffer)
 
