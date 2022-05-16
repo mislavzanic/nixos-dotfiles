@@ -11,6 +11,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
       google-cloud-sdk
+      python310Packages.google-api-python-client
       kubectl
       k9s
     ];

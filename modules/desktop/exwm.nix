@@ -36,7 +36,6 @@ in {
         windowManager.session = singleton {
           name = "exwm";
           start = ''
-            setsid compton &
             ${pkgs.dbus.dbus-launch} --exit-with-session emacs -mm --fullscreen
           '';
         };

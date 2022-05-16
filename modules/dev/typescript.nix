@@ -4,9 +4,9 @@ with lib;
 with lib.my;
 let
   devCfg = config.modules.dev;
-  cfg = devCfg.go;
+  cfg = devCfg.typescript;
 in {
-  options.modules.dev.go = {
+  options.modules.dev.typescript = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.xdg.enable;
   };
@@ -14,8 +14,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        go_1_18
-        gopls
+        nodePackages.typescript-language-server
+        nodePackages.typescript
       ];
     })
   ];

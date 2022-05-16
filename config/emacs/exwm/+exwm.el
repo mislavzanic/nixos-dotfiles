@@ -21,8 +21,15 @@
 
 (defun efs/lock ()
   (interactive)
-  (start-process-shell-command
-   "dm-tool lock" nil "dm-tool lock"))
+  (start-process-shell-command "dm-tool lock" nil "dm-tool lock"))
+
+(defun efs/kill-compton ()
+  (interactive)
+  (start-file-process-shell-command "compton" nil "killall compton"))
+
+(defun efs/start-compton ()
+  (interactive)
+  (start-file-process-shell-command "compton" nil "compton"))
 
 (defun efs/exwm-init-hook ()
   (exwm-workspace-switch-create 1)
@@ -129,7 +136,7 @@
   (add-hook 'exwm-randr-screen-change-hook
     (lambda ()
       (start-process-shell-command
-        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos ${PRIMARY_MONITOR_POS} --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --pos ${SECONDARY_MONITOR_POS} --rotate normal"))))
+        "xrandr" nil (substitute-env-vars "xrandr --output ${PRIMARY_MONITOR} --mode ${PRIMARY_MONITOR_RES} --pos 0x0 --rotate normal --output ${SECONDARY_MONITOR} --mode ${SECONDARY_MONITOR_RES} --above ${FIRST_MONITOR} --rotate normal"))))
 
   (add-hook 'exwm-randr-screen-change-hook #'efs/update-displays)
   (efs/update-displays)
@@ -174,8 +181,10 @@
           ([?\s-L] . windower-swap-right)
 
           (,(kbd "s-<tab>") . windower-toggle-single)
-          (,(kbd "s-s") . windower-toggle-split)
+          (,(kbd "s-t") . windower-toggle-split)
           (,(kbd "s-v") . evil-window-vsplit)
+          (,(kbd "s-s") . evil-window-split)
+          (,(kbd "s-c") . evil-window-delete)
 
 
           ;; Launch applications via shell command
