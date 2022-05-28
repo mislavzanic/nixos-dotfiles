@@ -8,7 +8,7 @@ let
 
 in {
 
-  options.modules.desktop.xmonad = { enable = mkBoolOpt true; };
+  options.modules.desktop.xmonad = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -18,11 +18,22 @@ in {
       sxiv
       xorg.xset
       xmonad-log
-      tremc
       dmenu
       dunst
       lxappearance
       pamixer
+      libnotify
+      xclip
+      maim
+      pavucontrol
+      pasystray
+      autorandr
+      xst
+      firefox
+      zathura
+      compton
+      xorg.xmodmap
+      networkmanagerapplet
     ];
 
     services = {
@@ -52,9 +63,9 @@ in {
             enable = true;
             enableContribAndExtras = true;
             extraPackages = hpkgs: [
-              hpkgs.xmonad_0_17_0
-              hpkgs.xmonad-contrib_0_17_0
-              hpkgs.xmonad-extras_0_17_0
+              hpkgs.xmonad
+              hpkgs.xmonad-contrib
+              hpkgs.xmonad-extras
             ];
           };
         };

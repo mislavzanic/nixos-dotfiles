@@ -1,3 +1,6 @@
 [submodule "config/emacs/doom"]
 	path = config/emacs/doom
 	url = git@github.com:mislavzanic/doom-emacs-config.git
+[submodule "config/dwm"]
+	path = config/dwm
+	url = git@github.com:mislavzanic/dwm

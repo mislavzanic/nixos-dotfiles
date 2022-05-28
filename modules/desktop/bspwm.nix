@@ -3,23 +3,28 @@
 with lib;
 with lib.my;
 let
-  cfg = config.modules.desktop.exwm;
+  cfg = config.modules.desktop.bspwm;
   configDir = config.dotfiles.configDir;
 
 in {
 
-  options.modules.desktop.exwm = { enable = mkBoolOpt false; };
+  options.modules.desktop.bspwm = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       feh
+      libnotify
       dunst
+      sxhkd
+      bsp-layout
       xclip
       pavucontrol
+      dmenu
       pasystray
       autorandr
       polybar
       qutebrowser
+      xst
       firefox
       zathura
       compton
@@ -30,17 +35,13 @@ in {
     services = {
       xserver = {
         enable = true;
-
-        updateDbusEnvironment = true;
-
-        windowManager.session = singleton {
-          name = "exwm";
-          start = ''
-            ${pkgs.dbus.dbus-launch} --exit-with-session emacs -mm --fullscreen
-          '';
-        };
-
+        windowManager.bspwm.enable = true;
         displayManager = {
+          defaultSession = "none+bspwm";
+          sessionCommands = ''
+              ${pkgs.bspwm}/bin/bspc wm -r
+              source $HOME/.config/bspwm/bspwmrc
+          '';
           lightdm = {
             enable = true;
             greeters.mini = {
@@ -64,6 +65,14 @@ in {
           };
 
         };
+      };
+    };
+
+    home.configFile = {
+      "sxhkd".source = "${configDir}/sxhkd";
+      "bspwm" = {
+        source = "${configDir}/bspwm";
+        recursive = true;
       };
     };
   };

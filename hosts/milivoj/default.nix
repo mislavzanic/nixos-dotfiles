@@ -12,10 +12,8 @@ in {
 
   modules = {
     desktop = {
-      xmonad.enable = false;
-      xmobar.enable = false;
-      i3.enable = false;
-      exwm.enable = true;
+      xmonad.enable = true;
+      xmobar.enable = true;
       apps = {
         zathura.enable = true;
         spotify.enable = true;

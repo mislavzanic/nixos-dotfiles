@@ -51,10 +51,13 @@ with lib.my;
     cmake
     gnumake
     gcc
-    nerdfonts
-    cantarell-fonts
     pfetch
     lxappearance
+  ];
+
+  fonts.fonts = with pkgs; [
+    nerdfonts
+    cantarell-fonts
   ];
 
   sound.enable = true;

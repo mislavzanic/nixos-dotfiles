@@ -1,46 +1,42 @@
+
 { options, config, pkgs, lib, ... }:
 
 with lib;
 with lib.my;
 let
-  cfg = config.modules.desktop.exwm;
+  cfg = config.modules.desktop.qtile;
   configDir = config.dotfiles.configDir;
 
 in {
 
-  options.modules.desktop.exwm = { enable = mkBoolOpt false; };
+  options.modules.desktop.qtile = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       feh
+      libnotify
       dunst
       xclip
       pavucontrol
+      dmenu
       pasystray
       autorandr
-      polybar
       qutebrowser
+      xst
       firefox
       zathura
       compton
       xorg.xmodmap
+      wlroots
       networkmanagerapplet
     ];
 
     services = {
       xserver = {
         enable = true;
-
-        updateDbusEnvironment = true;
-
-        windowManager.session = singleton {
-          name = "exwm";
-          start = ''
-            ${pkgs.dbus.dbus-launch} --exit-with-session emacs -mm --fullscreen
-          '';
-        };
-
+        windowManager.qtile.enable = true;
         displayManager = {
+          defaultSession = "none+qtile";
           lightdm = {
             enable = true;
             greeters.mini = {
@@ -64,6 +60,13 @@ in {
           };
 
         };
+      };
+    };
+
+    home.configFile = {
+      "qtile" = {
+        source = "${configDir}/qtile";
+        recursive = true;
       };
     };
   };

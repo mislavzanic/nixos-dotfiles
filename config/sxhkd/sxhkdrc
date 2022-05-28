@@ -1,0 +1,39 @@
+super + Return
+      xst
+
+super + p
+      dmenu_run
+
+super + e
+      emacsclient -c
+
+super + b
+      $DOTFILES_BIN/scripts/list_windows
+
+# Close window
+super + q
+      bspc node -c
+
+super + s
+      bspc node @parent -R 90
+# alternate between the tiled and monocle layout
+super + Tab
+	bspc desktop -l next
+
+super + w; super + {_,shift + }f
+	bspc node -t ~{floating,fullscreen}
+
+# Focus window directionally; w/ ctrl = move by monitor
+super + {_,ctrl +}{h,j,k,l}
+	$DOTFILES_BIN/bspwm/focus {_,-m }{west,south,north,east}
+
+# Swap windows directionally; w/ ctrl = across monitors
+super + shift + {_,ctrl +}{h,j,k,l}
+	$DOTFILES_BIN/bspwm/swap {_,-m }{west,south,north,east}
+
+super + {1-9,0}
+	bspc desktop -f {1-9,10};
+
+# On shift = move current node to numbered desktop
+super + shift + {1-9,0}
+	bspc node -d {1-9,10};

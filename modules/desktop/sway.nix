@@ -8,20 +8,23 @@ let
 
 in {
 
-  options.modules.desktop.i3 = { enable = mkBoolOpt true; };
+  options.modules.desktop.i3 = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      xdotool
-      htop
       feh
-      sxiv
-      xorg.xset
-      tremc
       dunst
-      xcompmgr
-      lxappearance
-      pamixer
+      xclip
+      pavucontrol
+      pasystray
+      autorandr
+      polybar
+      qutebrowser
+      firefox
+      zathura
+      compton
+      xorg.xmodmap
+      networkmanagerapplet
     ];
 
     services = {

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+export MONITOR=$(xrandr -q | grep primary | cut -d' ' -f1)
+export MONITORS=( $(xrandr -q | grep ' connected' | cut -d' ' -f1) )
+MONITOR=${MONITOR:-${MONITORS[0]}}
+
+# emacs --daemon
+feh --bg-fill ~/.local/share/bg
+xsetroot -cursor_name left_ptr
+
+polybar -c ~/.config/polybar/config bspwm &
+
+nm-applet &
+blueman-applet &
+pasystray &
+# pgrep bspswallow || bspswallow
+xmodmap ~/.config/.dotfiles/config/emacs/exwm/Xmodmap &
+
+for monitor in $MONITORS; do
+  bspc monitor "$monitor" -d 0
+done
+
+bspc monitor "$MONITOR" -d {1,2,3,4,5}
+# bsp-layout set tall 1
+# bsp-layout set tall 2
+# bsp-layout set tall 3
+# bsp-layout set tall 4
+# bsp-layout set tall 5
+
+bspc config window_gap  8
+bspc config border_width 2
+bspc config focused_border_color "#a31a0d"
+
+bspc config split_ratio 0.50
+
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+
+bspc config pointer_follows_focus true
+
+bspc rule -r '*'
+bspc rule -a Emacs state=tiled
+bspc rule -a Zathura state=tiled
+bspc rule -a Firefox split_ratio=0.32
+bspc rule -a feh state=fullscreen

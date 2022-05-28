@@ -6,17 +6,19 @@ set $outer_gaps 3
 set $mod Mod4
 set $alt Mod1
 
-set $term alacritty
+set $term xst
 set $browser firefox
 
 font pango:monospace 8
 
+exec --no-startup-id xmodmap ~/.config/.dotfiles/config/emacs/exwm/Xmodmap
 exec --no-startup-id feh --bg-fill ~/.local/share/bg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --no-startup-id xcompmgr
+exec --no-startup-id compton
 exec --no-startup-id emacs --daemon
 
 exec --no-startup-id nm-applet
+exec --no-startup-id pasystray
 
 for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps

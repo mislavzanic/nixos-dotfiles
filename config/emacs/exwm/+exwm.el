@@ -48,8 +48,8 @@
 
 (defun efs/exwm-update-title ()
   (pcase exwm-class-name
-    ("Firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
-    ("zathura" (exwm-workspace-rename-buffer (format "Zathura: %s" exwm-title)))
+    ("firefox" (exwm-workspace-rename-buffer (format "Firefox: %s" exwm-title)))
+    ("Zathura" (exwm-workspace-rename-buffer (format "Zathura: %s" exwm-title)))
     ("qutebrowser" (exwm-workspace-rename-buffer (format "qutebrowser: %s" exwm-title)))))
 
 (defun efs/update-displays ()

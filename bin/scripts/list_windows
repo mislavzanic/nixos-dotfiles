@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+window_id=($(wmctrl -l -x | awk '{print $1}'))
+window_names=($(wmctrl -l -x | sed -E "s/.*$HOSTNAME\s//g" | sed -E 's/\s/_/g'))
+choice=$(printf '%s\n' "${window_names[@]}" | dmenu -i -l 20 -p 'Windows:')
+index=0
+for x in "${window_names[@]}"; do
+    [ "$x" == "$choice" ] && break || ((index++))
+done
+bspc node "${window_id[$index]}" --focus
