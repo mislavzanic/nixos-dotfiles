@@ -13,7 +13,7 @@ import GHC.Exts (fromList)
 
 myModMask            :: KeyMask   = mod4Mask
 
-myTerminal           :: String    = "alacritty"
+myTerminal           :: String    = "xst"
 myEditor             :: String    = "emacsclient -c -a'emacs'"
 editCMD              :: String    = "emacsclient -c -n "
 myPDF                :: String    = "zathura"
@@ -21,9 +21,9 @@ myBrowser            :: Browser   = "firefox"
 
 myFont               :: String    = "xft:Ubuntu:bold:size=9:antialias=true:hinting=true"
 
-myBorderWidth        :: Dimension = 2
+myBorderWidth        :: Dimension = 3
 
-myWorkspaces         :: [String]  = ["www","dev","pdf","vrt","vid", "ply"]
+myWorkspaces         :: [String]  = ["1", "2", "3", "4", "5"]
 
 basicSubmapFromList :: Ord key => [(key, action)] -> Map (KeyMask, key) action
 basicSubmapFromList = fromList . map \(k, a) -> ((0, k), a)

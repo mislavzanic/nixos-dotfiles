@@ -29,6 +29,7 @@ import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
 import XMonad.Layout.MultiToggle (Toggle (Toggle))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NOBORDERS))
 
+import XMonad.Actions.GridSelect
 import XMonad.Util.NamedScratchpad
 
 import qualified Data.Map        as M
@@ -59,7 +60,6 @@ windowsKeys =
 
 scratchpadKeys =
   [ ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
-  , ("M-C-t", namedScratchpadAction myScratchPads "tremc")
   , ("M-C-s", namedScratchpadAction myScratchPads "spotify")
   ]
 
@@ -82,9 +82,11 @@ layoutKeys =
   [ ("M-<Tab>", sendMessage NextLayout) ]
 
 appKeys =
-  [("M-<Return>", spawn myTerminal)
+  [ ("M-<Return>", spawn myTerminal)
 
-  , ("M-S-c", kill)
+  , ("M-q", kill)
+  -- , ("M-b", goToSelected defaultGSConfig)
+  , ("M-S-r", spawn "xmonad --restart")
 
   , ("M1-]", spawn "pamixer -i 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
   , ("M1-[", spawn "pamixer -d 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
@@ -92,7 +94,6 @@ appKeys =
   , ("M1-b", spawn myBrowser)
   , ("M1-z", spawn myPDF)
   , ("M1-u", spawn myEditor)
-  , ("M1-d", spawn "discord")
   , ("M1-w", spawn "virt-manager")
   , ("M1-l", spawn "dm-tool lock")
 

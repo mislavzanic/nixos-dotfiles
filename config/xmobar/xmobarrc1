@@ -4,23 +4,25 @@ Config { font            = "xft:Ubuntu:size=9:antialias=true:autohint=false:styl
                            , "xft:Font Awesome 5 Brands:pixelsize=12"
                            , "xft:FontAwesome:pixelsize=12"
                            ]
-       , bgColor      = "#14191e"
-       , borderColor  = "#14191e"
+       , bgColor      = "#000000"
+       , borderColor  = "#000000"
        , fgColor      = "#FDF6E3"
-       , position     = OnScreen 1 (TopH 24)
+       , position     = OnScreen 0 (TopH 24)
        , lowerOnStart = True
        , hideOnStart  = False
        , allDesktops  = True
        , persistent   = True
-       , iconRoot     = "/home/mislav/.config/.dotfiles/config/xmonad/xpm"
-       , commands = [ Run Cpu ["-t", "<fn=2>\xf108</fn>  cpu: (<total>%)","-H","50","--high","red"] 20
-                    , Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
-                    , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
-                    , Run $ Network "enp9s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+       , iconRoot     = "/home/mzanic/.config/.dotfiles/config/xmonad/xpm"
+       , commands = [ Run Cpu ["-t", "cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Memory ["-t", "mem: <used>M (<usedratio>%)"] 20
+                    , Run DiskU [("/", "hdd: <free> free")] [] 60
+                    , Run Network "wlp2s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                    , Run Date "%b %d %Y - (%H:%M) " "date" 50
+                    , Run BatteryP ["BAT0"] ["-t", "bat: <acstatus><watts> (<left>%)"] 360
                     , Run XPropertyLog "_XMONAD_LOG_1"
-                    , Run $ Date "%b %d %Y - (%H:%M) " "date" 50
+                    , Run Com "/home/mislav/.config/.dotfiles/config/xmonad/trayer-padding-icon.sh" [] "trayerpad" 20
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<icon=cpu_20.xpm/> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <icon=pacman.xpm/> <fc=#586E75> | </fc> <icon=memory-icon_20.xpm/> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_1% { <icon=harddisk-icon_20.xpm/> <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <icon=net_up_20.xpm/> <fc=#cccccc> %enp9s0% </fc> <fc=#586E75> | </fc> <icon=calendar-clock-icon_20.xpm/> <fc=#cccccc> %date% </fc> <fc=#586E75>"
+       , template = "<fc=#cccccc> %battery%</fc>  <fc=#586E75> | </fc> <icon=cpu_20.xpm/> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <icon=pacman.xpm/> <fc=#586E75> | </fc> <icon=memory-icon_20.xpm/> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_0% { <icon=harddisk-icon_20.xpm/> <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <icon=net_up_20.xpm/> <fc=#cccccc> %enp9s0% </fc> <fc=#586E75> | </fc> <icon=calendar-clock-icon_20.xpm/> <fc=#cccccc> %date% </fc> <fc=#586E75> | </fc> %trayerpad%"
        }

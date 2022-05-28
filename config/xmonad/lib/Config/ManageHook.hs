@@ -25,9 +25,9 @@ activateHook = mconcat
 myManageHook :: ManageHook
 myManageHook = composeAll
     [ className =? "Thunderbird"   --> doShift ( head myWorkspaces )
-    , className =? "Brave-browser" --> doShift ( head myWorkspaces )
-    , className =? "Emacs" --> doShift ( myWorkspaces !! 1)
-    , className =? "Zathura" --> doShift ( myWorkspaces !! 2)
+    -- , className =? "Brave-browser" --> doShift ( head myWorkspaces )
+    -- , className =? "Emacs" --> doShift ( myWorkspaces !! 1)
+    -- , className =? "Zathura" --> doShift ( myWorkspaces !! 2)
     , className =? "Virt-manager" --> doShift ( myWorkspaces !! 3 )
     , className =? "mpv"     --> doShift ( myWorkspaces !! 4 )
     , className =? "Steam"     --> doShift ( myWorkspaces !! 5 )
@@ -35,7 +35,6 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
 
-    , className =? "discord"      --> doFloat
     , className =? "Virt-manager" --> doFloat
     , className =? "Thunderbird"  --> doFloat
     , className =? "Nvidia-settings"  --> doFloat
@@ -44,4 +43,4 @@ myManageHook = composeAll
     , isFullscreen --> doFullFloat
     ] <+> namedScratchpadManageHook myScratchPads
 
-myHandleEventHook = swallowEventHook (className =? "Alacritty") (return True)
+myHandleEventHook = swallowEventHook (className =? "xst") (return True)

@@ -4,7 +4,7 @@
 module Config.KaolinAurora where
 
 myNormalBorderColor  :: String    = "#232323"
-myppBgColor          :: String    = "#14191e"
+myppBgColor          :: String    = "#000000"
 myppCurrent          :: String    = "#8265E6"
 myppVisible          :: String    = "#8265E6"
 myppHidden           :: String    = "#B072A2"
@@ -14,11 +14,11 @@ myppUrgent           :: String    = "#DC322F"
 myppSepColor         :: String    = "#586E75"
 
 
-background :: String = "#14191e"
+background :: String = "#000000"
 foreground :: String = "#e6e6e8"
-border     :: String = "#5E34EB"
+border     :: String = "#c41a0d"
 
-color1 :: String = "#14191e"
+color1 :: String = "#000000"
 color2 :: String = "#e55c7a"
 color3 :: String = "#31e183"
 color4 :: String = "#f5c791"
