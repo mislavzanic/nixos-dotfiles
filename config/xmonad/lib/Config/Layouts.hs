@@ -67,7 +67,7 @@ rTall :: Int -> Rational -> Rational -> ResizableTall l
 rTall m r c = ResizableTall m r c []
 
 myLayout = layoutOpts $ tiled ||| full where
-     layoutOpts = addTabbed . smartBorders . toggleBorders . avoidStruts
+     layoutOpts = addTabbed . toggleBorders . avoidStruts
 
      full = setName "Full"
           $ noBorders Full

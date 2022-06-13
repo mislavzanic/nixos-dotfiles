@@ -17,7 +17,7 @@
       "INPUTRC"             = "$XDG_CONFIG_HOME/readline/inputrc";
       "LESSHISTFILE"        = "$XDG_CACHE_HOME/lesshst";
       "WGETRC"              = "$XDG_CONFIG_HOME/wgetrc";
-      "EDITOR"              = "emacs";
+      "EDITOR"              = "nvim";
 
       "EMACSDIR"            = "$XDG_CONFIG_HOME/emacs";
       "DOOMDIR"             = "$XDG_CONFIG_HOME/.dotfiles/config/emacs/doom";

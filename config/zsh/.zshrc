@@ -53,6 +53,3 @@ bindkey -v '^?' backward-delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^E' edit-command-line
 
-# Load zsh-syntax-highlighting; should be last.
-#eval "$(starship init zsh)"
-pfetch

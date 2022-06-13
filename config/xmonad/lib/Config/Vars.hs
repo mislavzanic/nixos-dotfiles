@@ -19,7 +19,8 @@ editCMD              :: String    = "emacsclient -c -n "
 myPDF                :: String    = "zathura"
 myBrowser            :: Browser   = "firefox"
 
-myFont               :: String    = "xft:Ubuntu:bold:size=9:antialias=true:hinting=true"
+myFont               :: String    = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
+
 
 myBorderWidth        :: Dimension = 3
 

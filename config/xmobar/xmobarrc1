@@ -1,4 +1,5 @@
-Config { font            = "xft:Ubuntu:size=9:antialias=true:autohint=false:style=bold"
+
+Config { font            = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
        , additionalFonts = [ "xft:mono:pixelsize=11:antialias=true:hinting=true"
                            , "xft:Font Awesome 5 Free Solid:pixelsize=12"
                            , "xft:Font Awesome 5 Brands:pixelsize=12"
@@ -20,9 +21,8 @@ Config { font            = "xft:Ubuntu:size=9:antialias=true:autohint=false:styl
                     , Run Date "%b %d %Y - (%H:%M) " "date" 50
                     , Run BatteryP ["BAT0"] ["-t", "bat: <acstatus><watts> (<left>%)"] 360
                     , Run XPropertyLog "_XMONAD_LOG_1"
-                    , Run Com "/home/mislav/.config/.dotfiles/config/xmonad/trayer-padding-icon.sh" [] "trayerpad" 20
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<fc=#cccccc> %battery%</fc>  <fc=#586E75> | </fc> <icon=cpu_20.xpm/> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <icon=pacman.xpm/> <fc=#586E75> | </fc> <icon=memory-icon_20.xpm/> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_0% { <icon=harddisk-icon_20.xpm/> <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <icon=net_up_20.xpm/> <fc=#cccccc> %enp9s0% </fc> <fc=#586E75> | </fc> <icon=calendar-clock-icon_20.xpm/> <fc=#cccccc> %date% </fc> <fc=#586E75> | </fc> %trayerpad%"
+       , template = "<icon=bat.xpm/> <fc=#cccccc> %battery%</fc>  <fc=#586E75> | </fc> <icon=cpu_20.xpm/> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <icon=memory-icon_20.xpm/> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_1% { <icon=harddisk-icon_20.xpm/> <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <icon=net_up_20.xpm/> <fc=#cccccc> %wlp2s0% </fc> <fc=#586E75> | </fc> <icon=calendar-clock-icon_20.xpm/> <fc=#cccccc> %date% </fc>"
        }

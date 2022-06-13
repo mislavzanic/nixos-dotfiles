@@ -15,6 +15,13 @@ in {
       xmobar
     ];
 
+    fonts.fonts = with pkgs; [
+      symbola
+      font-awesome
+      font-awesome_5
+      font-awesome_4
+    ];
+
     home.configFile = {
       "xmobar" = {
         source = "${configDir}/xmobar";

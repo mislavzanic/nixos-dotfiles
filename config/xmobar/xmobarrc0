@@ -1,8 +1,7 @@
 Config { font            = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
-       , additionalFonts = [ "xft:mono:pixelsize=11:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:FontAwesome:pixelsize=12"
                            , "xft:Font Awesome 5 Free Solid:pixelsize=12"
                            , "xft:Font Awesome 5 Brands:pixelsize=12"
-                           , "xft:FontAwesome:pixelsize=12"
                            ]
        , bgColor      = "#000000"
        , borderColor  = "#000000"
@@ -13,16 +12,35 @@ Config { font            = "xft:Cantarell:size=8:antialias=true:autohint=false:s
        , allDesktops  = True
        , persistent   = True
        , iconRoot     = "/home/mzanic/.config/.dotfiles/config/xmonad/xpm"
-       , commands = [ Run Cpu ["-t", "cpu: (<total>%)","-H","50","--high","red"] 20
-                    , Run Memory ["-t", "mem: <used>M (<usedratio>%)"] 20
-                    , Run DiskU [("/", "hdd: <free> free")] [] 60
-                    , Run Network "wlp2s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
-                    , Run Date "%b %d %Y - (%H:%M) " "date" 50
-                    , Run BatteryP ["BAT0"] ["-t", "bat: <acstatus><watts> (<left>%)"] 360
+       , commands = [ Run Cpu ["-t", "<fc=#8265E6><fn=2>\xf108</fn></fc> cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Memory ["-t", "<fc=#8265E6><fn=2>\xf233</fn></fc> mem: <used>M (<usedratio>%)"] 20
+                    , Run DiskU [("/", "<fc=#8265E6><fn=2>\xf0c7</fn></fc> hdd: <free> free")] [] 60
+                    , Run Wireless "wlp2s0" [ "-t","<fc=#8265E6><fn=1>\xf1eb</fn></fc> net: <essid> <quality>"
+                                           , "-L","30"
+                                           , "-H","90"
+                                           , "--low", "red"
+                                           , "--normal","yellow"
+                                           , "--high","green"
+                                           ] 10
+                    , Run Date "<fc=#8265E6><fn=1>\xf017</fn></fc> %b %d %Y - (%H:%M) " "date" 50
+                    , Run BatteryP ["BAT0"] [ "-t", "<acstatus>"
+                                            , "-S", "Off", "-d", "0", "-m", "3"
+                                            , "-L", "10", "-H", "90", "-p", "3"
+                                            , "-W", "0"
+                                            , "-f", "\xf244\xf243\xf243\xf243\xf242\xf242\xf242\xf241\xf241\xf240"
+                                            , "--"
+                                            , "-P"
+                                            , "-a", "notify-send -u critical 'Battery running out!!!!!!'"
+                                            , "-A", "5"
+                                            , "-i", "<fn=1>\xf1e6</fn>"
+                                            , "-O", "<fc=#8265E6><fn=1><leftbar>  \xf1e6</fn></fc> bat: <left> (<timeleft>)"
+                                            , "-o", "<fc=#8265E6><fn=1><leftbar></fn></fc> bat: <left> (<timeleft>)"
+                                            , "-H", "10", "-L", "7"
+                                            ] 50
                     , Run XPropertyLog "_XMONAD_LOG_0"
                     , Run Com "/home/mzanic/.config/.dotfiles/config/xmonad/trayer-padding-icon.sh" [] "trayerpad" 20
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<icon=bat.xpm/> <fc=#cccccc> %battery%</fc>  <fc=#586E75> | </fc> <icon=cpu_20.xpm/> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <icon=memory-icon_20.xpm/> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_0% { <icon=harddisk-icon_20.xpm/> <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <icon=net_up_20.xpm/> <fc=#cccccc> %wlp2s0% </fc> <fc=#586E75> | </fc> <icon=calendar-clock-icon_20.xpm/> <fc=#cccccc> %date% </fc> <fc=#586E75> | </fc> %trayerpad%"
+       , template = "<fc=#cccccc>%battery%</fc>  <fc=#586E75> | </fc> <fc=#cccccc> %cpu% </fc>  <fc=#586E75> | </fc> <fc=#cccccc> %memory% </fc> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_0% { <fc=#cccccc> %disku% </fc> <fc=#586E75> | </fc> <fc=#cccccc> %wlp2s0wi% </fc> <fc=#586E75> | </fc> <fc=#cccccc> %date% </fc> <fc=#586E75> | </fc> %trayerpad%"
        }

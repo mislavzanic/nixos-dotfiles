@@ -11,12 +11,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.picom = {
-      enable = true;
-      backend = "glx";
-      vSync = true;
-      fade = false;
-      shadow = false;
-    };
+    services.picom.enable = true;
   };
 }

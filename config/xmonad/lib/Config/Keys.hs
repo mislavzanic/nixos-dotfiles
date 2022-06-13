@@ -5,6 +5,7 @@ module Config.Keys where
     -- Config
 import Config.Vars
 import Config.Scratchpad
+import Config.Prompt
 
     -- Base
 import XMonad
@@ -17,6 +18,10 @@ import XMonad.Actions.Promote
 import XMonad.Actions.Submap (submap)
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.CycleWS
+
+import XMonad.Prompt
+import XMonad.Prompt.Shell
+import XMonad.Prompt.Input
 
 import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
                                           , MergeAll
@@ -43,11 +48,15 @@ windowsKeys =
   , ("M-k", windows W.focusUp)
   , ("M-m", windows W.focusMaster)
 
+  , ("M-b", goToSelected def)
+
   , ("M-<Backspace>", promote)
 
   , ("M-S-j", windows W.swapDown)
   , ("M-S-k", windows W.swapUp)
 
+  -- , ("M-s", screenshotPrompt dtXPConfig)
+  , ("M-s", runSelectedAction def [("Fullscreen", spawn "takeScreenshot.sh Fullscreen"), ("Region", spawn "takeScreenshot.sh Region"), ("Active window", spawn "takeScreenshot.sh Active Window")])
   , ("M-o k", spawn "dmkill")
   , ("M-o l", spawn "dmlogout")
 
@@ -76,7 +85,7 @@ workspaceKeys =
   ]
 
 promptKeys =
-  [ ("M-p", spawn "dmenu_run -i -p \"Run: \"") ]
+  [ ("M-p", shellPrompt dtXPConfig) ]
 
 layoutKeys =
   [ ("M-<Tab>", sendMessage NextLayout) ]
@@ -85,20 +94,20 @@ appKeys =
   [ ("M-<Return>", spawn myTerminal)
 
   , ("M-q", kill)
-  -- , ("M-b", goToSelected defaultGSConfig)
   , ("M-S-r", spawn "xmonad --restart")
 
-  , ("M1-]", spawn "pamixer -i 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
-  , ("M1-[", spawn "pamixer -d 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
+  , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
+  , ("<XF86AudioLowerVolume>", spawn "pamixer -d 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
 
-  , ("M1-b", spawn myBrowser)
+  , ("<XF86MonBrightnessDown>", spawn "brightnessctl s $(($(brightnessctl g) - 50))")
+  , ("<XF86MonBrightnessUp>",   spawn "brightnessctl s $(($(brightnessctl g) + 50))")
+
+  , ("M1-w", spawn myBrowser)
   , ("M1-z", spawn myPDF)
   , ("M1-u", spawn myEditor)
-  , ("M1-w", spawn "virt-manager")
   , ("M1-l", spawn "dm-tool lock")
 
   , ("M-S-w", spawn "sxiv -r -q -t -o ~/.local/share/wall/*")
-
   ]
 
 myKeys = concat

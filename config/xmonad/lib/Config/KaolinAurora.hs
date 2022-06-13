@@ -16,7 +16,8 @@ myppSepColor         :: String    = "#586E75"
 
 background :: String = "#000000"
 foreground :: String = "#e6e6e8"
-border     :: String = "#c41a0d"
+-- border     :: String = "#c41a0d"
+border     :: String = myppCurrent
 
 color1 :: String = "#000000"
 color2 :: String = "#e55c7a"

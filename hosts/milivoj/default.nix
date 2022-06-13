@@ -35,6 +35,9 @@ in {
       kubernetes.enable = true;
       terraform.enable = true;
     };
+    services = {
+      transmission.enable = true;
+    };
   };
 
   programs.dconf.enable = true;
@@ -61,7 +64,6 @@ in {
     openvpn
     slack
     brightnessctl
-    vscode
   ];
 
   environment = {

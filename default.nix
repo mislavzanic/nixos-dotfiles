@@ -18,7 +18,7 @@ with lib.my;
   fileSystems."/".device = mkDefault "/dev/disk/by-label/nixos";
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_5_16;
+    kernelPackages = pkgs.linuxKernel.packages.linux_5_17;
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
@@ -51,8 +51,10 @@ with lib.my;
     cmake
     gnumake
     gcc
-    pfetch
+    texlive.combined.scheme-full
     lxappearance
+    autorandr
+    srandrd
   ];
 
   fonts.fonts = with pkgs; [
@@ -62,6 +64,8 @@ with lib.my;
 
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+
+  # services.picom.enable = true;
 
   nix = {
     gc = {
