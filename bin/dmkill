@@ -7,9 +7,10 @@
 # License: https://www.gitlab.com/dwt1/dmscripts/LICENSE
 # Contributors: Derek Taylor
 
+dm_colors="-fn 'Cantarell' -nb '#000000' -nf '#ffffff' -sb '#a88058' -sf '#000000'"
 # Running ps to get running processes and display in dmenu.
 selected="$(ps --user "$(id -u)" -F | \
-            dmenu -i -l 20 -p "Search for process to kill:" | \
+            dmenu -i -l 20 -fn 'Cantarell' -nb '#000000' -nf '#ffffff' -sb '#a88058' -sf '#000000' -p 'Search for process to kill:' | \
             awk '{print $2" "$11}')";
 
 # Nested 'if' statements.  The outer 'if' statement is what to do

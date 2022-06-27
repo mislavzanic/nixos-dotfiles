@@ -13,7 +13,7 @@ in {
   modules = {
     desktop = {
       xmonad.enable = true;
-      xmobar.enable = true;
+      # xmobar.enable = true;
       apps = {
         zathura.enable = true;
         spotify.enable = true;
@@ -38,6 +38,7 @@ in {
     services = {
       transmission.enable = true;
     };
+    theme.active = "dresden";
   };
 
   programs.dconf.enable = true;
@@ -69,11 +70,9 @@ in {
   environment = {
     sessionVariables = {
       "PRIMARY_MONITOR" = "eDP-1";
-      # "PRIMARY_MONITOR_POS" = "0x0";
       "PRIMARY_MONITOR_RES" = "1920x1080";
 
       "SECONDARY_MONITOR" = "HDMI-1";
-      # "SECONDARY_MONITOR_POS" = "0x0";
       "SECONDARY_MONITOR_RES" = "1920x1200";
 
       "MONITOR_LIST" = "2 HDMI-1 3 HDMI-1";

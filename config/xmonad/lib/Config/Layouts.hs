@@ -2,7 +2,7 @@
 
 module Config.Layouts where
 
-import Config.KaolinAurora
+import Config.Colors
 
 import XMonad hiding ( (|||) ) -- jump to layout
 import XMonad.Layout.LayoutCombinators ( (|||) ) -- jump to layout
@@ -104,12 +104,12 @@ cutWords i = renamed [CutWordsLeft i]
 tabTheme :: Theme
 tabTheme = def { decoHeight = 4
                , decoWidth = maxBound
-               , activeColor = border
-               , urgentColor = myppUrgent
+               , activeColor = base03
+               , urgentColor = base01
                , activeBorderWidth = 0
                , urgentBorderWidth = 0
-               , inactiveColor = myNormalBorderColor
+               , inactiveColor = base08
                , inactiveBorderWidth = 0
-               , activeBorderColor = border
-               , inactiveBorderColor = myNormalBorderColor
+               , activeBorderColor = base03
+               , inactiveBorderColor = base08
                }

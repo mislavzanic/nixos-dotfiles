@@ -14,7 +14,7 @@ with lib.my;
   # soundly
   environment.variables.DOTFILES = config.dotfiles.dir;
   environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
-
+  environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
   fileSystems."/".device = mkDefault "/dev/disk/by-label/nixos";
 
   boot = {

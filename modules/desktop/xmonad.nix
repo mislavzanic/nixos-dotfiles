@@ -13,6 +13,8 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       xdotool
+      trayer
+      xmobar
       htop
       feh
       sxiv
@@ -31,7 +33,6 @@ in {
       xst
       firefox
       zathura
-      compton
       xorg.xmodmap
       networkmanagerapplet
     ];
@@ -42,19 +43,13 @@ in {
 
         displayManager = {
           defaultSession = "none+xmonad";
+          sessionCommands = ''
+            cat ~/.config/xtheme/* | '${pkgs.xorg.xrdb}/bin/xrdb' -load
+          '';
           lightdm.enable = true;
           lightdm.greeters.mini = {
             enable = true;
             user = config.user.name;
-            extraConfig = ''
-              [greeter-theme]
-              background-image = "";
-              background-color = "#0C0F12"
-              text-color = "#ff79c6"
-              password-background-color = "#1E2029"
-              window-color = "#181a23"
-              border-color = "#bd93f9"
-            '';
           };
         };
 

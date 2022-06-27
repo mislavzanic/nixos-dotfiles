@@ -22,7 +22,7 @@ myBrowser            :: Browser   = "firefox"
 myFont               :: String    = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
 
 
-myBorderWidth        :: Dimension = 3
+myBorderWidth        :: Dimension = 2
 
 myWorkspaces         :: [String]  = ["1", "2", "3", "4", "5"]
 

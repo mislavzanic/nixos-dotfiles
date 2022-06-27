@@ -43,4 +43,4 @@ myManageHook = composeAll
     , isFullscreen --> doFullFloat
     ] <+> namedScratchpadManageHook myScratchPads
 
-myHandleEventHook = swallowEventHook (className =? "xst") (return True)
+myHandleEventHook = swallowEventHook (className =? "xst-256color") (return True)

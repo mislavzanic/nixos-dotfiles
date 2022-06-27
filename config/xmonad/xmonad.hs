@@ -10,6 +10,7 @@
 
 -- custom modules
 import Config.KaolinAurora
+import Config.Colors
 import Config.Vars
 import Config.Keys
 import Config.Layouts
@@ -63,13 +64,10 @@ main = xmonad
           , borderWidth        = myBorderWidth
           , terminal           = myTerminal
           , modMask            = myModMask
-          , normalBorderColor  = color1
-          , focusedBorderColor = border
+          , normalBorderColor  = base08
+          , focusedBorderColor = base03
           , logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
-                                 -- Remember where we've been.
                                  <> masterHistoryHook -- Remember where we've been² (for 'swapPromote').
                                  <> updatePointer (0.5, 0.5) (0, 0)
-                                 -- When focusing a new window with the keyboard,
-                                 -- move pointer to exact center of that window.
           }
           `additionalKeysP` myKeys

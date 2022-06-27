@@ -3,4 +3,5 @@ let
 in {
   "pm_mail.age".publicKeys = [ key ];
   "gh.age".publicKeys = [ key ];
+  "cf.age".publicKeys = [ key ];
 }

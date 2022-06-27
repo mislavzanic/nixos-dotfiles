@@ -22,6 +22,20 @@ import XMonad.Actions.CycleWS
 import XMonad.Prompt
 import XMonad.Prompt.Shell
 import XMonad.Prompt.Input
+import XMonad.Prompt.FuzzyMatch
+import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.Submap
+import XMonad.Util.Run
+
+-- import XMonad.Util.XUtils ( WindowRect (CustomRect)
+--                           , WindowConfig ( WindowConfig
+--                                          , winBg
+--                                          , winFg
+--                                          , winFont
+--                                          , winRect
+--                                          )
+--                           )
+
 
 import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
                                           , MergeAll
@@ -31,6 +45,13 @@ import XMonad.Layout.SubLayouts ( GroupMsg( UnMerge
                                 , mergeDir
                                 , pushGroup
                                 )
+import XMonad.Prompt.Window ( WindowPrompt ( Goto
+                                           , Bring
+                                           )
+                            , allWindows
+                            , windowPrompt
+                            )
+
 import XMonad.Layout.MultiToggle (Toggle (Toggle))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (NOBORDERS))
 
@@ -55,10 +76,8 @@ windowsKeys =
   , ("M-S-j", windows W.swapDown)
   , ("M-S-k", windows W.swapUp)
 
-  -- , ("M-s", screenshotPrompt dtXPConfig)
+  -- , ("M-s", screenshotPrompt promptTheme)
   , ("M-s", runSelectedAction def [("Fullscreen", spawn "takeScreenshot.sh Fullscreen"), ("Region", spawn "takeScreenshot.sh Region"), ("Active window", spawn "takeScreenshot.sh Active Window")])
-  , ("M-o k", spawn "dmkill")
-  , ("M-o l", spawn "dmlogout")
 
   , ("M-h", sendMessage Shrink)
   , ("M-l", sendMessage Expand)
@@ -84,8 +103,18 @@ workspaceKeys =
   , ("M-S-<Backspace>", removeWorkspace)
   ]
 
+spawnWithZathura :: String -> X ()
+spawnWithZathura book = spawn $ "zathura " ++ book
+
+
 promptKeys =
-  [ ("M-p", shellPrompt dtXPConfig) ]
+  [ ("M-p", shellPrompt promptTheme)
+  -- , ("M-o", submap . promptList $ promptTheme)
+  , ("M-o", torrentPrompt promptTheme)
+  , ("M-C-p", bookPrompt promptTheme)
+  , ("M-[", windowPrompt promptTheme Goto allWindows)
+  , ("M-]", windowPrompt promptTheme Bring allWindows)
+  ]
 
 layoutKeys =
   [ ("M-<Tab>", sendMessage NextLayout) ]
@@ -95,6 +124,7 @@ appKeys =
 
   , ("M-q", kill)
   , ("M-S-r", spawn "xmonad --restart")
+
 
   , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
   , ("<XF86AudioLowerVolume>", spawn "pamixer -d 5 && notify-send -u low -t 1500 $(pamixer --get-volume)")
@@ -137,3 +167,20 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
+
+promptList :: XPConfig -> M.Map (KeyMask, KeySym) (X ())
+promptList theme = M.fromList [ ((noModMask, xK_p), torrentPrompt theme)
+                            , ((noModMask, xK_b), bookPrompt theme)
+                            , ((noModMask, xK_a), addWorkspacePrompt theme)
+                            -- , ((noModMask, xK_c), removeWorkspace theme)
+                            ]
+-- winConfig :: WindowConfig
+-- winConfig = WindowConfig { winBg = background
+--                          , winFg = foreground
+--                          , winFont = myFont
+--                          , winRect = CustomRect Rectangle { rect_y = -40
+--                                                           , rect_x = 1600
+--                                                           , rect_width = 350
+--                                                           , rect_height = 430
+--                                                           }
+--                          }

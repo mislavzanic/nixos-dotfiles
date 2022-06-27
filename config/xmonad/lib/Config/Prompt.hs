@@ -13,7 +13,7 @@ module Config.Prompt where
 
 
 import Config.Vars
-import Config.KaolinAurora
+import Config.Colors
 import Config.Utils
 
  -- imports
@@ -21,9 +21,11 @@ import XMonad
 import Control.Arrow (first)
 
 import XMonad.Prompt
+import XMonad.Prompt.Shell
 import XMonad.Prompt.FuzzyMatch
 import XMonad.Prompt.Input
 import XMonad.Prompt.Man
+import XMonad.Util.Run
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -56,14 +58,14 @@ mygridConfig colorizer = (buildDefaultGSConfig myColorizer)
     }
 
 
-dtXPConfig :: XPConfig
-dtXPConfig = def
+promptTheme :: XPConfig
+promptTheme = def
       { font                = myFont
-      , bgColor             = myppBgColor
-      , fgColor             = myppTitle
-      , bgHLight            = myppCurrent
-      , fgHLight            = "#000000"
-      , borderColor         = "#535974"
+      , bgColor             = basebg
+      , fgColor             = basefg
+      , bgHLight            = base03
+      , fgHLight            = basebg
+      , borderColor         = basebg
       , promptBorderWidth   = 0
       , position            = Top
       , height              = 20
@@ -90,6 +92,17 @@ systemPrompt c = inputPromptWithCompl c "Execute" (systemCompletion c) ?+ \case
 systemCompletion :: XPConfig -> String -> IO [String]
 systemCompletion c = mkComplFunFromList c ["poweroff", "lock", "logout", "reboot", "recompile"]
 
+torrentPrompt :: XPConfig -> X ()
+torrentPrompt c = inputPrompt c "Torrent" ?+ \magnet -> spawn $ "transmission-remote -a \"" ++ magnet ++ "\""
+
+bookPrompt :: XPConfig -> X ()
+bookPrompt c = do
+    exes <- runProcessWithInput "get_books.sh" [] ""
+    inputPromptWithCompl c "Books" (mkComplFunFromList
+                                             def { searchPredicate = fuzzyMatch
+                                                 , sorter = fuzzySort
+                                                 }
+                                             $ lines exes) ?+ \book -> spawn $ "zathura " ++ book
 
 ------------------------------------------------------------------------
 -- XPROMPT KEYMAP (emacs-like key bindings for xprompts)
@@ -136,10 +149,10 @@ myXPKeymap = M.fromList $
 data SearchType = Normal | Selected
 
 promptNoHist :: XPConfig
-promptNoHist = dtXPConfig { historySize = 0 }
+promptNoHist = promptTheme { historySize = 0 }
 
 screenshotPrompt :: XPConfig -> X ()
-screenshotPrompt c = inputPromptWithCompl c "Screenshot" (mkComplFunFromList dtXPConfig ["Fullscreen", "Region", "Active Window"]) ?+ (
+screenshotPrompt c = inputPromptWithCompl c "Screenshot" (mkComplFunFromList promptTheme ["Fullscreen", "Region", "Active Window"]) ?+ (
   \s -> spawn $ "takeScreenshot.sh" ++ " " ++ s
   )
 
@@ -171,8 +184,8 @@ searchEngineMap st = basicSubmapFromList
     | se `elem` [hoogle, wikipedia, arch, duckduckgo, piratebay] =
         promptNoHist
     | se `elem` [youtube, reddit] =
-        dtXPConfig { autoComplete = (5 `ms`) }
-    | otherwise = dtXPConfig
+        promptTheme { autoComplete = (5 `ms`) }
+    | otherwise = promptTheme
 
   -- | Search engines not in X.A.Search.
   reddit     = searchEngine  "reddit"       "https://old.reddit.com/r/"
