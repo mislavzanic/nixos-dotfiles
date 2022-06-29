@@ -38,7 +38,7 @@ in {
     services = {
       transmission.enable = true;
     };
-    theme.active = "dresden";
+    theme.active = "gruvbox";
   };
 
   programs.dconf.enable = true;

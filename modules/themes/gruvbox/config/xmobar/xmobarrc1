@@ -1,0 +1,45 @@
+Config { font            = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
+       , additionalFonts = [ "xft:FontAwesome:pixelsize=12"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+                           ]
+       , bgColor      = "#000000"
+       , borderColor  = "#000000"
+       , fgColor      = "#FDF6E3"
+       , position     = OnScreen 1 (TopH 24)
+       , lowerOnStart = True
+       , hideOnStart  = False
+       , allDesktops  = True
+       , persistent   = True
+       , iconRoot     = "/home/mzanic/.config/.dotfiles/config/xmonad/xpm"
+       , commands = [ Run Cpu ["-t", "<fc=#A88058><fn=2>\xf108</fn></fc> cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Memory ["-t", "<fc=#A88058><fn=2>\xf233</fn></fc> mem: <used>M (<usedratio>%)"] 20
+                    , Run DiskU [("/", "<fc=#A88058><fn=2>\xf0c7</fn></fc> hdd: <free> free")] [] 60
+                    , Run Wireless "wlp2s0" [ "-t","<fc=#A88058><fn=1>\xf1eb</fn></fc> net: <essid> <quality>"
+                                           , "-L","30"
+                                           , "-H","90"
+                                           , "--low", "red"
+                                           , "--normal","yellow"
+                                           , "--high","green"
+                                           ] 10
+                    , Run Date "<fc=#A88058><fn=1>\xf017</fn></fc> %b %d %Y - (%H:%M) " "date" 50
+                    , Run BatteryP ["BAT0"] [ "-t", "<acstatus>"
+                                            , "-S", "Off", "-d", "0", "-m", "3"
+                                            , "-L", "10", "-H", "90", "-p", "3"
+                                            , "-W", "0"
+                                            , "-f", "\xf244\xf243\xf243\xf243\xf242\xf242\xf242\xf241\xf241\xf240"
+                                            , "--"
+                                            , "-P"
+                                            , "-a", "notify-send -u critical 'Battery running out!!!!!!'"
+                                            , "-A", "5"
+                                            , "-i", "<fn=1>\xf1e6</fn>"
+                                            , "-O", "<fc=#A88058><fn=1><leftbar>  \xf1e6</fn></fc> bat: <left> (<timeleft>)"
+                                            , "-o", "<fc=#A88058><fn=1><leftbar></fn></fc> bat: <left> (<timeleft>)"
+                                            , "-H", "10", "-L", "7"
+                                            ] 50
+                    , Run XPropertyLog "_XMONAD_LOG_1"
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "<box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc>%battery%</fc></box>  <fc=#586E75> | </fc> <box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc> %cpu% </fc></box>  <fc=#586E75> | </fc> <box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc> %memory% </fc></box> } <icon=haskell.xpm/> <fc=#586E75> | </fc>  %_XMONAD_LOG_1% { <box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc> %disku% </fc></box> <fc=#586E75> | </fc> <box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc> %wlp2s0wi% </fc></box> <fc=#586E75> | </fc> <box type=Bottom width=2 mb=2 color=#A88058><fc=#cccccc> %date% </fc></box>"
+       }

@@ -9,7 +9,6 @@
 -}
 
 -- custom modules
-import Config.KaolinAurora
 import Config.Colors
 import Config.Vars
 import Config.Keys
@@ -64,10 +63,10 @@ main = xmonad
           , borderWidth        = myBorderWidth
           , terminal           = myTerminal
           , modMask            = myModMask
-          , normalBorderColor  = base08
-          , focusedBorderColor = base03
+          , normalBorderColor  = baseBorder
+          , focusedBorderColor = base01
           , logHook            = workspaceHistoryHookExclude [scratchpadWorkspaceTag]
-                                 <> masterHistoryHook -- Remember where we've been² (for 'swapPromote').
+                                 <> masterHistoryHook
                                  <> updatePointer (0.5, 0.5) (0, 0)
           }
           `additionalKeysP` myKeys

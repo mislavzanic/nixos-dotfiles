@@ -29,20 +29,10 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                    t = 0.95 - h
                    l = 0.95 - w
     spawnSpotify  = "spotify"
-    findSpotify   = title =? "Spotify" <||> title =? "spotify" <||> className =? "Spotify"
+    findSpotify   = title =? "Spotify" <||> title =? "spotify" <||> className =? "Spotify" <||> title =? ""
     manageSpotify = customFloating $ RationalRect l t w h
                     where
                       h = 0.9
                       w = 0.9
                       t = 0.95 - h
                       l = 0.95 - w
-{-
-    spawnDiscord  = "discord"
-    findDiscord   = className =? "discord"
-    manageDiscord = customFloating $ RationalRect l t w h
-                    where
-                      h = 0.9
-                      w = 0.9
-                      t = 0.95 - h
-                      l = 0.95 - w
--}

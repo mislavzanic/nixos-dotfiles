@@ -15,11 +15,10 @@ myStartupHook = do
   spawn     ("sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor primary --transparent true --alpha 0 " ++ trayerColor basebg ++ " --height 22 &")
 
   spawnOnce "[ -f ~/.local/share/bg ] && feh --bg-fill ~/.local/share/bg"
+  spawnOnce "emacs-28.1 --daemon &"
   spawnOnce "dunst &"
   spawnOnce "nm-applet &"
   spawnOnce "pasystray &"
   spawnOnce "xsetroot -cursor_name left_ptr &"
   spawnOnce "xmodmap ~/.config/.dotfiles/config/x11/Xmodmap"
-  spawnOnce "~/.config/xtheme.init"
-  spawnOnce "cat ~/xtheme/* | /nix/store/z5p1gwhhq1cjikfh37b4bd8zz7misrhs-xrdb-1.2.1/bin/xrdb -load"
-  spawnOnce "emacs-28.1 --daemon &"
+  spawnOnce "~/.config/xmonad/xinit"

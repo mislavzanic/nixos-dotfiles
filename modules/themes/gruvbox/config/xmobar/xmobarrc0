@@ -1,0 +1,51 @@
+Config { font            = "xft:Cantarell:size=8:antialias=true:autohint=false:style=bold"
+       , additionalFonts = [ "xft:FontAwesome:pixelsize=12"
+                           , "xft:Font Awesome 5 Free Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+                           ]
+       , bgColor      = "#1d2021"
+       , borderColor  = "#1d2021"
+       , fgColor      = "#d5c4a1"
+       , position     = OnScreen 0 (TopH 24)
+       , lowerOnStart = True
+       , hideOnStart  = False
+       , allDesktops  = True
+       , persistent   = True
+       , iconRoot     = "/home/mzanic/.config/.dotfiles/config/xmonad/xpm"
+       , commands = [ Run Cpu ["-t", "<fc=#83a598><fn=2>\xf108</fn></fc> cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Memory ["-t", "<fc=#83a598><fn=2>\xf233</fn></fc> mem: <used>M (<usedratio>%)"] 20
+                    , Run DiskU [("/", "<fc=#83a598><fn=2>\xf0c7</fn></fc> hdd: <free> free")] [] 60
+                    , Run Brightness [ "-t", "<fc=#83a598><fn=2>\xf0eb</fn></fc> br: <percent>%"
+                                     , "--"
+                                     , "-D", "intel_backlight"
+                                     ] 10
+                    , Run Wireless "wlp2s0" [ "-t","<fc=#83a598><fn=1>\xf1eb</fn></fc> net: <essid> <quality>"
+                                           , "-L","30"
+                                           , "-H","90"
+                                           , "--low", "red"
+                                           , "--normal","yellow"
+                                           , "--high","green"
+                                           ] 10
+                    , Run Date "<fc=#83a598><fn=1>\xf017</fn></fc> %b %d %Y - (%H:%M) " "date" 50
+                    , Run BatteryP ["BAT0"] [ "-t", "<acstatus>"
+                                            , "-S", "Off", "-d", "0", "-m", "3"
+                                            , "-L", "10", "-H", "90", "-p", "3"
+                                            , "-W", "0"
+                                            , "-f", "\xf244\xf243\xf243\xf243\xf242\xf242\xf242\xf241\xf241\xf240"
+                                            , "--"
+                                            , "-P"
+                                            , "-a", "notify-send -u critical 'Battery running out!!!!!!'"
+                                            , "-A", "5"
+                                            , "-i", "<fn=1>\xf1e6</fn>"
+                                            , "-O", "<fc=#83a598><fn=1><leftbar>  \xf1e6</fn></fc> bat: <left> (<timeleft>)"
+                                            , "-o", "<fc=#83a598><fn=1><leftbar></fn></fc> bat: <left> (<timeleft>)"
+                                            , "-H", "10", "-L", "7"
+                                            ] 50
+                    , Run XPropertyLog "_XMONAD_LOG_0"
+                    , Run Com "/home/mzanic/.config/.dotfiles/config/xmonad/trayer-padding-icon.sh" [] "trayerpad" 20
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       -- , template = "<box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1>%battery%</fc></box>  <fc=#665C54> | </fc> <box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1> %cpu% </fc></box>  <fc=#665C54> | </fc> <box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1> %memory% </fc></box> } <icon=haskell.xpm/> <fc=#665C54> | </fc>  %_XMONAD_LOG_0% { <box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1> %disku% </fc></box> <fc=#665C54> | </fc> <box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1> %wlp2s0wi% </fc></box> <fc=#665C54> | </fc> <box type=Bottom width=2 mb=2 color=#83a598><fc=#d5c4a1> %date% </fc></box> <fc=#665C54> | </fc> %trayerpad%"
+       , template = "<fc=#d5c4a1>%battery%</fc>  <fc=#665C54> | </fc> <fc=#d5c4a1>%bright%</fc>  <fc=#665C54> | </fc> <fc=#d5c4a1> %cpu% </fc>  <fc=#665C54> | </fc> <fc=#d5c4a1> %memory% </fc> } <icon=haskell.xpm/> <fc=#665C54> | </fc>  %_XMONAD_LOG_0% { <fc=#d5c4a1> %disku% </fc> <fc=#665C54> | </fc> <fc=#d5c4a1> %wlp2s0wi% </fc> <fc=#665C54> | </fc> <fc=#d5c4a1> %date% </fc> <fc=#665C54> | </fc> %trayerpad%"
+       }

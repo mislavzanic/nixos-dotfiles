@@ -34,6 +34,7 @@ in {
               error     = cfg.colors.red;
               warning   = cfg.colors.yellow;
               highlight = cfg.colors.red;
+              opacity   = "200";
             };
           };
         };

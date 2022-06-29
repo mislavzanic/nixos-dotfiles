@@ -65,6 +65,7 @@ in {
         error     = mkOpt str cfg.colors.red;
         warning   = mkOpt str cfg.colors.yellow;
         highlight = mkOpt str cfg.colors.white;
+        opacity   = mkOpt str "255";
       };
     };
   };
@@ -89,6 +90,7 @@ in {
     {
       home.configFile = {
         "xtheme/00-init".text = with cfg.colors; ''
+          #define brd  ${types.border}
           #define bg   ${types.bg}
           #define fg   ${types.fg}
           #define blk  ${black}
@@ -107,26 +109,29 @@ in {
           #define bmag ${brightmagenta}
           #define bcyn ${brightcyan}
           #define bwht ${white}
+          #define alph ${types.opacity}
         '';
         "xtheme/05-colors".text = ''
-          *.foreground: fg
-          *.background: bg
-          *.color0:  blk
-          *.color1:  red
-          *.color2:  grn
-          *.color3:  ylw
-          *.color4:  blu
-          *.color5:  mag
-          *.color6:  cyn
-          *.color7:  wht
-          *.color8:  bblk
-          *.color9:  bred
-          *.color10: bgrn
-          *.color11: bylw
-          *.color12: bblu
-          *.color13: bmag
-          *.color14: bcyn
-          *.color15: bwht
+          st.border: brd
+          st.foreground: fg
+          st.background: bg
+          st.color0:  blk
+          st.color1:  red
+          st.color2:  grn
+          st.color3:  ylw
+          st.color4:  blu
+          st.color5:  mag
+          st.color6:  cyn
+          st.color7:  wht
+          st.color8:  bblk
+          st.color9:  bred
+          st.color10: bgrn
+          st.color11: bylw
+          st.color12: bblu
+          st.color13: bmag
+          st.color14: bcyn
+          st.color15: bwht
+          st.opacity: alph
         '';
       };
 
@@ -141,11 +146,11 @@ in {
       # .fehbg polluting $HOME
       (let wCfg = config.services.xserver.desktopManager.wallpaper;
            command = ''
-             if [ -e "$XDG_DATA_HOME/bg" ]; then
+             if [ -e "$XDG_DATA_HOME/wallpaper" ]; then
                ${pkgs.feh}/bin/feh --bg-${wCfg.mode} \
                  ${optionalString wCfg.combineScreens "--no-xinerama"} \
                  --no-fehbg \
-                 $XDG_DATA_HOME/bg
+                 $XDG_DATA_HOME/wallpaper
              fi
           '';
        in {
