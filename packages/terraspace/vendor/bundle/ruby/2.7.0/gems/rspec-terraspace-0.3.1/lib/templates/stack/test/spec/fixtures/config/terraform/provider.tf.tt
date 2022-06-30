@@ -1,5 +1,0 @@
-<% if autodetect_provider == "azurerm" -%>
-provider "azurerm" {
-  features {} # required
-}
-<% end -%>

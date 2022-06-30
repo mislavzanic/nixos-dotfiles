@@ -1,2 +1,0 @@
-require 'rhcl'
-require 'json'

@@ -1,1 +1,0 @@
-@name = "my-sg-name-dev"

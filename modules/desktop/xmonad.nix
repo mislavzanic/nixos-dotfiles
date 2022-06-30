@@ -12,9 +12,13 @@ in {
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      haskellPackages.xmonad
+      # haskellPackages.mzanic-xmonad
+
+      xmobar
+
       xdotool
       trayer
-      xmobar
       htop
       feh
       sxiv
@@ -36,6 +40,34 @@ in {
       xorg.xmodmap
       networkmanagerapplet
     ];
+
+    # services = {
+    #   xserver = {
+    #     enable = true;
+
+    #     displayManager = {
+    #       defaultSession = "none+myxmonad";
+    #       sessionCommands = ''
+    #         cat ~/.config/xtheme/* | '${pkgs.xorg.xrdb}/bin/xrdb' -load
+    #       '';
+    #       lightdm.enable = true;
+    #       lightdm.greeters.mini = {
+    #         enable = true;
+    #         user = config.user.name;
+    #       };
+    #     };
+
+    #     windowManager = {
+    #       session = [{
+    #         name = "myxmonad";
+    #         start = ''
+    #           /usr/bin/env mzanic-xmonad &
+    #           waitPID=$!
+    #         '';
+    #       }];
+    #     };
+    #   };
+    # };
 
     services = {
       xserver = {

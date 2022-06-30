@@ -18,7 +18,8 @@ with lib.my;
   fileSystems."/".device = mkDefault "/dev/disk/by-label/nixos";
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_5_17;
+    # kernelPackages = pkgs.linuxKernel.packages.linux_5_18;
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {

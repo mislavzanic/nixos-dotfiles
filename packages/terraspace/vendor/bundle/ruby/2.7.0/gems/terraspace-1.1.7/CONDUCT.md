@@ -1,1 +1,0 @@
-https://terraspace.cloud/docs/conduct/

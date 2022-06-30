@@ -1,7 +1,0 @@
-#!/bin/bash
-<%= switch_ruby_version_line %>
-if [ -f config/app.rb ]; then
-  exec bundle exec terraspace "$@"
-else
-  exec terraspace "$@"
-fi

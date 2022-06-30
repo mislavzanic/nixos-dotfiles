@@ -2,8 +2,8 @@
   description = "My nixos config";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-    nixpkgs-unstable.url = "nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";  # for packages on the edge
 
     home-manager.url = "github:rycee/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -11,9 +11,15 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     emacs-overlay.url  = "github:nix-community/emacs-overlay";
+
+    # xmonad.url = "github:xmonad/xmonad";
+    # xmonad-contrib.url = "github:xmonad/xmonad-contrib";
+    xmonad.url = path:./config/xmonad/xmonad;
+    xmonad-contrib.url = path:./config/xmonad/xmonad-contrib;
+    xmobar.url = "github:jaor/xmobar";
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, xmonad, xmonad-contrib, xmobar, ... }:
   let
     inherit (lib.my) mapModules mapModulesRec mapHosts;
 
@@ -24,7 +30,8 @@
       config.allowUnfree = true;  # forgive me Stallman senpai
       overlays = extraOverlays ++ (lib.attrValues self.overlays);
     };
-    pkgs  = mkPkgs nixpkgs [ self.overlay ];
+
+    pkgs  = mkPkgs nixpkgs [ self.overlay xmonad.overlay xmonad-contrib.overlay ];
     pkgs' = mkPkgs nixpkgs-unstable [];
 
     lib = nixpkgs.lib.extend
@@ -44,6 +51,5 @@
     nixosModules = { dotfiles = import ./.; } // mapModulesRec ./modules import;
 
     nixosConfigurations = mapHosts ./hosts {};
-
   };
 }

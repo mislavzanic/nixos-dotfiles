@@ -1,2 +1,0 @@
-module <%= helper_class %>
-end

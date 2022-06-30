@@ -1,3 +1,0 @@
-## Examples
-
-    terraspace bundle install
