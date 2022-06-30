@@ -11,25 +11,20 @@ in {
   options.modules.desktop.xmonad = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
+
     environment.systemPackages = with pkgs; [
       haskellPackages.xmonad
       # haskellPackages.mzanic-xmonad
-
       xmobar
-
-      xdotool
       trayer
-      htop
-      feh
-      sxiv
-      xorg.xset
+      networkmanagerapplet
+
       xmonad-log
       dmenu
+
       dunst
-      lxappearance
-      pamixer
       libnotify
-      xclip
+      pamixer
       maim
       pavucontrol
       pasystray
@@ -37,8 +32,6 @@ in {
       xst
       firefox
       zathura
-      xorg.xmodmap
-      networkmanagerapplet
     ];
 
     # services = {

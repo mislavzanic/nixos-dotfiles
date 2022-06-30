@@ -2,13 +2,13 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     xmonad = {
-      # url = "github:xmonad/xmonad";
-      url = path:./xmonad;
+      url = "github:xmonad/xmonad";
+      # url = path:./xmonad;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     xmonad-contrib = {
-      # url = "github:xmonad/xmonad-contrib";
-      url = path:./xmonad-contrib;
+      url = "github:xmonad/xmonad-contrib";
+      # url = path:./xmonad-contrib;
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

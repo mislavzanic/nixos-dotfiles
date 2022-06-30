@@ -1,5 +1,5 @@
 {
-  description = "My nixos config";
+  description = "My NixOS config";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -12,10 +12,8 @@
 
     emacs-overlay.url  = "github:nix-community/emacs-overlay";
 
-    # xmonad.url = "github:xmonad/xmonad";
-    # xmonad-contrib.url = "github:xmonad/xmonad-contrib";
-    xmonad.url = path:./config/xmonad/xmonad;
-    xmonad-contrib.url = path:./config/xmonad/xmonad-contrib;
+    xmonad.url = "github:xmonad/xmonad";
+    xmonad-contrib.url = "github:xmonad/xmonad-contrib";
     xmobar.url = "github:jaor/xmobar";
   };
 
@@ -31,7 +29,7 @@
       overlays = extraOverlays ++ (lib.attrValues self.overlays);
     };
 
-    pkgs  = mkPkgs nixpkgs [ self.overlay xmonad.overlay xmonad-contrib.overlay ];
+    pkgs  = mkPkgs nixpkgs [ self.overlay ];
     pkgs' = mkPkgs nixpkgs-unstable [];
 
     lib = nixpkgs.lib.extend
